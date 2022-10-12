@@ -9,6 +9,7 @@
     * Timer implementeren die kolven trackt: hoe lang, aan welke tepels en aantal cc melk
     * De moeder notifiëren wanneer borstvoeding of kolven moet starten: deze tijdsintervallen kan je instellen
 * Memories (foto’s en videos) met een comment bijhouden in de app
+* Bepaalde noodfuncties voor de moeder zoals dichtsbijzijnde pamperwinkel vinden of vroedvrouw bellen
 
 ## Wie moet het gebruiken?
 * Moeders met een baby.
@@ -30,12 +31,10 @@ Online CRUD operaties met een backend service: Firebase
     * Media picker:
         * Foto van baby(‘s) en moeder maken of kiezen uit gallery
         * Videos opnemen van ‘memorable’ gebeurtenissen die je later opnieuw wil bekijken, en deze tonen in een apart tabblad 
-* Geolocation &amp; maps:
-    * Vanaf de huidige locatie wordt er een zoekopdracht op google maps gedaan naar de dichtstbijzijnde winkels waar men luiers verkoopt (in nood kan je deze functie raadplegen)
-
+    * Locatie detecteren
+        * Vanaf de huidige locatie wordt er een zoekopdracht op google maps gedaan naar de dichtstbijzijnde winkels waar men luiers verkoopt (in nood kan je deze             functie raadplegen)
 * Phone dialer: nummer van ingegeven vroedvrouw kan steeds gebeld worden via de
 app (indien advies nodig is)
-
 * Push notifications
     * wanneer moet er borstvoeding of kolven plaatsvinden
 * 2D graphics
