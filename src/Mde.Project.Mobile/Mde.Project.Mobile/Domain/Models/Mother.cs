@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Mde.Project.Mobile.Domain.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
 
 namespace Mde.Project.Mobile.Domain.Models
 {
-    public class Mother
+    public class Mother : BaseModel
     {
         public string UserName { get; set; }
         public string FirstName { get; set; }
