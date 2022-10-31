@@ -6,6 +6,7 @@ namespace Mde.Project.Mobile.Domain.Models
 {
     public class Baby
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
