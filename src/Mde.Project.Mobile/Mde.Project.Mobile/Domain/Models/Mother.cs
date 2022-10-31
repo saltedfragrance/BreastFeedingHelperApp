@@ -5,7 +5,7 @@ using Xamarin.Essentials;
 
 namespace Mde.Project.Mobile.Domain.Models
 {
-    public class User
+    public class Mother
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
