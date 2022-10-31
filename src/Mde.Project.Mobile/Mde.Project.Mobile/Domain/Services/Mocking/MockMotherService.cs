@@ -9,7 +9,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
     public class MockMotherService : IMotherService
     {
-        private static List<Mother> _motherList = new List<Mother>
+        private static List<Mother> mothers = new List<Mother>
         {
             new Mother
             {
@@ -27,9 +27,9 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             throw new NotImplementedException();
         }
 
-        public Task<Mother> GetMother(Guid id)
+        public async Task<List<Mother>> GetMothers()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(mothers);
         }
 
         public async Task<bool> Login(string email, string password)
