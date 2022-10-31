@@ -1,6 +1,7 @@
 ﻿using FreshMvvm;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Mocking;
+using Mde.Project.Mobile.ViewModels;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,7 +16,7 @@ namespace Mde.Project.Mobile
 
             FreshIOC.Container.Register<IMotherService>(new MockMotherService());
 
-            MainPage = new MainPage();
+            MainPage = FreshPageModelResolver.ResolvePageModel<LoginViewModel>();
         }
 
         protected override void OnStart()
