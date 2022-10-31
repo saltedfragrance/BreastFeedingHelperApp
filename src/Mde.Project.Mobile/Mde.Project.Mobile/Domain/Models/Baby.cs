@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Mde.Project.Mobile.Domain.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Mde.Project.Mobile.Domain.Models
 {
-    public class Baby
+    public class Baby : BaseModel
     {
-        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }

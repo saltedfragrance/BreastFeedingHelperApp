@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mde.Project.Mobile.Domain.Services
+namespace Mde.Project.Mobile.Domain.Services.Interfaces
 {
     public interface IMotherService
     {
