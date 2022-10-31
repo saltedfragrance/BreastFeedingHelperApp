@@ -12,6 +12,6 @@ namespace Mde.Project.Mobile.Domain.Models
         public DateTime Date { get; set; }
         public Uri MediaUri { get; set; }
         public Mother Mother { get; set; }
-        public Baby Baby { get; set; }
+        public ICollection<Baby> Baby { get; set; }
     }
 }
