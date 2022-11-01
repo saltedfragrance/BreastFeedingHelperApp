@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.LoginPage"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <StackLayout Padding="40">
             <Image Source="loginscreenimage.jpg" Margin="0,0,0,10"></Image>
@@ -18,13 +19,14 @@
                    TextColor="Black"
                    FontSize="Title" >
             </Label>
-            <Entry Placeholder="Email" TextColor="black" PlaceholderColor="Black"></Entry>
-            <Entry Placeholder="Password" TextColor="black" PlaceholderColor="Black"></Entry>
+            <Entry Placeholder="Email" TextColor="black" PlaceholderColor="Black" Text="{Binding Email}"></Entry>
+            <Entry Placeholder="Password" TextColor="black" PlaceholderColor="Black" Text="{Binding PassWord}"></Entry>
             <Button
                 Text="Sign in"
                 BackgroundColor="LightPink"
                 CornerRadius="30"
-                Margin="0,20,0,0"></Button>
+                Margin="0,20,0,0"
+                Command="{Binding Login}"></Button>
             <Label Text="Forgot your password?" TextColor="Black" HorizontalOptions="Center" FontSize="15"></Label>
             <Button CornerRadius="30" Margin="0,90,0,0" Text="Don't have an account? Sign up" BackgroundColor="LightPink" TextColor="White" HorizontalOptions="Center" FontSize="15"></Button>
         </StackLayout>

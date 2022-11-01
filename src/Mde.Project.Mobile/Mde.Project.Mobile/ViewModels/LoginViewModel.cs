@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
 {
@@ -48,7 +50,8 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand Login => new Command(
             async () =>
             {
-
+                CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
+                await CoreMethods.PushPageModel<TimeLineViewModel>(null);
             });
     }
 }

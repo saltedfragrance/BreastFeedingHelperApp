@@ -4,11 +4,12 @@ using Mde.Project.Mobile.Domain.Services.Mocking;
 using Mde.Project.Mobile.ViewModels;
 using System;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace Mde.Project.Mobile
 {
-    public partial class App : Application
+    public partial class App : Xamarin.Forms.Application
     {
         public App()
         {
@@ -16,7 +17,16 @@ namespace Mde.Project.Mobile
 
             FreshIOC.Container.Register<IMotherService>(new MockMotherService());
 
-            MainPage = FreshPageModelResolver.ResolvePageModel<LoginViewModel>();
+            var mainContainer = new FreshTabbedNavigationContainer(Constants.MainContainer);
+            mainContainer.BarBackgroundColor = Color.Pink;
+            mainContainer.AddTab<TimeLineViewModel>("Timeline", "timeline.png", null);
+            mainContainer.AddTab<TimeLineViewModel>("Statistics", "statistics.png", null);
+            mainContainer.AddTab<TimeLineViewModel>("Babies", "baby.png", null);
+            mainContainer.AddTab<TimeLineViewModel>("Breastfeeding", "breastfeeding.png", null);
+            mainContainer.AddTab<TimeLineViewModel>("Memories", "memories.png", null);
+            mainContainer.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+
+            MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LoginViewModel>());
         }
 
         protected override void OnStart()
