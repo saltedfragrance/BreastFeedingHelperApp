@@ -19,7 +19,14 @@
                    TextColor="Black"
                    FontSize="Title" >
             </Label>
+            <Label Text="{Binding EmailError}"
+                   IsVisible="{Binding EmailErrorVisible}"
+                   TextColor="Red"></Label>
             <Entry Placeholder="Email" TextColor="black" PlaceholderColor="Black" Text="{Binding Email}"></Entry>
+            <Label Text="{Binding PassWordError}"
+                   IsVisible="{Binding PassWordErrorVisible}"
+                   TextColor="Red"
+                   ></Label>
             <Entry Placeholder="Password" TextColor="black" PlaceholderColor="Black" Text="{Binding PassWord}"></Entry>
             <Button
                 Text="Sign in"
@@ -28,7 +35,7 @@
                 Margin="0,20,0,0"
                 Command="{Binding Login}"></Button>
             <Label Text="Forgot your password?" TextColor="Black" HorizontalOptions="Center" FontSize="15"></Label>
-            <Button CornerRadius="30" Margin="0,90,0,0" Text="Don't have an account? Sign up" BackgroundColor="LightPink" TextColor="White" HorizontalOptions="Center" FontSize="15"></Button>
+            <Button CornerRadius="30" Margin="0,45,0,0" Text="Don't have an account? Sign up" BackgroundColor="LightPink" TextColor="White" HorizontalOptions="Center" FontSize="15"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

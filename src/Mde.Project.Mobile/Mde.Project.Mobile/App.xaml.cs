@@ -1,4 +1,5 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.Domain.Services.Mocking;
 using Mde.Project.Mobile.ViewModels;
@@ -16,6 +17,7 @@ namespace Mde.Project.Mobile
             InitializeComponent();
 
             FreshIOC.Container.Register<IMotherService>(new MockMotherService());
+            FreshIOC.Container.Register<IUserService>(new UserService(new MockMotherService()));
 
             var mainContainer = new FreshTabbedNavigationContainer(Constants.MainContainer);
             mainContainer.BarBackgroundColor = Color.Pink;
