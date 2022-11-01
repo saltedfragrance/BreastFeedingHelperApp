@@ -44,5 +44,11 @@ namespace Mde.Project.Mobile.ViewModels
         {
             Mothers = await _motherService.GetMothers();
         }
+
+        public ICommand Login => new Command(
+            async () =>
+            {
+
+            });
     }
 }
