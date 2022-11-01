@@ -9,7 +9,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
     public class MockMotherService : IMotherService
     {
-        private static List<Mother> mothers = new List<Mother>
+        private readonly static List<Mother> mothers = new List<Mother>
         {
             new Mother
             {
