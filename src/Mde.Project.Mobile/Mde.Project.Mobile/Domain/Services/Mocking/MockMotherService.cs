@@ -11,17 +11,17 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
     public class MockMotherService : IMotherService
     {
-        public Mother currentMother { get; set; }
+        public Mother CurrentMother { get; set; }
         private readonly List<Mother> mothers = new List<Mother>
         {
             new Mother
             {
                 Id = new Guid("572a8007-46c7-44c0-ab7f-7c20d1530a2b"),
-                Email = "testmother@test.com",
+                Email = "t@t.com",
                 FirstName = "Angelina",
                 LastName = "Jolie",
                 MidWifePhoneNumber = 0497554433,
-                PassWord = "test",
+                PassWord = "t",
                 UserName = "TestMother"
             }
         };

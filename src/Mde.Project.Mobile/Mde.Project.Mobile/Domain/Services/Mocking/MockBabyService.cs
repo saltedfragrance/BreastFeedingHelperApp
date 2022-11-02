@@ -11,7 +11,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
     {
         private readonly List<Baby> babies = new List<Baby>
         {
-            new Baby{ Id = Guid.NewGuid(), FirstName = "Junior", Height = 50, MotherId = new Guid("572a8007-46c7-44c0-ab7f-7c20d1530a2b"), Weight = 5}
+            
         };
         public async Task CreateBaby(string firstName, int height, int weight, Guid motherId)
         {

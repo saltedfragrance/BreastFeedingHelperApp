@@ -19,15 +19,13 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private readonly IMotherService _motherService;
         private readonly IUserService _userService;
-        private IValidator userValidator;
+        private readonly IValidator userValidator;
         public LoginViewModel(IMotherService motherService, IUserService userService)
         {
             _motherService = motherService;
             userValidator = new UserValidator();
             _userService = userService;
         }
-        private List<Mother> Mothers { get; set; }
-
         private async Task RefreshMother()
         {
             if (_motherService.CurrentMother == null) _motherService.CurrentMother = new Mother();
@@ -98,13 +96,6 @@ namespace Mde.Project.Mobile.ViewModels
             base.ViewIsAppearing(sender, e);
 
             await RefreshMother();
-
-            await GetMothers();
-        }
-
-        private async Task GetMothers()
-        {
-            Mothers = await _motherService.GetMothers();
         }
 
         private void SaveMotherState()
@@ -124,7 +115,7 @@ namespace Mde.Project.Mobile.ViewModels
                     _motherService.CurrentMother = mothers.FirstOrDefault(m => m.Email == _motherService.CurrentMother.Email
                                                                             && m.PassWord == _motherService.CurrentMother.PassWord);
                     CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
-                    await CoreMethods.PushPageModel<TimeLineViewModel>(vm => vm.CurrentMother = _motherService.CurrentMother);
+                    await CoreMethods.PushPageModel<TimeLineViewModel>();
                 }
                 else if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == false))
                 {

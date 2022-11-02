@@ -23,6 +23,17 @@ namespace Mde.Project.Mobile.ViewModels
             _motherService = motherService;
         }
 
+        private string pageTitle;
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set
+            {
+                pageTitle = value;
+                RaisePropertyChanged(nameof(pageTitle));
+            }
+        }
+
         private ObservableCollection<Baby> babies;
 
         public ObservableCollection<Baby> Babies
@@ -34,6 +45,35 @@ namespace Mde.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(Babies));
             }
         }
+
+        private bool hasBabies;
+
+        public bool HasBabies
+        {
+            get { return hasBabies; }
+            set { 
+                hasBabies = value;
+                RaisePropertyChanged(nameof(HasBabies));
+            }
+        }
+
+        private bool hasNoBabies;
+
+        public bool HasNoBabies
+        {
+            get { return hasNoBabies; }
+            set
+            {
+                hasNoBabies = value;
+                RaisePropertyChanged(nameof(HasNoBabies));
+            }
+        }
+
+        public override void Init(object initData)
+        {
+            PageTitle = "Babies";
+        }
+
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
@@ -45,7 +85,13 @@ namespace Mde.Project.Mobile.ViewModels
         {
             var babies = await _babyService.GetBabies();
             Babies = new ObservableCollection<Baby>();
-            babies.ToList().Where(b => b.MotherId == _motherService.CurrentMother.Id).ToList().ForEach(baby => Babies.Add(baby));
+            var babiesOfMother = babies.ToList().Where(b => b.MotherId == _motherService.CurrentMother.Id).ToList();
+            if (babiesOfMother.Count() != 0)
+            {
+                babiesOfMother.ForEach(baby => Babies.Add(baby));
+                HasBabies = true;
+            }
+            else HasNoBabies = true;
         }
     }
 }
