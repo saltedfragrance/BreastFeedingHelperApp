@@ -2,6 +2,7 @@
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,11 +10,11 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
     public class MockMotherService : IMotherService
     {
-        private readonly static List<Mother> mothers = new List<Mother>
+        private readonly List<Mother> mothers = new List<Mother>
         {
             new Mother
             {
-                Id = Guid.Parse(Guid.NewGuid().ToString()),
+                Id = new Guid("572a8007-46c7-44c0-ab7f-7c20d1530a2b"),
                 Email = "testmother@test.com",
                 FirstName = "Angelina",
                 LastName = "Jolie",
@@ -22,7 +23,13 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                 UserName = "TestMother"
             }
         };
+
         public Task<Mother> CreateMother(Mother mother)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Baby>> GetBabies(Mother mother)
         {
             throw new NotImplementedException();
         }
