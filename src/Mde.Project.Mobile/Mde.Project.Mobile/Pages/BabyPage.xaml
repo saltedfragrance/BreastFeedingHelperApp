@@ -22,8 +22,10 @@
                 </ListView>
             </StackLayout>
 
-            <StackLayout IsVisible="{Binding HasNoBabies}">
-                <Label Text="bla" TextColor="Black"></Label>
+            <StackLayout VerticalOptions="CenterAndExpand" IsVisible="{Binding HasNoBabies}">
+                <Image VerticalOptions="Center" Source="laughingbaby.png" HeightRequest="50"></Image>
+                <Label HorizontalOptions="Center" TextColor="black">No babies yet!</Label>
+                <Button HorizontalOptions="Center" CornerRadius="30" Text="Add baby"></Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
