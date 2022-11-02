@@ -23,7 +23,7 @@ namespace Mde.Project.Mobile
             mainContainer.BarBackgroundColor = Color.Pink;
             mainContainer.AddTab<TimeLineViewModel>("Timeline", "timeline.png", null);
             mainContainer.AddTab<TimeLineViewModel>("Statistics", "statistics.png", null);
-            mainContainer.AddTab<TimeLineViewModel>("Babies", "baby.png", null);
+            mainContainer.AddTab<BabyViewModel>("Babies", "baby.png", null);
             mainContainer.AddTab<TimeLineViewModel>("Breastfeeding", "breastfeeding.png", null);
             mainContainer.AddTab<TimeLineViewModel>("Memories", "memories.png", null);
             mainContainer.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
