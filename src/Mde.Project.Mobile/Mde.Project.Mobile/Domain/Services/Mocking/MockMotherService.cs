@@ -11,6 +11,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
     public class MockMotherService : IMotherService
     {
+        public Mother currentMother { get; set; }
         private readonly List<Mother> mothers = new List<Mother>
         {
             new Mother

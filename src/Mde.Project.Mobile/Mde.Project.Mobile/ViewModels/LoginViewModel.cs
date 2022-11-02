@@ -19,8 +19,6 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private readonly IMotherService _motherService;
         private readonly IUserService _userService;
-
-
         private IValidator userValidator;
         public LoginViewModel(IMotherService motherService, IUserService userService)
         {
@@ -32,18 +30,7 @@ namespace Mde.Project.Mobile.ViewModels
 
         private async Task RefreshMother()
         {
-            if (currentMother == null) currentMother = new Mother();
-        }
-
-        private Mother currentMother;
-        public Mother CurrentMother
-        {
-            get { return currentMother; }
-            set
-            {
-                currentMother = value;
-                RaisePropertyChanged(nameof(Mother));
-            }
+            if (_motherService.CurrentMother == null) _motherService.CurrentMother = new Mother();
         }
 
         private string email;
@@ -122,8 +109,8 @@ namespace Mde.Project.Mobile.ViewModels
 
         private void SaveMotherState()
         {
-            currentMother.Email = Email;
-            currentMother.PassWord = PassWord;
+            _motherService.CurrentMother.Email = Email;
+            _motherService.CurrentMother.PassWord = PassWord;
         }
 
         public ICommand Login => new Command(
@@ -131,12 +118,15 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 SaveMotherState();
 
-                if (Validate(currentMother) && (await _userService.Login(Email, PassWord) == true))
+                if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
                 {
+                    List<Mother> mothers = await _motherService.GetMothers();
+                    _motherService.CurrentMother = mothers.FirstOrDefault(m => m.Email == _motherService.CurrentMother.Email
+                                                                            && m.PassWord == _motherService.CurrentMother.PassWord);
                     CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
-                    await CoreMethods.PushPageModel<TimeLineViewModel>(null);
+                    await CoreMethods.PushPageModel<TimeLineViewModel>(vm => vm.CurrentMother = _motherService.CurrentMother);
                 }
-                else if (Validate(currentMother) && (await _userService.Login(Email, PassWord) == false))
+                else if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == false))
                 {
                     EmailError = "Credentials incorrect!";
                     PassWordError = "Credentials incorrect!";

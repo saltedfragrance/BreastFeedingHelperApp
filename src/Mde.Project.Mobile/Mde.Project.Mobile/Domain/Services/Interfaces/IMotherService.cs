@@ -9,6 +9,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
 {
     public interface IMotherService
     {
+        Mother CurrentMother { get; set; }
         Task<List<Mother>> GetMothers();
         Task<Mother> UpdateMother(Mother mother);
         Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, Location Location);
