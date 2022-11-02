@@ -10,6 +10,7 @@ namespace Mde.Project.Mobile.Domain.Models
         public string FirstName { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
+        public Mother Mother { get; set; }
         public ICollection<Memory> Memories { get; set; }
     }
 }
