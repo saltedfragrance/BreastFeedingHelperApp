@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace Mde.Project.Mobile.Domain.Services.Interfaces
 {
@@ -10,7 +11,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
     {
         Task<List<Mother>> GetMothers();
         Task<Mother> UpdateMother(Mother mother);
-        Task<Mother> CreateMother(Mother mother);
-        Task<IEnumerable<Baby>> GetBabies(Mother mother);
+        Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, Location Location);
     }
 }

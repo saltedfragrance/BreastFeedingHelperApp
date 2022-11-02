@@ -17,6 +17,7 @@ namespace Mde.Project.Mobile
             InitializeComponent();
 
             FreshIOC.Container.Register<IMotherService>(new MockMotherService());
+            FreshIOC.Container.Register<IBabyService>(new MockBabyService());
             FreshIOC.Container.Register<IUserService>(new UserService(new MockMotherService()));
 
             var mainContainer = new FreshTabbedNavigationContainer(Constants.MainContainer);

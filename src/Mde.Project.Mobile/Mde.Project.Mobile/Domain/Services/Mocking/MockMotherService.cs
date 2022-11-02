@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
@@ -24,12 +25,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             }
         };
 
-        public Task<Mother> CreateMother(Mother mother)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Baby>> GetBabies(Mother mother)
+        public Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, Location Location)
         {
             throw new NotImplementedException();
         }
