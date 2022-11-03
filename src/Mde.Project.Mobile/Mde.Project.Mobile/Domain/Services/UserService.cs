@@ -3,6 +3,7 @@ using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,9 +35,9 @@ namespace Mde.Project.Mobile.Domain.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> Register(string firstName, string lastName, string userName, string email, string passWord, int midWifePhoneNumber, string location)
+        public async Task Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
-            throw new NotImplementedException();
+            _motherService.CreateMother(firstName, lastName, email, passWord, midWifePhoneNumber);
         }
     }
 }

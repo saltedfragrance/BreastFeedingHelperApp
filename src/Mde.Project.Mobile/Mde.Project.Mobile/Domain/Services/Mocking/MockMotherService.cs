@@ -12,7 +12,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
     public class MockMotherService : IMotherService
     {
         public Mother CurrentMother { get; set; }
-        private readonly List<Mother> mothers = new List<Mother>
+        private List<Mother> mothers = new List<Mother>
         {
             new Mother
             {
@@ -21,14 +21,13 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                 FirstName = "Angelina",
                 LastName = "Jolie",
                 MidWifePhoneNumber = 0497554433,
-                PassWord = "t",
-                UserName = "TestMother"
+                PassWord = "t"
             }
         };
 
-        public Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, string Location)
+        public async Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
-            throw new NotImplementedException();
+            mothers.Add(new Mother { FirstName = firstName, LastName = lastName, Email = email, PassWord = passWord, MidWifePhoneNumber = midWifePhoneNumber });
         }
 
         public async Task<List<Mother>> GetMothers()
