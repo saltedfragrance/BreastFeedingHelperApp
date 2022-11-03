@@ -9,8 +9,8 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
     public interface IBabyService
     {
         Task<List<Baby>> GetBabies();
-        Task CreateBaby(string firstName, double height, double weight, Guid motherId);
-        Task UpdateBaby(Baby baby);
-        Task DeleteBaby(Guid babyId);
+        Task CreateBaby(string firstName, double height, double weight, string motherId);
+        Task UpdateBaby(string id);
+        Task DeleteBaby(string id);
     }
 }

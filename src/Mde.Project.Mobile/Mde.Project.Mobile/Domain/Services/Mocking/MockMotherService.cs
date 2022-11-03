@@ -26,7 +26,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             }
         };
 
-        public Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, Location Location)
+        public Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, string Location)
         {
             throw new NotImplementedException();
         }
@@ -36,7 +36,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             return await Task.FromResult(mothers);
         }
 
-        public Task<Mother> UpdateMother(Mother mother)
+        public Task<Mother> UpdateMother(string id)
         {
             throw new NotImplementedException();
         }

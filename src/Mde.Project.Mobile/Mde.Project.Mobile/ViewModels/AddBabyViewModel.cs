@@ -85,7 +85,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddBaby => new Command(
             async () =>
             {
-                await _babyService.CreateBaby(FirstName, Height, Weight, _motherService.CurrentMother.Id);
+                await _babyService.CreateBaby(FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString());
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
             });
@@ -93,7 +93,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand DeleteBaby => new Command<Guid>(
     async (Guid id) =>
     {
-        await _babyService.DeleteBaby(id);
+        await _babyService.DeleteBaby(id.ToString());
     });
     }
 }

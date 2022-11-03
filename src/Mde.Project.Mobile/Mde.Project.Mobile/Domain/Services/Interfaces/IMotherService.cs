@@ -11,7 +11,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
     {
         Mother CurrentMother { get; set; }
         Task<List<Mother>> GetMothers();
-        Task<Mother> UpdateMother(Mother mother);
-        Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, Location Location);
+        Task<Mother> UpdateMother(string id);
+        Task<Mother> CreateMother(string userName, string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, string location);
     }
 }

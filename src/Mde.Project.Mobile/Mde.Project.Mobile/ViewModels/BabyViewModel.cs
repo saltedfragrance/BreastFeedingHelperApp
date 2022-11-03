@@ -103,7 +103,7 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
                 if (answer)
                 {
-                    await _babyService.DeleteBaby(id);
+                    await _babyService.DeleteBaby(id.ToString());
                     await RefreshBabies();
                 }
             });
