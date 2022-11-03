@@ -1,12 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.RegistrationPage">
+             x:Class="Mde.Project.Mobile.Pages.RegistrationPage"
+             BackgroundColor="White">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="40" HorizontalOptions="Center" WidthRequest="160">
+            <Label TextColor="Black" Text="Registration" FontSize="Title"></Label>
+            <Entry Placeholder="First name" TextColor="black" PlaceholderColor="Black" Text="{Binding FirstName}"></Entry>
+            <Entry Placeholder="Last name" TextColor="black" PlaceholderColor="Black" Text="{Binding LastName}"></Entry>
+            <Entry Placeholder="E-mail" TextColor="black" PlaceholderColor="Black" Text="{Binding Email}"></Entry>
+            <Entry Placeholder="Password" TextColor="black" PlaceholderColor="Black" Text="{Binding Password}"></Entry>
+            <Entry Placeholder="Repeat Password" TextColor="black" PlaceholderColor="Black" Text="{Binding Password}"></Entry>
+            <Entry Placeholder="Midwife phone number" TextColor="black" PlaceholderColor="Black" Text="{Binding MidWifePhoneNumber}" Keyboard="Numeric"></Entry>
+            <Button Command="{Binding Register}" CornerRadius="30" Margin="0,5,0,0" Text="Sign up" BackgroundColor="LightPink" TextColor="White" HorizontalOptions="Center" FontSize="15"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

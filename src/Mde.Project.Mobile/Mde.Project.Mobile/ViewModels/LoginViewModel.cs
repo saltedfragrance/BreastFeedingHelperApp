@@ -124,6 +124,14 @@ namespace Mde.Project.Mobile.ViewModels
                 }
             });
 
+        public ICommand RegistrationPage => new Command(
+            async () =>
+            {
+
+                await CoreMethods.PushPageModel<RegistrationViewModel>();
+
+            });
+
         private bool Validate(Mother mother)
         {
             EmailError = "";
