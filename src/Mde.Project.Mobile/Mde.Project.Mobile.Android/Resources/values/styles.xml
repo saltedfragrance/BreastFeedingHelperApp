@@ -9,6 +9,7 @@
 	  <item name="colorControlNormal">#000000</item>
 	  <item name="colorPrimary">#000000</item>
 	  <item name="color">#000000</item>
+	  <item name="color">#000000</item>
 
     <!-- Set theme colors from https://aka.ms/material-colors -->
     <!-- colorPrimary is used for the default action bar background -->

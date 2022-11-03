@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mde.Project.Mobile.Pages.BackNavBarView">
+    <ContentView.Content>
+        <StackLayout>
+            <StackLayout VerticalOptions="Start">
+                <Grid HeightRequest="70" BackgroundColor="LightBlue">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalTextAlignment="Start" Margin="0,-20,0,0" TextColor="black" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" FontSize="28" FontAttributes="Bold" Text="Add Baby"></Label>
+                    <Image Margin="20,20,0,0" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Source="arrow.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PreviousPage}"></TapGestureRecognizer>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+                <BoxView Margin="0,-6" HeightRequest="1" Color="Black"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -9,6 +9,8 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
 {
@@ -51,7 +53,8 @@ namespace Mde.Project.Mobile.ViewModels
         public bool HasBabies
         {
             get { return hasBabies; }
-            set { 
+            set
+            {
                 hasBabies = value;
                 RaisePropertyChanged(nameof(HasBabies));
             }
@@ -74,22 +77,35 @@ namespace Mde.Project.Mobile.ViewModels
             PageTitle = "Babies";
         }
 
+
+        public override async void ReverseInit(object returnedData)
+        {
+            await RefreshBabies();
+            await CoreMethods.PushPageModel<BabyViewModel>();
+        }
+
+
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
 
             await RefreshBabies();
         }
-
+        public ICommand AddBaby => new Command(
+           async () =>
+           {
+               await CoreMethods.PushPageModel<AddBabyViewModel>(null, true);
+           });
         private async Task RefreshBabies()
         {
             var babies = await _babyService.GetBabies();
             Babies = new ObservableCollection<Baby>();
-            var babiesOfMother = babies.ToList().Where(b => b.MotherId == _motherService.CurrentMother.Id).ToList();
+            var babiesOfMother = babies.ToList().Where(b => b.MotherId.ToString() == _motherService.CurrentMother.Id.ToString()).ToList();
             if (babiesOfMother.Count() != 0)
             {
                 babiesOfMother.ForEach(baby => Babies.Add(baby));
                 HasBabies = true;
+                hasNoBabies = false;
             }
             else HasNoBabies = true;
         }

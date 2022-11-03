@@ -13,9 +13,9 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             
         };
-        public async Task CreateBaby(string firstName, int height, int weight, Guid motherId)
+        public async Task CreateBaby(string firstName, double height, double weight, Guid motherId)
         {
-            babies.Add(new Baby { Id = Guid.NewGuid(), FirstName = firstName, Height = height, Weight = weight });
+            babies.Add(new Baby { Id = Guid.NewGuid(), FirstName = firstName, Height = height, Weight = weight, MotherId = motherId });
         }
         public async Task DeleteBaby(Baby baby)
         {
