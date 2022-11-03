@@ -85,7 +85,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddBaby => new Command(
             async () =>
             {
-                await _babyService.CreateBaby(FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString());
+                await _babyService.CreateBaby(FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
             });

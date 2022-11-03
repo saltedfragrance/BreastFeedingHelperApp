@@ -12,6 +12,7 @@ namespace Mde.Project.Mobile.Domain.Models
         public double Weight { get; set; }
         public Guid MotherId { get; set; }
         public Mother Mother { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public ICollection<Memory> Memories { get; set; }
     }
 }

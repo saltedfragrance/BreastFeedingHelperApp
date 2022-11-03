@@ -12,11 +12,11 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
     {
         private readonly List<Baby> babies = new List<Baby>
         {
-            
+
         };
-        public async Task CreateBaby(string firstName, double height, double weight, string motherId)
+        public async Task CreateBaby(string firstName, double height, double weight, string motherId, string dateOfBirth)
         {
-            babies.Add(new Baby { Id = Guid.NewGuid(), FirstName = firstName, Height = height, Weight = weight, MotherId = new Guid(motherId) });
+            babies.Add(new Baby { Id = Guid.NewGuid(), FirstName = firstName, Height = height, Weight = weight, MotherId = new Guid(motherId), DateOfBirth = Convert.ToDateTime(dateOfBirth) });
         }
         public async Task DeleteBaby(string id)
         {
@@ -30,7 +30,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             Baby baby = babies.Where(b => b.Id == (new Guid(id))).FirstOrDefault();
             babies.Remove(baby);
-            await CreateBaby(baby.FirstName, baby.Height, baby.Weight, baby.MotherId.ToString());
+            await CreateBaby(baby.FirstName, baby.Height, baby.Weight, baby.MotherId.ToString(), baby.DateOfBirth.ToString());
         }
     }
 }
