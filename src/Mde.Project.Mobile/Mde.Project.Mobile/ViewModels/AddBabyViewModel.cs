@@ -89,5 +89,11 @@ namespace Mde.Project.Mobile.ViewModels
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
             });
+
+        public ICommand DeleteBaby => new Command<Guid>(
+    async (Guid id) =>
+    {
+        await _babyService.DeleteBaby(id);
+    });
     }
 }

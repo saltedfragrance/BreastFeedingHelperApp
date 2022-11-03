@@ -11,6 +11,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
         Task<List<Baby>> GetBabies();
         Task CreateBaby(string firstName, double height, double weight, Guid motherId);
         Task UpdateBaby(Baby baby);
-        Task DeleteBaby(Baby baby);
+        Task DeleteBaby(Guid babyId);
     }
 }

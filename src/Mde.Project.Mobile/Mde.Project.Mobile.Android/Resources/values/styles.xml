@@ -10,6 +10,10 @@
 	  <item name="colorPrimary">#000000</item>
 	  <item name="color">#000000</item>
 	  <item name="color">#000000</item>
+	  <item name="android:colorPressedHighlight">@color/ListViewSelected</item>
+	  <item name="android:colorFocusedHighlight">@color/ListViewSelected</item>
+	  <item name="android:colorActivatedHighlight">@color/ListViewSelected</item>
+	  <item name="android:activatedBackgroundIndicator">@color/ListViewSelected</item>
 
     <!-- Set theme colors from https://aka.ms/material-colors -->
     <!-- colorPrimary is used for the default action bar background -->

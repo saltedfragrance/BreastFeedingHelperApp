@@ -90,15 +90,27 @@ namespace Mde.Project.Mobile.ViewModels
 
             await RefreshBabies();
         }
+
         public ICommand AddBaby => new Command(
            async () =>
            {
                await CoreMethods.PushPageModel<AddBabyViewModel>(null, true);
            });
+
+        public ICommand DeleteBaby => new Command<Guid>(
+            async (Guid id) =>
+            {
+                bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
+                if (answer)
+                {
+                    await _babyService.DeleteBaby(id);
+                    await RefreshBabies();
+                }
+            });
         private async Task RefreshBabies()
         {
             var babies = await _babyService.GetBabies();
-            if(Babies == null)
+            if (Babies == null)
             {
                 Babies = new ObservableCollection<Baby>();
             }
@@ -110,7 +122,12 @@ namespace Mde.Project.Mobile.ViewModels
                 HasBabies = true;
                 HasNoBabies = false;
             }
-            else HasNoBabies = true;
+            else
+            {
+                Babies.Clear();
+                HasBabies = false;
+                HasNoBabies = true;
+            }
         }
     }
 }

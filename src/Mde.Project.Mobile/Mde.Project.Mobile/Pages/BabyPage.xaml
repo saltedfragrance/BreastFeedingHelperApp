@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mde.Project.Mobile.Pages.BabyPage"
+             x:Class="Mde.Project.Mobile.Pages.BabyPage" x:Name="this"
              xmlns:views="clr-namespace:Mde.Project.Mobile.Pages"
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False">
@@ -11,7 +11,7 @@
 
 
             <StackLayout BackgroundColor="Transparent" IsVisible="{Binding HasBabies}">
-                <ListView HasUnevenRows="True" ItemsSource="{Binding Babies}">
+                <ListView BackgroundColor="White" HasUnevenRows="True" ItemsSource="{Binding Babies}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell Height="250">
@@ -29,7 +29,7 @@
                                     <Image Grid.ColumnSpan="2" Grid.Row="0" Source="laughingbaby.png" WidthRequest="50"></Image>
                                     <Label FontSize="20" HorizontalOptions="End" Grid.Row="1" Grid.Column="0" Text="{Binding FirstName}" TextColor="Black"></Label>
                                     <Image HorizontalOptions="Start"  Grid.Row="1" Grid.Column="1" Source="editbutton.png" WidthRequest="25"></Image>
-                                    <Image HorizontalOptions="Start" Margin="35,0,0,0" Grid.Row="1" Grid.Column="1" Source="deletebutton.png" WidthRequest="25"></Image>
+                                    <ImageButton Command="{Binding Path=BindingContext.DeleteBaby, Source={x:Reference this}}" CommandParameter="{Binding Id}" HorizontalOptions="Start" Margin="35,0,0,0" Grid.Row="1" Grid.Column="1" Source="deletebutton.png" WidthRequest="30"></ImageButton>
                                     <Label FontSize="20" VerticalOptions="Center" Margin="0,0,60,0" HorizontalOptions="End" Grid.Row="2" Grid.Column="0" TextColor="Black" Text="Weight:"></Label>
                                     <Label FontSize="20" VerticalOptions="Center" Margin="0,0,25,0" HorizontalOptions="End" Grid.Row="2" Grid.Column="0" TextColor="Black" Text="{Binding Weight}"></Label>
                                     <Label FontSize="20" VerticalOptions="Center" HorizontalOptions="End" Grid.Row="2" Grid.Column="0" TextColor="Black" Text="cm"></Label>

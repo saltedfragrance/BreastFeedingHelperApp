@@ -2,6 +2,7 @@
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,9 +18,9 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             babies.Add(new Baby { Id = Guid.NewGuid(), FirstName = firstName, Height = height, Weight = weight, MotherId = motherId });
         }
-        public async Task DeleteBaby(Baby baby)
+        public async Task DeleteBaby(Guid babyId)
         {
-            babies.Remove(baby);
+            babies.RemoveAll(b => b.Id == babyId);
         }
         public async Task<List<Baby>> GetBabies()
         {
