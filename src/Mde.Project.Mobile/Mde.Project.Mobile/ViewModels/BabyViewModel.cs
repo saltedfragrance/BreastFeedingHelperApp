@@ -91,10 +91,11 @@ namespace Mde.Project.Mobile.ViewModels
             await RefreshBabies();
         }
 
-        public ICommand AddBaby => new Command(
-           async () =>
+        public ICommand AddOrEditBaby => new Command<Guid?>(
+           async (Guid? id) =>
            {
-               await CoreMethods.PushPageModel<AddBabyViewModel>(null, true);
+               if(id == Guid.Empty) await CoreMethods.PushPageModel<AddBabyViewModel>(null, true);
+               else await CoreMethods.PushPageModel<AddBabyViewModel>(id, true);
            });
 
         public ICommand DeleteBaby => new Command<Guid>(

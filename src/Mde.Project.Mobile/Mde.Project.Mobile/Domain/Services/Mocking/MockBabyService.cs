@@ -26,11 +26,16 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             return await Task.FromResult(babies);
         }
-        public async Task UpdateBaby(string id)
+
+        public async Task<Baby> GetBaby(string id)
+        {
+            return babies.Where(b => b.Id == new Guid(id)).FirstOrDefault();
+        }
+        public async Task UpdateBaby(string id, string firstName, string birthDate, double weight, double height)
         {
             Baby baby = babies.Where(b => b.Id == (new Guid(id))).FirstOrDefault();
+            await CreateBaby(firstName, height, weight, baby.MotherId.ToString(), birthDate.ToString());
             babies.Remove(baby);
-            await CreateBaby(baby.FirstName, baby.Height, baby.Weight, baby.MotherId.ToString(), baby.DateOfBirth.ToString());
         }
     }
 }

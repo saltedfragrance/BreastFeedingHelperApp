@@ -35,7 +35,8 @@
                     </Label.FormattedText>
                 </Label>
                 <Slider Maximum="100" Value="{Binding Height}"  MaximumTrackColor="Black"></Slider>
-                <Button Text="Add baby" Command="{Binding AddBaby}"></Button>
+                <Button IsVisible="{Binding Add}" Text="Add baby" Command="{Binding AddBaby}"></Button>
+                <Button IsVisible="{Binding Edit}" Text="Edit baby" Command="{Binding EditBaby}"></Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

@@ -19,6 +19,36 @@ namespace Mde.Project.Mobile.ViewModels
             _motherService = motherService;
             _babyService = babyService;
         }
+        private bool edit;
+        public bool Edit
+        {
+            get { return edit; }
+            set
+            {
+                edit = value;
+                RaisePropertyChanged(nameof(Edit));
+            }
+        }
+
+        private bool add;
+        public bool Add
+        {
+            get { return add; }
+            set
+            {
+                add = value;
+                RaisePropertyChanged(nameof(Add));
+            }
+        }
+
+        private Guid? id;
+
+        public Guid? Id
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
 
         private DateTime birthDate;
         public DateTime BirthDate
@@ -76,6 +106,31 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
+
+        public async override void Init(object initData)
+        {
+            if (initData != null)
+            {
+                Add = false;
+                Edit = true;
+                var id = initData as Guid?;
+                Id = id;
+                var baby = await _babyService.GetBaby(Id.ToString());
+                BirthDate = baby.DateOfBirth;
+                FirstName = baby.FirstName;
+                Weight = baby.Weight;
+                Height = baby.Height;
+
+            }
+            else
+            {
+                Add = true;
+                Edit = false;
+            }
+
+            base.Init(initData);
+        }
+
         public ICommand PreviousPage => new Command(
             async () =>
             {
@@ -90,10 +145,18 @@ namespace Mde.Project.Mobile.ViewModels
                 await CoreMethods.PopPageModel(true, true);
             });
 
+        public ICommand EditBaby => new Command(
+            async () =>
+            {
+                await _babyService.UpdateBaby(Id.ToString(), FirstName, BirthDate.ToString(), Weight, Height);
+                PreviousPageModel.ReverseInit(new Baby());
+                await CoreMethods.PopPageModel(true, true);
+            });
+
         public ICommand DeleteBaby => new Command<Guid>(
-    async (Guid id) =>
-    {
-        await _babyService.DeleteBaby(id.ToString());
-    });
+            async (Guid id) =>
+            {
+                await _babyService.DeleteBaby(id.ToString());
+            });
     }
 }

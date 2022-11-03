@@ -29,7 +29,7 @@
                                     </Grid.ColumnDefinitions>
                                     <Image Grid.ColumnSpan="2" Grid.Row="0" Source="laughingbaby.png" WidthRequest="50"></Image>
                                     <Label FontSize="20" HorizontalOptions="End" Grid.Row="1" Grid.Column="0" Text="{Binding FirstName}" TextColor="Black"></Label>
-                                    <Image HorizontalOptions="Start"  Grid.Row="1" Grid.Column="1" Source="editbutton.png" WidthRequest="25"></Image>
+                                    <ImageButton HorizontalOptions="Start"  Grid.Row="1" Grid.Column="1" Source="editbutton.png" WidthRequest="25" Command="{Binding Path=BindingContext.AddOrEditBaby, Source={x:Reference this}}" CommandParameter="{Binding Id}"></ImageButton>
                                     <ImageButton Command="{Binding Path=BindingContext.DeleteBaby, Source={x:Reference this}}" CommandParameter="{Binding Id}" HorizontalOptions="Start" Margin="35,0,0,0" Grid.Row="1" Grid.Column="1" Source="deletebutton.png" WidthRequest="30"></ImageButton>
                                     <Label FontSize="20" VerticalOptions="Center" Margin="0,0,20,0" HorizontalOptions="End" Grid.Row="2" Grid.Column="0" TextColor="Black" Text="Date of birth:"></Label>
                                     <Label FontSize="20" VerticalOptions="Center" Margin="0,0,20,0" HorizontalOptions="End" Grid.Row="2" Grid.Column="1" TextColor="Black" Text="{Binding DateOfBirth, StringFormat='{0:MMMM dd, yyyy}'}"></Label>
@@ -46,14 +46,14 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Button HorizontalOptions="Center" CornerRadius="30" Text="Add another baby" Command="{Binding AddBaby}"></Button>
+                <Button HorizontalOptions="Center" CornerRadius="30" Text="Add another baby" Command="{Binding AddOrEditBaby}"></Button>
             </StackLayout>
 
 
             <StackLayout VerticalOptions="CenterAndExpand" IsVisible="{Binding HasNoBabies}">
                 <Image VerticalOptions="Center" Source="laughingbaby.png" HeightRequest="50"></Image>
                 <Label HorizontalOptions="Center" TextColor="black">No babies yet!</Label>
-                <Button HorizontalOptions="Center" CornerRadius="30" Text="Add baby" Command="{Binding AddBaby}"></Button>
+                <Button HorizontalOptions="Center" CornerRadius="30" Text="Add baby" Command="{Binding AddOrEditBaby}"></Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
