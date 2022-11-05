@@ -11,8 +11,23 @@ namespace Mde.Project.Mobile.Domain.Validators
 {
     public class UserValidator : AbstractValidator<Mother>
     {
-        public UserValidator()
+        public UserValidator(bool isRegistering)
         {
+            if (isRegistering)
+            {
+            RuleFor(mother => mother.FirstName)
+                    .NotEmpty()
+                    .WithMessage("First name cannot be empty");
+
+            RuleFor(mother => mother.LastName)
+                    .NotEmpty()
+                    .WithMessage("Last name cannot be empty");
+
+            RuleFor(mother => mother.MidWifePhoneNumber)
+                    .NotEmpty()
+                    .WithMessage("Midwife phone number cannot be empty");
+            }
+
             RuleFor(mother => mother.Email)
                     .NotEmpty()
                     .WithMessage("E-mail cannot be empty")

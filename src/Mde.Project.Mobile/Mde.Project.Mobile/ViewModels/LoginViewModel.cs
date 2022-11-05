@@ -23,7 +23,7 @@ namespace Mde.Project.Mobile.ViewModels
         public LoginViewModel(IMotherService motherService, IUserService userService)
         {
             _motherService = motherService;
-            userValidator = new UserValidator();
+            userValidator = new UserValidator(false);
             _userService = userService;
         }
         private async Task RefreshMother()

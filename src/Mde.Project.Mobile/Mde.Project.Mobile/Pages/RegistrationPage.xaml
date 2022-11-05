@@ -6,11 +6,29 @@
     <ContentPage.Content>
         <StackLayout Padding="40" HorizontalOptions="Center" WidthRequest="160">
             <Label TextColor="Black" Text="Registration" FontSize="Title"></Label>
+            <Label Text="{Binding FirstNameError}"
+                   IsVisible="{Binding FirstNameErrorVisible}"
+                   TextColor="Red"></Label>
             <Entry Placeholder="First name" TextColor="black" PlaceholderColor="Black" Text="{Binding FirstName}"></Entry>
+            <Label Text="{Binding LastNameError}"
+                   IsVisible="{Binding LastNameErrorVisible}"
+                   TextColor="Red"></Label>
             <Entry Placeholder="Last name" TextColor="black" PlaceholderColor="Black" Text="{Binding LastName}"></Entry>
+            <Label Text="{Binding EmailError}"
+                   IsVisible="{Binding EmailErrorVisible}"
+                   TextColor="Red"></Label>
             <Entry Placeholder="E-mail" TextColor="black" PlaceholderColor="Black" Text="{Binding Email}"></Entry>
-            <Entry Placeholder="Password" TextColor="black" PlaceholderColor="Black" Text="{Binding Password}"></Entry>
-            <Entry Placeholder="Repeat Password" TextColor="black" PlaceholderColor="Black" Text="{Binding Password}"></Entry>
+            <Label Text="{Binding PassWordError}"
+                   IsVisible="{Binding PassWordErrorVisible}"
+                   TextColor="Red"></Label>
+            <Entry Placeholder="Password" TextColor="black" PlaceholderColor="Black" Text="{Binding PassWord}"></Entry>
+            <Label Text="{Binding RepeatPassWordError}"
+                   IsVisible="{Binding RepeatPassWordErrorVisible}"
+                   TextColor="Red"></Label>
+            <Entry Placeholder="Repeat Password" TextColor="black" PlaceholderColor="Black" Text="{Binding RepeatPassWord}"></Entry>
+            <Label Text="{Binding MidWifePhoneNumberError}"
+                   IsVisible="{Binding MidWifePhoneNumberErrorVisible}"
+                   TextColor="Red"></Label>
             <Entry Placeholder="Midwife phone number" TextColor="black" PlaceholderColor="Black" Text="{Binding MidWifePhoneNumber}" Keyboard="Numeric"></Entry>
             <Button Command="{Binding Register}" CornerRadius="30" Margin="0,5,0,0" Text="Sign up" BackgroundColor="LightPink" TextColor="White" HorizontalOptions="Center" FontSize="15"></Button>
         </StackLayout>
