@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Pages\BreastFeedingPage.xaml.cs">
+      <DependentUpon>BreastFeedingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -32,6 +35,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\BackNavBarView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\BreastFeedingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\LoginPage.xaml">
