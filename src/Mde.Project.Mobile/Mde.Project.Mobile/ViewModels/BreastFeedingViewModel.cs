@@ -16,7 +16,6 @@ namespace Mde.Project.Mobile.ViewModels
         public override void ReverseInit(object returnedData)
         {
             base.ReverseInit(returnedData);
-            IsBreastFeedingPage = false;
         }
     }
 }

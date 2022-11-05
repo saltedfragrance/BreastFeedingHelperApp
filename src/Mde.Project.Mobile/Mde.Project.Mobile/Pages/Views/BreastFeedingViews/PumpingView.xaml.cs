@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Mde.Project.Mobile.Pages.Views.NavigationViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BackNavBarView : ContentView
+    public partial class PumpingView : ContentView
     {
-        public BackNavBarView()
+        public PumpingView()
         {
             InitializeComponent();
         }

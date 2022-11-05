@@ -2,14 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.BabyPage" x:Name="this"
-             xmlns:views="clr-namespace:Mde.Project.Mobile.Pages"
+             xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews"
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <StackLayout>
             <views:TitleBarView/>
-
-
             <StackLayout BackgroundColor="Transparent" IsVisible="{Binding HasBabies}">
                 <ListView BackgroundColor="White" HasUnevenRows="True" ItemsSource="{Binding Babies}">
                     <ListView.ItemTemplate>

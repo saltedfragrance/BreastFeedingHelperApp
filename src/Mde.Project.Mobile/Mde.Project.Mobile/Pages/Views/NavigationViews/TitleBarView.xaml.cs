@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Mde.Project.Mobile.Pages
+namespace Mde.Project.Mobile.Pages.Views.NavigationViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TitleBarView : ContentView
