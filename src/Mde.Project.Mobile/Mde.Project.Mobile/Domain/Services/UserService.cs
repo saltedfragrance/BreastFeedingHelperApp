@@ -37,7 +37,7 @@ namespace Mde.Project.Mobile.Domain.Services
 
         public async Task Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
-            _motherService.CreateMother(firstName, lastName, email, passWord, midWifePhoneNumber);
+            await _motherService.CreateMother(firstName, lastName, email, passWord, midWifePhoneNumber);
         }
     }
 }
