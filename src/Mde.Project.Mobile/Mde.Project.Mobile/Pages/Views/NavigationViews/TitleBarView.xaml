@@ -22,6 +22,29 @@
                     <Image Margin="0,4,0,0" Grid.Row="0" Grid.Column="2" Source="help.ping"></Image>
                 </Grid>
                 <BoxView Margin="0,-6" HeightRequest="1" Color="Black"/>
+                
+                <Grid HeightRequest="80" IsVisible="{Binding IsBreastFeedingPage, FallbackValue='False'}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0,1">
+                            <GradientStop Color="pink"
+                             Offset="0.1" />
+                            <GradientStop Color="White"
+                          Offset="1" />
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Button CornerRadius="20" Text="Pumping" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="0"></Button>
+                    <Button CornerRadius="20" Text="Feeding" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="1"></Button>
+                    <Button CornerRadius="20" Text="Reminders" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="2"></Button>
+                </Grid>
+                
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

@@ -34,7 +34,7 @@
     <EmbeddedResource Update="Pages\BabyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Views\BackNavBarView.xaml">
+    <EmbeddedResource Update="Pages\Views\NavigationViews\BackNavBarView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\BreastFeedingPage.xaml">
@@ -49,10 +49,7 @@
     <EmbeddedResource Update="Pages\TimeLinePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Views\BreastFeedingMenuView.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Views\TitleBarView.xaml">
+    <EmbeddedResource Update="Pages\Views\NavigationViews\TitleBarView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
