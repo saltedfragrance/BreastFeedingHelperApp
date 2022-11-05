@@ -40,8 +40,8 @@
                           Offset="1" />
                         </LinearGradientBrush>
                     </Grid.Background>
-                    <Button CornerRadius="20" Text="Pumping" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="0"></Button>
-                    <Button CornerRadius="20" Text="Feeding" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="1"></Button>
+                    <Button Command="{Binding PumpingPage}" CornerRadius="20" Text="Pumping" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="0"></Button>
+                    <Button Command="{Binding FeedingPage}" CornerRadius="20" Text="Feeding" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="1"></Button>
                     <Button CornerRadius="20" Text="Reminders" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="2"></Button>
                 </Grid>
                 

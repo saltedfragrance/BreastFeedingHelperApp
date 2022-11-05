@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Mde.Project.Mobile.Pages.Views.BreastFeedingViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PumpingView : ContentView
+    public partial class RemindersView : ContentView
     {
-        public PumpingView()
+        public RemindersView()
         {
             InitializeComponent();
         }
