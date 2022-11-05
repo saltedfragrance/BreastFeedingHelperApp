@@ -85,7 +85,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand RemindersPage => new Command(
             () =>
             {
-                IsFeedingPage = true;
+                IsRemindersPage = true;
                 IsFeedingPage = false;
                 IsPumpingPage = false;
             });

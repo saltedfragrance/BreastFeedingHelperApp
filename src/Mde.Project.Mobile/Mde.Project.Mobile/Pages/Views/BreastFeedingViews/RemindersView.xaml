@@ -2,9 +2,21 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.Views.BreastFeedingViews.RemindersView">
-  <ContentView.Content>
-      <StackLayout>
-          <Label Text="Hello Xamarin.Forms!" />
-      </StackLayout>
-  </ContentView.Content>
+    <ContentView.Content>
+        <StackLayout Padding="35">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.25*"></RowDefinition>
+                    <RowDefinition Height="0.25*"></RowDefinition>
+                    <RowDefinition Height="0.25*"></RowDefinition>
+                    <RowDefinition Height="0.25*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button CornerRadius="30" HorizontalOptions="Center" Grid.Column="0" VerticalOptions="Center" BackgroundColor="Pink" Grid.Row="0" TextColor="Black" Text="Set feeding reminder"></Button>
+                <Button HorizontalOptions="Center" VerticalOptions="Center" CornerRadius="30" BackgroundColor="Pink" Grid.Column="0" Grid.Row="3" TextColor="Black" Text="Set pumping reminder"></Button>
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
 </ContentView>
