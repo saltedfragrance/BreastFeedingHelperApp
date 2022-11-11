@@ -8,6 +8,7 @@ namespace Mde.Project.Mobile.Domain.Models
     public class TimeLine : BaseModel
     {
         public Guid MotherId { get; set; }
-        public List<string> Events { get; set; }
+        public List<Event> Events { get; set; }
     }
 }
+ 

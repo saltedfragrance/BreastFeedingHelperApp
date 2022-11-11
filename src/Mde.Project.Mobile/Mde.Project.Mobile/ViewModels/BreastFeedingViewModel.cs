@@ -1,4 +1,5 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,13 @@ namespace Mde.Project.Mobile.ViewModels
 {
     public class BreastFeedingViewModel : FreshBasePageModel
     {
+        private IMotherService _motherService;
+
+        public BreastFeedingViewModel(IMotherService motherService)
+        {
+            _motherService = motherService;
+        }
+
         private bool stopWatchEnabled = false;
         private Stopwatch stopWatch = new Stopwatch();
         public bool StopWatchEnabled
@@ -238,12 +246,13 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand StopBreastFeeding => new Command(
                 async () =>
                 {
-                    bool stopPumping = await CoreMethods.DisplayAlert("Attention", "Are you sure you wish to stop pumping?", "Yes", "No");
-                    if (stopPumping)
+                    string amountPumped = await CurrentPage.DisplayPromptAsync("End pumping session?", "Please enter the amount of milk pumped in milliliters", "Finish session", "Continue session");
+                    if (amountPumped != null)
                     {
                         BreastFeedingStopped = true;
                         BreastFeedingStarted = false;
                         StopWatchEnabled = false;
+                        await _motherService.AddEventToTimeLine($"Pumped {amountPumped}ml of breast milk");
                     }
                 });
     }

@@ -3,13 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.TimeLinePage"
              NavigationPage.HasNavigationBar="False"
+             xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews"
              BackgroundColor="White">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" 
-                   TextColor="Black"/>
+            <views:TitleBarView/>
         </StackLayout>
     </ContentPage.Content>
 

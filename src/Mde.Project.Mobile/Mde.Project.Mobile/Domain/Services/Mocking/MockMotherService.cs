@@ -22,7 +22,12 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                 LastName = "Jolie",
                 MidWifePhoneNumber = 0497554433,
                 PassWord = "t",
-                TimeLine = new TimeLine{ Events = new List<string>(), Id = new Guid("8468bb0b-607b-4fd7-81f1-aa60f132ffb5"), MotherId = new Guid("6286c349-107d-4e04-a118-a78aa37a5c52")}
+                TimeLine = new TimeLine{ Events = new List<Event>
+                {
+                    new Event { Id = Guid.NewGuid(), Date = DateTime.Now, Description = "Pumped 30ml of breast milk"},
+                    new Event { Id = Guid.NewGuid(), Date = DateTime.Now, Description = "Stijn jr grew by 1cm!"},
+                },
+                Id = new Guid("8468bb0b-607b-4fd7-81f1-aa60f132ffb5"), MotherId = new Guid("6286c349-107d-4e04-a118-a78aa37a5c52")}
             }
         };
 
@@ -39,6 +44,11 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         public Task<Mother> UpdateMother(string id)
         {
             throw new NotImplementedException();
+        }
+        public Task<string> AddEventToTimeLine(string eventMessage)
+        {
+            CurrentMother.TimeLine.Events.Add(new Event { Id = Guid.NewGuid(), Description = eventMessage, Date = DateTime.Now });
+            return Task.FromResult(eventMessage);
         }
     }
 }

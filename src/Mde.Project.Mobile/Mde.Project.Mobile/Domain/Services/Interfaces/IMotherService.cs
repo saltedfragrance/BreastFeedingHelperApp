@@ -13,5 +13,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
         Task<List<Mother>> GetMothers();
         Task<Mother> UpdateMother(string id);
         Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber);
+        Task<string> AddEventToTimeLine(string eventMessage);
     }
 }
