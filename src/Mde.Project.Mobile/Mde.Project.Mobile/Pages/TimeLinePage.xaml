@@ -8,7 +8,25 @@
     <ContentPage.Content>
         <StackLayout>
             <views:TitleBarView/>
+            <ListView HasUnevenRows="True" ItemsSource="{Binding TimeLineEvents}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="250">
+                            <Grid Padding="25" HeightRequest="250">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.1*"></ColumnDefinition>
+                                    <ColumnDefinition Width="0.9*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Label HorizontalOptions="Center" TextColor="Black" Grid.Column="1" Text="{Binding Description}"></Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
-
 </ContentPage>

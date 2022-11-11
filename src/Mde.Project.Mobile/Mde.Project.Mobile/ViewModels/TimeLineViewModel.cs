@@ -3,6 +3,8 @@ using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Text;
 
 namespace Mde.Project.Mobile.ViewModels
@@ -16,15 +18,15 @@ namespace Mde.Project.Mobile.ViewModels
             _motherService = motherService;
         }
 
-        private TimeLine timeLine;
+        private ObservableCollection<Event> timeLineEvents;
 
-        public TimeLine TimeLine
+        public ObservableCollection<Event> TimeLineEvents
         {
-            get { return timeLine; }
+            get { return timeLineEvents; }
             set
             {
-                timeLine = value;
-                RaisePropertyChanged(nameof(TimeLine));
+                timeLineEvents = value;
+                RaisePropertyChanged(nameof(TimeLineEvents));
             }
         }
 
@@ -36,7 +38,7 @@ namespace Mde.Project.Mobile.ViewModels
 
         private void RefreshTimeLine()
         {
-            TimeLine = _motherService.CurrentMother.TimeLine;
+            TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
         }
 
     }
