@@ -189,7 +189,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand Register => new Command(
             async () =>
             {
-                var mother = new Mother { FirstName = this.FirstName, LastName = this.LastName, Email = this.Email, PassWord = this.PassWord, MidWifePhoneNumber = int.Parse(this.MidWifePhoneNumber) };
+                var mother = new Mother { FirstName = this.FirstName, LastName = this.LastName, Email = this.Email, PassWord = this.PassWord, MidWifePhoneNumber = (this.MidWifePhoneNumber != null? int.Parse(this.MidWifePhoneNumber) : 0) };
                 if (Validate(mother))
                 {
                     await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
