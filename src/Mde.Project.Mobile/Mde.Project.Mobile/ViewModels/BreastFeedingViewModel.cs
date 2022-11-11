@@ -1,6 +1,7 @@
 ﻿using FreshMvvm;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -9,6 +10,126 @@ namespace Mde.Project.Mobile.ViewModels
 {
     public class BreastFeedingViewModel : FreshBasePageModel
     {
+        private bool stopWatchEnabled = false;
+        private Stopwatch stopWatch = new Stopwatch();
+        public bool StopWatchEnabled
+        {
+            get { return stopWatchEnabled; }
+            set
+            {
+                stopWatchEnabled = value;
+                RaisePropertyChanged(nameof(StopWatchEnabled));
+            }
+        }
+
+        private bool leftNippleIsChecked;
+
+        public bool LeftNippleIsChecked
+        {
+            get { return leftNippleIsChecked; }
+            set
+            {
+                leftNippleIsChecked = value;
+                if (leftNippleIsChecked)
+                {
+                    RightNippleIsChecked = false;
+                    BothNipplesAreChecked = false;
+                }
+                RaisePropertyChanged(nameof(LeftNippleIsChecked));
+            }
+        }
+
+        private bool rightNippleIsChecked;
+
+        public bool RightNippleIsChecked
+        {
+            get { return rightNippleIsChecked; }
+            set
+            {
+                rightNippleIsChecked = value;
+                if (rightNippleIsChecked)
+                {
+                    LeftNippleIsChecked = false;
+                    BothNipplesAreChecked = false;
+                }
+                RaisePropertyChanged(nameof(RightNippleIsChecked));
+            }
+        }
+
+        private bool bothNipplesAreChecked;
+
+        public bool BothNipplesAreChecked
+        {
+            get { return bothNipplesAreChecked; }
+            set
+            {
+                bothNipplesAreChecked = value;
+                if (bothNipplesAreChecked)
+                {
+                    RightNippleIsChecked = false;
+                    LeftNippleIsChecked = false;
+                }
+                RaisePropertyChanged(nameof(BothNipplesAreChecked));
+            }
+        }
+
+        private bool breastFeedingStarted = false;
+
+        public bool BreastFeedingStarted
+        {
+            get { return breastFeedingStarted; }
+            set
+            {
+                breastFeedingStarted = value;
+                RaisePropertyChanged(nameof(BreastFeedingStarted));
+            }
+        }
+
+        private bool breastFeedingStopped = true;
+
+        public bool BreastFeedingStopped
+        {
+            get { return breastFeedingStopped; }
+            set
+            {
+                breastFeedingStopped = value;
+                RaisePropertyChanged(nameof(BreastFeedingStopped));
+            }
+        }
+
+        private string stopWatchSeconds;
+        public string StopWatchSeconds
+        {
+            get { return stopWatchSeconds; }
+            set
+            {
+                stopWatchSeconds = value;
+                RaisePropertyChanged(nameof(StopWatchSeconds));
+            }
+        }
+
+        private string stopWatchMinutes;
+        public string StopWatchMinutes
+        {
+            get { return stopWatchMinutes; }
+            set
+            {
+                stopWatchMinutes = value;
+                RaisePropertyChanged(nameof(StopWatchMinutes));
+            }
+        }
+
+        private string stopWatchHours;
+        public string StopWatchHours
+        {
+            get { return stopWatchHours; }
+            set
+            {
+                stopWatchHours = value;
+                RaisePropertyChanged(nameof(StopWatchHours));
+            }
+        }
+
         private bool isBreastFeedingPage = true;
 
         public bool IsBreastFeedingPage
@@ -89,5 +210,41 @@ namespace Mde.Project.Mobile.ViewModels
                 IsFeedingPage = false;
                 IsPumpingPage = false;
             });
+        public ICommand StartBreastFeeding => new Command(
+            () =>
+            {
+                if(!RightNippleIsChecked && !LeftNippleIsChecked && !BothNipplesAreChecked)
+                {
+                    CoreMethods.DisplayAlert("Attention", "Please select which nipples you wish to pump", "Continue");
+                    return;
+                }
+                BreastFeedingStopped = false;
+                BreastFeedingStarted = true;
+                StopWatchEnabled = true;
+                stopWatch.Restart();
+                StopWatchHours = stopWatch.Elapsed.Hours.ToString();
+                StopWatchMinutes = stopWatch.Elapsed.Minutes.ToString();
+                StopWatchSeconds = stopWatch.Elapsed.Seconds.ToString();
+
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    StopWatchHours = stopWatch.Elapsed.Hours.ToString();
+                    StopWatchMinutes = stopWatch.Elapsed.Minutes.ToString();
+                    StopWatchSeconds = stopWatch.Elapsed.Seconds.ToString();
+                    return true;
+                });
+            });
+
+        public ICommand StopBreastFeeding => new Command(
+                async () =>
+                {
+                    bool stopPumping = await CoreMethods.DisplayAlert("Attention", "Are you sure you wish to stop pumping?", "Yes", "No");
+                    if (stopPumping)
+                    {
+                        BreastFeedingStopped = true;
+                        BreastFeedingStarted = false;
+                        StopWatchEnabled = false;
+                    }
+                });
     }
 }

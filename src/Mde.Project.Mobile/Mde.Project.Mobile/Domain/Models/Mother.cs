@@ -14,6 +14,8 @@ namespace Mde.Project.Mobile.Domain.Models
         public string PassWord { get; set; }
         public int MidWifePhoneNumber { get; set; }
         public Location Location { get; set; }
+        public Guid TimeLineId { get; set; }
+        public TimeLine TimeLine { get; set; }
         public ICollection<Baby> Babies { get; set; }
         public ICollection<Memory> Memories { get; set; }
     }

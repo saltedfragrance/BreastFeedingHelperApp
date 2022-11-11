@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:system="clr-namespace:System;assembly=netstandard"   
              x:Class="Mde.Project.Mobile.Pages.Views.BreastFeedingViews.PumpingView">
     <ContentView.Content>
         <StackLayout Padding="35">
@@ -9,21 +10,33 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.25*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.25*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.25*"></ColumnDefinition>
-                    <ColumnDefinition Width="0.25*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
+                <CheckBox IsEnabled="{Binding BreastFeedingStopped}"  IsChecked="{Binding LeftNippleIsChecked}" Grid.Row="0" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Center"></CheckBox>
                 <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Start" Text="Left nipple" TextColor="Black" VerticalOptions="Center"></Label>
-                <CheckBox Grid.Row="0" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Center"></CheckBox>
-                <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Start" VerticalOptions="Center" Text="Right Nipple" TextColor="Black"></Label>
-                <CheckBox Grid.Row="0" Grid.Column="2" HorizontalOptions="End" VerticalOptions="Center"></CheckBox>
-                <Label Grid.Row="1" Grid.ColumnSpan="3" HorizontalOptions="End" VerticalOptions="Center" Text="Both Nipples" TextColor="Black"></Label>
-                <CheckBox Grid.Row="1" Grid.ColumnSpan="2" HorizontalOptions="End" VerticalOptions="Center"></CheckBox>
-                <Button Margin="30" HorizontalOptions="Center" Grid.ColumnSpan="4" Grid.Row="2" CornerRadius="20" BackgroundColor="HotPink" Text="Start Pumping!"></Button>
+                <Label Grid.Row="1" Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center" Text="Right Nipple" TextColor="Black"></Label>
+                <CheckBox IsEnabled="{Binding BreastFeedingStopped}" IsChecked="{Binding RightNippleIsChecked}" Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Center"></CheckBox>
+                <Label Grid.Row="2"  Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center" Text="Both Nipples" TextColor="Black"></Label>
+                <CheckBox IsEnabled="{Binding BreastFeedingStopped}" IsChecked="{Binding BothNipplesAreChecked}" Grid.Row="2"  Grid.Column="0" HorizontalOptions="End" VerticalOptions="Center"></CheckBox>
+                <Label Margin="10" Grid.Row="3" Grid.ColumnSpan="4" HorizontalOptions="Center" FontSize="20" IsVisible="{Binding StopWatchEnabled}" TextColor="Black" Text="Time pumped:"></Label>
+                <Label Margin="0,20,0,0" Grid.Row="3" Grid.ColumnSpan="4" HorizontalOptions="Center" FontSize="20" TextColor="Black" IsVisible="{Binding StopWatchEnabled}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{x:Static system:Environment.NewLine}"/>
+                            <Span TextColor="Red" Text="{Binding StopWatchHours, StringFormat='{0:F0} Hours - '}"></Span>
+                            <Span TextColor="Red" Text="{Binding StopWatchMinutes, StringFormat='{0:F0} Minutes - '}"></Span>
+                            <Span TextColor="Red" Text="{Binding StopWatchSeconds, StringFormat='{0:F0} Seconds'}"></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button x:Name="startButton" Command="{Binding StartBreastFeeding}" IsEnabled="{Binding BreastFeedingStopped}" Padding="20" HorizontalOptions="Center" Grid.ColumnSpan="4" Grid.Row="4" CornerRadius="20" BackgroundColor="HotPink" Text="Start Pumping!"></Button>
+                <Button x:Name="stopButton" Command="{Binding StopBreastFeeding}"  IsEnabled="{Binding BreastFeedingStarted}" Padding="20" HorizontalOptions="Center" Grid.ColumnSpan="4" Grid.Row="5" CornerRadius="20" BackgroundColor="HotPink" Text="Stop Pumping!"></Button>
             </Grid>
 
         </StackLayout>

@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Name="Parent"
              x:Class="Mde.Project.Mobile.Pages.BreastFeedingPage"
              xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews"
              xmlns:breastFeedingViews="clr-namespace:Mde.Project.Mobile.Pages.Views.BreastFeedingViews"
+             xmlns:vm="clr-namespace:Mde.Project.Mobile.ViewModels;assembly=Mde.Project.Mobile"
              BackgroundColor="White"
-             NavigationPage.HasNavigationBar="False">
+             NavigationPage.HasNavigationBar="False"
+             x:DataType="vm:BreastFeedingViewModel">
     <ContentPage.Content>
         <StackLayout>
             <views:TitleBarView/>
-            <breastFeedingViews:PumpingView IsVisible="{Binding IsPumpingPage}"/>
+            <breastFeedingViews:PumpingView  IsVisible="{Binding IsPumpingPage}"/>
             <breastFeedingViews:FeedingView IsVisible="{Binding IsFeedingPage}"/>
             <breastFeedingViews:RemindersView IsVisible="{Binding IsRemindersPage}"/>
         </StackLayout>

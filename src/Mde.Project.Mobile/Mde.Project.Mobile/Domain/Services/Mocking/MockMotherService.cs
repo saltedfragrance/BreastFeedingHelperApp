@@ -21,7 +21,8 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                 FirstName = "Angelina",
                 LastName = "Jolie",
                 MidWifePhoneNumber = 0497554433,
-                PassWord = "t"
+                PassWord = "t",
+                TimeLine = new TimeLine{ Events = new List<string>(), Id = new Guid("8468bb0b-607b-4fd7-81f1-aa60f132ffb5"), MotherId = new Guid("6286c349-107d-4e04-a118-a78aa37a5c52")}
             }
         };
 
