@@ -1,4 +1,5 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -81,27 +82,27 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
-        private bool breastFeedingStarted = false;
+        private bool pumpingStarted = false;
 
-        public bool BreastFeedingStarted
+        public bool PumpingStarted
         {
-            get { return breastFeedingStarted; }
+            get { return pumpingStarted; }
             set
             {
-                breastFeedingStarted = value;
-                RaisePropertyChanged(nameof(BreastFeedingStarted));
+                pumpingStarted = value;
+                RaisePropertyChanged(nameof(PumpingStarted));
             }
         }
 
-        private bool breastFeedingStopped = true;
+        private bool pumpingStopped = true;
 
-        public bool BreastFeedingStopped
+        public bool PumpingStopped
         {
-            get { return breastFeedingStopped; }
+            get { return pumpingStopped; }
             set
             {
-                breastFeedingStopped = value;
-                RaisePropertyChanged(nameof(BreastFeedingStopped));
+                pumpingStopped = value;
+                RaisePropertyChanged(nameof(PumpingStopped));
             }
         }
 
@@ -218,7 +219,7 @@ namespace Mde.Project.Mobile.ViewModels
                 IsFeedingPage = false;
                 IsPumpingPage = false;
             });
-        public ICommand StartBreastFeeding => new Command(
+        public ICommand StartPumping => new Command(
             () =>
             {
                 if(!RightNippleIsChecked && !LeftNippleIsChecked && !BothNipplesAreChecked)
@@ -226,8 +227,8 @@ namespace Mde.Project.Mobile.ViewModels
                     CoreMethods.DisplayAlert("Attention", "Please select which nipples you wish to pump", "Continue");
                     return;
                 }
-                BreastFeedingStopped = false;
-                BreastFeedingStarted = true;
+                PumpingStopped = false;
+                PumpingStarted = true;
                 StopWatchEnabled = true;
                 stopWatch.Restart();
                 StopWatchHours = stopWatch.Elapsed.Hours.ToString();
@@ -249,10 +250,10 @@ namespace Mde.Project.Mobile.ViewModels
                     string amountPumped = await CurrentPage.DisplayPromptAsync("End pumping session?", "Please enter the amount of milk pumped in milliliters", "Finish session", "Continue session");
                     if (amountPumped != null)
                     {
-                        BreastFeedingStopped = true;
-                        BreastFeedingStarted = false;
+                        PumpingStopped = true;
+                        PumpingStarted = false;
                         StopWatchEnabled = false;
-                        await _motherService.AddEventToTimeLine($"Pumped {amountPumped}ml of breast milk");
+                        await _motherService.AddEventToTimeLine($"Pumped {amountPumped}ml of breast milk", TimeLineCategories.PumpingMessage);
                     }
                 });
     }

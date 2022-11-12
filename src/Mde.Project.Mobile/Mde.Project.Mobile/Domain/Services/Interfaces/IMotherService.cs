@@ -1,4 +1,5 @@
-﻿using Mde.Project.Mobile.Domain.Models;
+﻿using Mde.Project.Mobile.Domain.Enums;
+using Mde.Project.Mobile.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
         Task<List<Mother>> GetMothers();
         Task<Mother> UpdateMother(string id);
         Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber);
-        Task<string> AddEventToTimeLine(string eventMessage);
+        Task<string> AddEventToTimeLine(string eventMessage, TimeLineCategories messageCategory);
     }
 }

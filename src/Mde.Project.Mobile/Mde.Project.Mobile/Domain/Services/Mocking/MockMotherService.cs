@@ -1,4 +1,5 @@
-﻿using Mde.Project.Mobile.Domain.Models;
+﻿using Mde.Project.Mobile.Domain.Enums;
+using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,9 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                 PassWord = "t",
                 TimeLine = new TimeLine{ Events = new List<Event>
                 {
-                    new Event { Id = Guid.NewGuid(), Date = DateTime.Now, Description = "Pumped 30ml of breast milk"},
-                    new Event { Id = Guid.NewGuid(), Date = DateTime.Now, Description = "Stijn jr grew by 1cm!"},
+                    new Event { Id = Guid.NewGuid(), Date = new DateTime(2022, 11, 2, 2, 20, 30), Description = "Pumped 30ml of breast milk", Category = TimeLineCategories.PumpingMessage, Image = "timelinepumping.png"},
+                    new Event { Id = Guid.NewGuid(), Date = new DateTime(2022, 11, 2, 7, 40, 10), Description = "Pumped 50ml of breast milk", Category = TimeLineCategories.PumpingMessage, Image = "timelinepumping.png"},
+                    new Event { Id = Guid.NewGuid(), Date = new DateTime(2022, 12, 4, 5, 20, 30), Description = "Stijn jr grew by 1cm!", Category = TimeLineCategories.BabyHeightGainMessage, Image = "timelinebabygrowing.png"},
                 },
                 Id = new Guid("8468bb0b-607b-4fd7-81f1-aa60f132ffb5"), MotherId = new Guid("6286c349-107d-4e04-a118-a78aa37a5c52")}
             }
@@ -45,10 +47,20 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             throw new NotImplementedException();
         }
-        public Task<string> AddEventToTimeLine(string eventMessage)
+        public Task<string> AddEventToTimeLine(string eventMessage, TimeLineCategories messageCategory)
         {
-            CurrentMother.TimeLine.Events.Add(new Event { Id = Guid.NewGuid(), Description = eventMessage, Date = DateTime.Now });
+            CurrentMother.TimeLine.Events.Add(new Event { Id = Guid.NewGuid(), Description = eventMessage, Date = DateTime.Now, Category = messageCategory, Image = DetermineImage(messageCategory) });
             return Task.FromResult(eventMessage);
+        }
+
+        private string DetermineImage(TimeLineCategories messageCategory)
+        {
+            if (messageCategory == TimeLineCategories.BreastFeedingMessage) return "timelinebreastfeeding.png";
+            else if (messageCategory == TimeLineCategories.PumpingMessage) return "timelinepumping.png";
+            else if (messageCategory == TimeLineCategories.MemoryAddedMessage) return "timelinememory.png";
+            else if (messageCategory == TimeLineCategories.AddedBabyMessage) return "timelinenewborn.png";
+            else if (messageCategory == TimeLineCategories.BabyHeightGainMessage) return "timelinebabygrowing.png";
+            else return "timelinebabyweightgain.png";
         }
     }
 }
