@@ -222,7 +222,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand StartPumping => new Command(
             () =>
             {
-                if(!RightNippleIsChecked && !LeftNippleIsChecked && !BothNipplesAreChecked)
+                if (!RightNippleIsChecked && !LeftNippleIsChecked && !BothNipplesAreChecked)
                 {
                     CoreMethods.DisplayAlert("Attention", "Please select which nipples you wish to pump", "Continue");
                     return;
@@ -244,16 +244,25 @@ namespace Mde.Project.Mobile.ViewModels
                 });
             });
 
-        public ICommand StopBreastFeeding => new Command(
+        public ICommand StopPumping => new Command(
                 async () =>
                 {
                     string amountPumped = await CurrentPage.DisplayPromptAsync("End pumping session?", "Please enter the amount of milk pumped in milliliters", "Finish session", "Continue session");
                     if (amountPumped != null)
                     {
+                        string nipples = null;
+                        string message = null;
+                        if (RightNippleIsChecked) nipples = "the right nipple";
+                        else if (LeftNippleIsChecked) nipples = "the left nipple";
+                        else nipples = "both nipples";
                         PumpingStopped = true;
                         PumpingStarted = false;
                         StopWatchEnabled = false;
-                        await _motherService.AddEventToTimeLine($"Pumped {amountPumped}ml of breast milk", TimeLineCategories.PumpingMessage);
+                        stopWatch.Stop();
+                        TimeSpan ts = stopWatch.Elapsed;
+                        if (ts.Minutes == 0) message = $"Pumped {amountPumped}ml of breast milk on {nipples} during {string.Format("{0:0} seconds", ts.Seconds)}";
+                        else message = $"Pumped {amountPumped}ml of breast milk on {nipples} during {string.Format("{0:0} minutes and {1:0} seconds", ts.Minutes, ts.Seconds)}";
+                        await _motherService.AddEventToTimeLine(message, TimeLineCategories.PumpingMessage);
                     }
                 });
     }
