@@ -131,12 +131,11 @@ namespace Mde.Project.Mobile.ViewModels
 
         private async Task RefreshBabies()
         {
-            var babies = await _babyService.GetBabies();
             if (Babies == null)
             {
                 Babies = new ObservableCollection<Baby>();
             }
-            var babiesOfMother = babies.ToList().Where(b => b.MotherId.ToString() == _motherService.CurrentMother.Id.ToString()).ToList();
+            var babiesOfMother = _motherService.CurrentMother.Babies.ToList();
             if (babiesOfMother.Count() != 0)
             {
                 Babies = new ObservableCollection<Baby>();

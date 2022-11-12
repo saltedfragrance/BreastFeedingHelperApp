@@ -26,7 +26,6 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             return await Task.FromResult(babies);
         }
-
         public async Task<Baby> GetBaby(string id)
         {
             return babies.Where(b => b.Id == new Guid(id)).FirstOrDefault();
