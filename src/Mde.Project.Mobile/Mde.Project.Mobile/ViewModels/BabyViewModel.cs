@@ -40,7 +40,10 @@ namespace Mde.Project.Mobile.ViewModels
 
         public ObservableCollection<Baby> Babies
         {
-            get { return babies; }
+            get
+            {
+                return babies;
+            }
             set
             {
                 babies = value;
@@ -94,7 +97,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddOrEditBaby => new Command<Guid?>(
            async (Guid? id) =>
            {
-               if(id == Guid.Empty) await CoreMethods.PushPageModel<AddBabyViewModel>(null, true);
+               if (id == Guid.Empty) await CoreMethods.PushPageModel<AddBabyViewModel>(null, true);
                else await CoreMethods.PushPageModel<AddBabyViewModel>(id, true);
            });
 
@@ -131,15 +134,11 @@ namespace Mde.Project.Mobile.ViewModels
 
         private async Task RefreshBabies()
         {
-            if (Babies == null)
+            var babies = await _babyService.GetBabies();
+            if (babies.Count() != 0)
             {
                 Babies = new ObservableCollection<Baby>();
-            }
-            var babiesOfMother = _motherService.CurrentMother.Babies.ToList();
-            if (babiesOfMother.Count() != 0)
-            {
-                Babies = new ObservableCollection<Baby>();
-                babiesOfMother.ForEach(baby => Babies.Add(baby));
+                babies.Where(baby => baby.MotherId == _motherService.CurrentMother.Id).ToList().ForEach(b => Babies.Add(b));
                 HasBabies = true;
                 HasNoBabies = false;
             }

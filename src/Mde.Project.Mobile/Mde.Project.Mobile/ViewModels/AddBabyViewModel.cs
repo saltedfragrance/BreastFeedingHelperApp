@@ -1,9 +1,13 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -140,7 +144,9 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddBaby => new Command(
             async () =>
             {
-                await _babyService.CreateBaby(FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
+                await _babyService.CreateBaby(Guid.NewGuid().ToString() ,FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
+                var babies = await _babyService.GetBabies();
+                await _motherService.AddEventToTimeLine($"A new baby is born! Welcome {babies.Last().FirstName}!", TimeLineCategories.AddedBabyMessage);
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
             });
