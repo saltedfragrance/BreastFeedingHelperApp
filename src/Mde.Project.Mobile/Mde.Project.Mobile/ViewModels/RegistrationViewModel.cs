@@ -6,6 +6,7 @@ using Mde.Project.Mobile.Domain.Validators;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -15,11 +16,46 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private readonly IUserService _userService;
         private readonly IValidator _userValidator;
+        private readonly IMotherService _motherService;
 
-        public RegistrationViewModel(IUserService userService)
+        public RegistrationViewModel(IUserService userService, IMotherService motherService)
         {
             _userValidator = new UserValidator(true);
             _userService = userService;
+            _motherService = motherService;
+        }
+
+        private bool isRegistering;
+        public bool IsRegistering
+        {
+            get { return isRegistering; }
+            set
+            {
+                isRegistering = value;
+                RaisePropertyChanged(nameof(IsRegistering));
+            }
+        }
+
+        private bool isEditingAccount;
+        public bool IsEditingAccount
+        {
+            get { return isEditingAccount; }
+            set
+            {
+                isEditingAccount = value;
+                RaisePropertyChanged(nameof(IsEditingAccount));
+            }
+        }
+
+        private string pageTitle;
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set
+            {
+                pageTitle = value;
+                RaisePropertyChanged(nameof(PageTitle));
+            }
         }
 
         private string firstName;
@@ -186,18 +222,59 @@ namespace Mde.Project.Mobile.ViewModels
             get { return !string.IsNullOrEmpty(MidWifePhoneNumberError); }
         }
 
-        public ICommand Register => new Command(
+        public async override void Init(object initData)
+        {
+            if (initData != null)
+            {
+                IsRegistering = true;
+                IsEditingAccount = false;
+            }
+            else
+            {
+                IsEditingAccount = true;
+                isRegistering = false;
+                if (_userService.IsLoggedIn)
+                {
+                    PopulateControls();
+                }
+            }
+            base.Init(initData);
+            PageTitle = "Account overview";
+        }
+
+        private void PopulateControls()
+        {
+            FirstName = _motherService.CurrentMother.FirstName;
+            LastName = _motherService.CurrentMother.LastName;
+            Email = _motherService.CurrentMother.Email;
+            PassWord = _motherService.CurrentMother.PassWord;
+            RepeatPassWord = _motherService.CurrentMother.PassWord;
+            MidWifePhoneNumber = _motherService.CurrentMother.MidWifePhoneNumber.ToString();
+
+        }
+
+        public ICommand RegisterOrUpdate => new Command(
             async () =>
             {
-                var mother = new Mother { FirstName = this.FirstName, LastName = this.LastName, Email = this.Email, PassWord = this.PassWord, MidWifePhoneNumber = (this.MidWifePhoneNumber != null? int.Parse(this.MidWifePhoneNumber) : 0) };
-                if (Validate(mother))
+                var mother = new Mother { FirstName = this.FirstName, LastName = this.LastName, Email = this.Email, PassWord = this.PassWord, MidWifePhoneNumber = (this.MidWifePhoneNumber != null ? int.Parse(this.MidWifePhoneNumber) : 0) };
+                if (Validate(mother) && !_userService.IsLoggedIn)
                 {
                     await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
                     await CoreMethods.DisplayAlert("Success", "You can now login", "Continue");
-                    await CoreMethods.PopPageModel();
+                    await CoreMethods.PopPageModel(true, true);
+                }
+                else if(Validate(mother) && _userService.IsLoggedIn)
+                {
+                    await _motherService.UpdateMother(_motherService.CurrentMother.Id.ToString(), mother);
+                    await CoreMethods.DisplayAlert("Success", "Account updated", "Continue");
+                    await CoreMethods.PopPageModel(true, true);
                 }
             });
-
+        public ICommand PreviousPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PopPageModel(true, true);
+            });
         private bool Validate(Mother mother)
         {
             EmailError = "";

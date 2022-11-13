@@ -3,6 +3,7 @@ using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 
         public async Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
-            mothers.Add(new Mother { FirstName = firstName, LastName = lastName, Email = email, PassWord = passWord, MidWifePhoneNumber = midWifePhoneNumber });
+            mothers.Add(new Mother { FirstName = firstName, LastName = lastName, Email = email, PassWord = passWord, MidWifePhoneNumber = midWifePhoneNumber, TimeLine = new TimeLine { Events = new List<Event>() } });
         }
 
         public async Task<List<Mother>> GetMothers()
@@ -45,9 +46,14 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             return await Task.FromResult(mothers);
         }
 
-        public Task<Mother> UpdateMother(string id)
+        public Task UpdateMother(string id, Mother mother)
         {
-            throw new NotImplementedException();
+            var motherToUpdate = mothers.Where(m => m.Id.ToString() == id).FirstOrDefault();
+            motherToUpdate.FirstName = mother.FirstName;
+            motherToUpdate.LastName = mother.LastName;
+            motherToUpdate.Email = mother.Email;
+            motherToUpdate.PassWord = mother.PassWord;
+            return Task.CompletedTask;
         }
         public Task<string> AddEventToTimeLine(string eventMessage, TimeLineCategories messageCategory)
         {

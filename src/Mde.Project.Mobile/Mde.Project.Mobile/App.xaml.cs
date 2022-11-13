@@ -19,7 +19,7 @@ namespace Mde.Project.Mobile
 
             FreshIOC.Container.Register<IMotherService>(new MockMotherService());
             FreshIOC.Container.Register<IBabyService>(new MockBabyService());
-            FreshIOC.Container.Register<IUserService>(new UserService(new MockMotherService()));
+            FreshIOC.Container.Register<IUserService>(new UserService(FreshIOC.Container.Resolve<IMotherService>()));
 
             var mainContainer = new FreshTabbedNavigationContainer(Constants.MainContainer);
             mainContainer.BarBackgroundColor = Color.Pink;

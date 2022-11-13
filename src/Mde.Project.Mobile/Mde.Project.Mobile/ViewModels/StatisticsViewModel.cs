@@ -28,7 +28,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AccountPage => new Command(
             async () =>
             {
-                await CoreMethods.PushPageModel<AccountViewModel>(null, true);
+                await CoreMethods.PushPageModel<RegistrationViewModel>(null, true);
             });
     }
 }

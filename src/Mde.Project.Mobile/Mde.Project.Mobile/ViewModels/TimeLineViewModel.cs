@@ -16,6 +16,28 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private IMotherService _motherService;
 
+        private bool hasEvents;
+        public bool HasEvents
+        {
+            get { return hasEvents; }
+            set
+            {
+                hasEvents = value;
+                RaisePropertyChanged(nameof(HasEvents));
+            }
+        }
+
+        private bool hasNoEvents;
+        public bool HasNoEvents
+        {
+            get { return hasNoEvents; }
+            set
+            {
+                hasNoEvents = value;
+                RaisePropertyChanged(nameof(HasNoEvents));
+            }
+        }
+
         private string pageTitle;
         public string PageTitle
         {
@@ -36,8 +58,10 @@ namespace Mde.Project.Mobile.ViewModels
 
         public ObservableCollection<Event> TimeLineEvents
         {
-            get {
-                return timeLineEvents; }
+            get
+            {
+                return timeLineEvents;
+            }
             set
             {
                 timeLineEvents = value;
@@ -55,13 +79,23 @@ namespace Mde.Project.Mobile.ViewModels
 
         private void RefreshTimeLine()
         {
-            TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
+            if (_motherService.CurrentMother.TimeLine.Events.Count != 0)
+            {
+                HasEvents = true;
+                HasNoEvents = false;
+                TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
+            }
+            else
+            {
+                HasEvents = false;
+                HasNoEvents = true;
+            }
         }
 
         public ICommand AccountPage => new Command(
             async () =>
             {
-                await CoreMethods.PushPageModel<AccountViewModel>(null, true);
+                await CoreMethods.PushPageModel<RegistrationViewModel>(null, true);
             });
     }
 }

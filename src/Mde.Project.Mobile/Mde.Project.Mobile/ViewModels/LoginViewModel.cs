@@ -26,10 +26,6 @@ namespace Mde.Project.Mobile.ViewModels
             userValidator = new UserValidator(false);
             _userService = userService;
         }
-        private async Task RefreshMother()
-        {
-            if (_motherService.CurrentMother == null) _motherService.CurrentMother = new Mother();
-        }
 
         private string email;
 
@@ -94,42 +90,46 @@ namespace Mde.Project.Mobile.ViewModels
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
-
-            await RefreshMother();
-        }
-
-        private void SaveMotherState()
-        {
-            _motherService.CurrentMother.Email = Email;
-            _motherService.CurrentMother.PassWord = PassWord;
         }
 
         public ICommand Login => new Command(
             async () =>
             {
-                SaveMotherState();
-
-                if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
+                if (Email != null && PassWord != null)
                 {
                     List<Mother> mothers = await _motherService.GetMothers();
-                    _motherService.CurrentMother = mothers.FirstOrDefault(m => m.Email == _motherService.CurrentMother.Email
-                                                                            && m.PassWord == _motherService.CurrentMother.PassWord);
-                    CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
-                    await CoreMethods.PushPageModel<TimeLineViewModel>();
+                    _motherService.CurrentMother = mothers.FirstOrDefault(m => m.Email == Email
+                                                        && m.PassWord == PassWord);
+                    if (_motherService.CurrentMother == null) _motherService.CurrentMother = new Mother { Email = this.Email, PassWord = this.PassWord };
                 }
-                else if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == false))
+                else
                 {
                     EmailError = "Credentials incorrect!";
                     PassWordError = "Credentials incorrect!";
                 }
+
+                if (_motherService.CurrentMother != null)
+                {
+                    if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
+                    {
+                        CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
+                        await CoreMethods.PushPageModel<TimeLineViewModel>();
+                    }
+                    else if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == false))
+                    {
+                        EmailError = "Credentials incorrect!";
+                        PassWordError = "Credentials incorrect!";
+                    }
+
+                }
+
             });
 
         public ICommand RegistrationPage => new Command(
             async () =>
             {
-
-                await CoreMethods.PushPageModel<RegistrationViewModel>();
-
+                bool isRegistering = true;
+                await CoreMethods.PushPageModel<RegistrationViewModel>(isRegistering, true);
             });
 
         private bool Validate(Mother mother)

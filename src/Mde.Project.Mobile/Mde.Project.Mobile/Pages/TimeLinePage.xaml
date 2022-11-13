@@ -8,7 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
             <views:TitleBarView/>
-            <ListView HasUnevenRows="True" ItemsSource="{Binding TimeLineEvents}">
+            <ListView HasUnevenRows="True" IsVisible="{Binding HasEvents}" ItemsSource="{Binding TimeLineEvents}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -33,6 +33,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <StackLayout VerticalOptions="CenterAndExpand" IsVisible="{Binding HasNoEvents}">
+                <Label HorizontalOptions="Center" TextColor="black">No events yet!</Label>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
