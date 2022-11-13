@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
 {
@@ -23,5 +25,10 @@ namespace Mde.Project.Mobile.ViewModels
             PageTitle = "Statistics";
             base.ViewIsAppearing(sender, e);    
         }
+        public ICommand AccountPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<AccountViewModel>(null, true);
+            });
     }
 }

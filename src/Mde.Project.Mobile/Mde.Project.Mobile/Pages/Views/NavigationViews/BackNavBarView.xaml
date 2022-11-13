@@ -16,11 +16,8 @@
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label VerticalTextAlignment="Start" Margin="0,-20,0,0" TextColor="black" Grid.Row="1" Grid.Column="1" HorizontalTextAlignment="Center" FontSize="20" FontAttributes="Bold" Text="{Binding PageTitle}"></Label>
-                    <Image Margin="20,20,0,0" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Source="arrow.png">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding PreviousPage}"></TapGestureRecognizer>
-                        </Image.GestureRecognizers>
-                    </Image>
+                    <ImageButton BackgroundColor="Transparent" WidthRequest="30" Command="{Binding PreviousPage}"  Margin="20,20,0,0" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Source="arrow.png">
+                    </ImageButton>
                 </Grid>
                 <BoxView Margin="0,-6" HeightRequest="1" Color="Black"/>
             </StackLayout>
