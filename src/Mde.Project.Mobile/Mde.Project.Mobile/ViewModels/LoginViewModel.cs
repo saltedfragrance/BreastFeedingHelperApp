@@ -95,32 +95,21 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand Login => new Command(
             async () =>
             {
-                if (Email != null && PassWord != null)
+                _motherService.CurrentMother = new Mother { Email = this.Email, PassWord = this.PassWord };
+
+                if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
                 {
                     List<Mother> mothers = await _motherService.GetMothers();
                     _motherService.CurrentMother = mothers.FirstOrDefault(m => m.Email == Email
                                                         && m.PassWord == PassWord);
-                    if (_motherService.CurrentMother == null) _motherService.CurrentMother = new Mother { Email = this.Email, PassWord = this.PassWord };
+
+                    CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
+                    await CoreMethods.PushPageModel<TimeLineViewModel>();
                 }
-                else
+                else if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == false))
                 {
                     EmailError = "Credentials incorrect!";
                     PassWordError = "Credentials incorrect!";
-                }
-
-                if (_motherService.CurrentMother != null)
-                {
-                    if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
-                    {
-                        CoreMethods.SwitchOutRootNavigation(Constants.MainContainer);
-                        await CoreMethods.PushPageModel<TimeLineViewModel>();
-                    }
-                    else if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == false))
-                    {
-                        EmailError = "Credentials incorrect!";
-                        PassWordError = "Credentials incorrect!";
-                    }
-
                 }
 
             });
