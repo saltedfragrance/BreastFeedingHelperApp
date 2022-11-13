@@ -130,10 +130,11 @@ namespace Mde.Project.Mobile.ViewModels
         private async Task RefreshBabies()
         {
             var babies = await _babyService.GetBabies();
-            if (babies.Count() != 0)
+            Babies = new ObservableCollection<Baby>();
+            babies.Where(baby => baby.MotherId == _motherService.CurrentMother.Id).ToList().ForEach(b => Babies.Add(b));
+
+            if (Babies.Count() != 0)
             {
-                Babies = new ObservableCollection<Baby>();
-                babies.Where(baby => baby.MotherId == _motherService.CurrentMother.Id).ToList().ForEach(b => Babies.Add(b));
                 HasBabies = true;
                 HasNoBabies = false;
             }
