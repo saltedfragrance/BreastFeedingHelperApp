@@ -21,6 +21,7 @@ namespace Mde.Project.Mobile
             FreshIOC.Container.Register<IBabyService>(new MockBabyService());
             FreshIOC.Container.Register<IUserService>(new UserService(FreshIOC.Container.Resolve<IMotherService>()));
 
+            var loginContainer = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LoginViewModel>(), Constants.LoginContainer);
             var mainContainer = new FreshTabbedNavigationContainer(Constants.MainContainer);
             mainContainer.BarBackgroundColor = Color.Pink;
             mainContainer.AddTab<TimeLineViewModel>("Timeline", "timeline.png", null);
@@ -30,7 +31,7 @@ namespace Mde.Project.Mobile
             mainContainer.AddTab<MemoriesViewModel>("Memories", "memories.png", null);
             mainContainer.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
 
-            MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LoginViewModel>());
+            MainPage = loginContainer;
         }
 
         protected override void OnStart()
