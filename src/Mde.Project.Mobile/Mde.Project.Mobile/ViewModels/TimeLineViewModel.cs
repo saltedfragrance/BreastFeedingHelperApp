@@ -23,9 +23,10 @@ namespace Mde.Project.Mobile.ViewModels
             set
             {
                 pageTitle = value;
-                RaisePropertyChanged(nameof(pageTitle));
+                RaisePropertyChanged(nameof(PageTitle));
             }
         }
+
         public TimeLineViewModel(IMotherService motherService)
         {
             _motherService = motherService;
@@ -47,8 +48,8 @@ namespace Mde.Project.Mobile.ViewModels
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
-            base.ViewIsAppearing(sender, e);
             PageTitle = "Timeline";
+            base.ViewIsAppearing(sender, e);
             RefreshTimeLine();
         }
 

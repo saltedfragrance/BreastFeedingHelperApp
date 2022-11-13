@@ -21,6 +21,17 @@ namespace Mde.Project.Mobile.ViewModels
 
         private bool stopWatchEnabled = false;
         private Stopwatch stopWatch = new Stopwatch();
+
+        private string pageTitle;
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set
+            {
+                pageTitle = value;
+                RaisePropertyChanged(nameof(PageTitle));
+            }
+        }
         public bool StopWatchEnabled
         {
             get { return stopWatchEnabled; }
@@ -188,6 +199,7 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            PageTitle = "Breastfeeding";
             base.ViewIsAppearing(sender, e);
         }
 
