@@ -1,6 +1,4 @@
-﻿using FreshMvvm;
-using Mde.Project.Mobile.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,15 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Mde.Project.Mobile.Pages.Views.NavigationViews
+namespace Mde.Project.Mobile.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TitleBarView : ContentView
+    public partial class AccountPage : ContentPage
     {
-        public TitleBarView()
+        public AccountPage()
         {
             InitializeComponent();
-            
         }
     }
 }

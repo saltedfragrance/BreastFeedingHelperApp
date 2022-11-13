@@ -265,5 +265,11 @@ namespace Mde.Project.Mobile.ViewModels
                         await _motherService.AddEventToTimeLine(message, TimeLineCategories.PumpingMessage);
                     }
                 });
+
+        public ICommand AccountPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<AccountViewModel>(null, true);
+            });
     }
 }

@@ -30,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Pages\AccountPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Pages\AddBabyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

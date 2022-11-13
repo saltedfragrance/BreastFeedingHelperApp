@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
 {
@@ -14,6 +16,16 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private IMotherService _motherService;
 
+        private string pageTitle;
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set
+            {
+                pageTitle = value;
+                RaisePropertyChanged(nameof(pageTitle));
+            }
+        }
         public TimeLineViewModel(IMotherService motherService)
         {
             _motherService = motherService;
@@ -36,6 +48,7 @@ namespace Mde.Project.Mobile.ViewModels
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
+            PageTitle = "Timeline";
             RefreshTimeLine();
         }
 
@@ -44,6 +57,10 @@ namespace Mde.Project.Mobile.ViewModels
             TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
         }
 
-
+        public ICommand AccountPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<AccountViewModel>(null, true);
+            });
     }
 }

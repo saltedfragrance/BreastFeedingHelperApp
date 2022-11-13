@@ -23,6 +23,18 @@ namespace Mde.Project.Mobile.ViewModels
             _motherService = motherService;
             _babyService = babyService;
         }
+
+        private string pageTitle;
+        public string PageTitle
+        {
+            get { return pageTitle; }
+            set
+            {
+                pageTitle = value;
+                RaisePropertyChanged(nameof(pageTitle));
+            }
+        }
+
         private bool edit;
         public bool Edit
         {
@@ -133,6 +145,7 @@ namespace Mde.Project.Mobile.ViewModels
             }
 
             base.Init(initData);
+            PageTitle = "Add baby";
         }
 
         public ICommand PreviousPage => new Command(

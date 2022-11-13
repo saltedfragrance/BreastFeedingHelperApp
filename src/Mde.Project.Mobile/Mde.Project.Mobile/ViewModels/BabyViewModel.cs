@@ -32,7 +32,7 @@ namespace Mde.Project.Mobile.ViewModels
             set
             {
                 pageTitle = value;
-                RaisePropertyChanged(nameof(pageTitle));
+                RaisePropertyChanged(nameof(PageTitle));
             }
         }
 
@@ -75,12 +75,6 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
-        public override void Init(object initData)
-        {
-            PageTitle = "Babies";
-        }
-
-
         public override async void ReverseInit(object returnedData)
         {
             await RefreshBabies();
@@ -89,6 +83,7 @@ namespace Mde.Project.Mobile.ViewModels
 
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            PageTitle = "Babies";
             base.ViewIsAppearing(sender, e);
 
             await RefreshBabies();
@@ -149,5 +144,11 @@ namespace Mde.Project.Mobile.ViewModels
                 HasNoBabies = true;
             }
         }
+
+        public ICommand AccountPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<AccountViewModel>(null, true);
+            });
     }
 }
