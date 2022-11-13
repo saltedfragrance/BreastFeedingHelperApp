@@ -27,7 +27,7 @@ namespace Mde.Project.Mobile
             mainContainer.AddTab<StatisticsViewModel>("Statistics", "statistics.png", null);
             mainContainer.AddTab<BabyViewModel>("Babies", "baby.png", null);
             mainContainer.AddTab<BreastFeedingViewModel>("Breastfeeding", "breastfeeding.png", null);
-            mainContainer.AddTab<TimeLineViewModel>("Memories", "memories.png", null);
+            mainContainer.AddTab<MemoriesViewModel>("Memories", "memories.png", null);
             mainContainer.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
 
             MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LoginViewModel>());
