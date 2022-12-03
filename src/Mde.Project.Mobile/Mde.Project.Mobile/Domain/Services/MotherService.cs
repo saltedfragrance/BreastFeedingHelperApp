@@ -12,13 +12,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
-namespace Mde.Project.Mobile.Domain.Services.Mocking
+namespace Mde.Project.Mobile.Domain.Services
 {
-    public class MockMotherService : IMotherService
+    public class MotherService : IMotherService
     {
         private readonly IFireBaseService _fireBaseService;
         public Mother CurrentMother { get; set; }
-        public MockMotherService(IFireBaseService fireBaseService)
+        public MotherService(IFireBaseService fireBaseService)
         {
             _fireBaseService = fireBaseService;
         }
@@ -83,7 +83,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                                                     .FirstOrDefault();
 
             await _fireBaseService.Client.Child(nameof(Mother)).Child(motherToUpdate.Key).PutAsync(mother);
-            CurrentMother = (await GetMothers()).Where(m => CurrentMother.Id == m.Id).FirstOrDefault();
+            await RefreshCurrentMother();
         }
         public async Task AddEventToTimeLine(string eventMessage, TimeLineCategories messageCategory)
         {
@@ -91,7 +91,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
                                                                 .OnceAsync<TimeLine>())
                                                                 .Where(t => t.Object.MotherId == CurrentMother.Id)
                                                                 .FirstOrDefault();
-                                                                
+
             Event timeLineEvent = new Event()
             {
                 Id = Guid.NewGuid(),
@@ -101,6 +101,7 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             };
 
             await _fireBaseService.Client.Child(nameof(TimeLine)).Child(timeLineToUpdate.Key).Child("Events").PostAsync(JsonConvert.SerializeObject(timeLineEvent));
+            await RefreshCurrentMother();
         }
 
         private string DetermineImage(TimeLineCategories messageCategory)
@@ -111,6 +112,28 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
             else if (messageCategory == TimeLineCategories.AddedBabyMessage) return "timelinenewborn.png";
             else if (messageCategory == TimeLineCategories.BabyHeightGainMessage) return "timelinebabygrowing.png";
             else return "timelinebabyweightgain.png";
+        }
+
+        private async Task RefreshCurrentMother()
+        {
+            var motherToRefresh = (await _fireBaseService.Client.Child(nameof(Mother)).OnceAsync<Mother>()).Where(m => m.Object.Id == CurrentMother.Id).FirstOrDefault();
+            var timeLineOfMother = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<TimeLine>()).ToList().Where(t => t.Object.MotherId == CurrentMother.Id).FirstOrDefault();
+
+            CurrentMother = new Mother()
+            {
+                Id = motherToRefresh.Object.Id,
+                Email = motherToRefresh.Object.Email,
+                FirstName = motherToRefresh.Object.FirstName,
+                LastName = motherToRefresh.Object.LastName,
+                MidWifePhoneNumber = motherToRefresh.Object.MidWifePhoneNumber,
+                TimeLine = new TimeLine
+                {
+                    Id = motherToRefresh.Object.TimeLineId,
+                    MotherId = motherToRefresh.Object.Id,
+                    Events = timeLineOfMother.Object.Events
+                },
+                TimeLineId = motherToRefresh.Object.TimeLineId,
+            };
         }
     }
 }

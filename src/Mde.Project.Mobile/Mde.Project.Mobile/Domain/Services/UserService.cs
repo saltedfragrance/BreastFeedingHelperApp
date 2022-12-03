@@ -14,21 +14,21 @@ namespace Mde.Project.Mobile.Domain.Services
     public class UserService : IUserService
     {
         private readonly IMotherService _motherService;
-        private static readonly string webApiKey = "AIzaSyCwbYQx5eBLQU4ZCC6OTXyuOpwkS0iSlvM";
-        FirebaseAuthProvider authProvider = new FirebaseAuthProvider(new FirebaseConfig(webApiKey));
+        private readonly IFireBaseService _fireBaseService;
 
         public bool IsLoggedIn { get; set; } = false;
 
-        public UserService(IMotherService motherService)
+        public UserService(IMotherService motherService, IFireBaseService fireBaseService)
         {
             _motherService = motherService;
+            _fireBaseService = fireBaseService;
         }
 
         public async Task<bool> Login(string email, string passWord)
         {
             try
             {
-                FirebaseAuthLink token = await authProvider.SignInWithEmailAndPasswordAsync(email, passWord);
+                FirebaseAuthLink token = await _fireBaseService.AuthProvider.SignInWithEmailAndPasswordAsync(email, passWord);
                 var mothers = await _motherService.GetMothers();
                 _motherService.CurrentMother = mothers.Where(m => m.Email == email).FirstOrDefault();
                 IsLoggedIn = true;
@@ -47,7 +47,7 @@ namespace Mde.Project.Mobile.Domain.Services
 
         public async Task Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
-            await authProvider.CreateUserWithEmailAndPasswordAsync(email, passWord);
+            await _fireBaseService.AuthProvider.CreateUserWithEmailAndPasswordAsync(email, passWord);
             await _motherService.CreateMother(firstName, lastName, email, passWord, midWifePhoneNumber);
         }
     }

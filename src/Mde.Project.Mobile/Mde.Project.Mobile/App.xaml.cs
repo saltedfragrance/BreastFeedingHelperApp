@@ -18,9 +18,9 @@ namespace Mde.Project.Mobile
             InitializeComponent();
 
             FreshIOC.Container.Register<IFireBaseService>(new FireBaseService());
-            FreshIOC.Container.Register<IMotherService>(new MockMotherService(FreshIOC.Container.Resolve<IFireBaseService>()));
-            FreshIOC.Container.Register<IBabyService>(new MockBabyService());
-            FreshIOC.Container.Register<IUserService>(new UserService(FreshIOC.Container.Resolve<IMotherService>()));
+            FreshIOC.Container.Register<IMotherService>(new MotherService(FreshIOC.Container.Resolve<IFireBaseService>()));
+            FreshIOC.Container.Register<IBabyService>(new MockBabyService(FreshIOC.Container.Resolve<IFireBaseService>()));
+            FreshIOC.Container.Register<IUserService>(new UserService(FreshIOC.Container.Resolve<IMotherService>(), FreshIOC.Container.Resolve<IFireBaseService>()));
 
             var loginContainer = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LoginViewModel>(), Constants.LoginContainer);
             var mainContainer = new FreshTabbedNavigationContainer(Constants.MainContainer);
