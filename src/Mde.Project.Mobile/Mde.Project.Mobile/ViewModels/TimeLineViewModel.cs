@@ -79,17 +79,17 @@ namespace Mde.Project.Mobile.ViewModels
 
         private void RefreshTimeLine()
         {
-            if (_motherService.CurrentMother.TimeLine.Events.Count != 0)
-            {
-                HasEvents = true;
-                HasNoEvents = false;
-                TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
-            }
-            else
-            {
-                HasEvents = false;
-                HasNoEvents = true;
-            }
+                if (_motherService.CurrentMother.TimeLine.Events != null)
+                {
+                    HasEvents = true;
+                    HasNoEvents = false;
+                    TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
+                }
+                else
+                {
+                    HasEvents = false;
+                    HasNoEvents = true;
+                }
         }
 
         public ICommand AccountPage => new Command(

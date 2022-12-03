@@ -17,7 +17,8 @@ namespace Mde.Project.Mobile
         {
             InitializeComponent();
 
-            FreshIOC.Container.Register<IMotherService>(new MockMotherService());
+            FreshIOC.Container.Register<IFireBaseService>(new FireBaseService());
+            FreshIOC.Container.Register<IMotherService>(new MockMotherService(FreshIOC.Container.Resolve<IFireBaseService>()));
             FreshIOC.Container.Register<IBabyService>(new MockBabyService());
             FreshIOC.Container.Register<IUserService>(new UserService(FreshIOC.Container.Resolve<IMotherService>()));
 

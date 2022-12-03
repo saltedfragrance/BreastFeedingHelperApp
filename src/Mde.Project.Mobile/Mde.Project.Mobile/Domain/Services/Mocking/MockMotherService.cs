@@ -1,6 +1,9 @@
-﻿using Mde.Project.Mobile.Domain.Enums;
+﻿using Firebase.Database;
+using Firebase.Database.Query;
+using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,52 +16,91 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
 {
     public class MockMotherService : IMotherService
     {
+        private readonly IFireBaseService _fireBaseService;
         public Mother CurrentMother { get; set; }
-
-        private List<Mother> mothers = new List<Mother>()
+        public MockMotherService(IFireBaseService fireBaseService)
         {
-            new Mother
-            {
-                Id = new Guid("572a8007-46c7-44c0-ab7f-7c20d1530a2b"),
-                Email = "t@t.com",
-                FirstName = "Angelina",
-                LastName = "Jolie",
-                MidWifePhoneNumber = 0497554433,
-                PassWord = "t",
-                TimeLine = new TimeLine {
-                Events = new List<Event>
-                {
-                    new Event { Id = Guid.NewGuid(), Date = new DateTime(2022, 11, 2, 2, 20, 30), Description = "Pumped 30ml of breast milk", Category = TimeLineCategories.PumpingMessage, Image = "timelinepumping.png"},
-                    new Event { Id = Guid.NewGuid(), Date = new DateTime(2022, 11, 2, 7, 40, 10), Description = "Pumped 50ml of breast milk", Category = TimeLineCategories.PumpingMessage, Image = "timelinepumping.png"},
-                    new Event { Id = Guid.NewGuid(), Date = new DateTime(2022, 12, 4, 5, 20, 30), Description = "Stijn jr grew by 1cm!", Category = TimeLineCategories.BabyHeightGainMessage, Image = "timelinebabygrowing.png"}
-                }
-                }
-            }
-        };
-
+            _fireBaseService = fireBaseService;
+        }
         public async Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
-            mothers.Add(new Mother { FirstName = firstName, LastName = lastName, Email = email, PassWord = passWord, MidWifePhoneNumber = midWifePhoneNumber, TimeLine = new TimeLine { Events = new List<Event>() } });
+            var motherToAdd = new Mother
+            {
+                Id = Guid.NewGuid(),
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                PassWord = passWord,
+                MidWifePhoneNumber = midWifePhoneNumber,
+                TimeLineId = Guid.NewGuid()
+            };
+
+            var timeLineToAdd = new TimeLine
+            {
+                Id = motherToAdd.TimeLineId,
+                MotherId = motherToAdd.Id
+            };
+
+            await _fireBaseService.Client.Child(nameof(TimeLine)).PostAsync(JsonConvert.SerializeObject(timeLineToAdd));
+            await _fireBaseService.Client.Child(nameof(Mother)).PostAsync(JsonConvert.SerializeObject(motherToAdd));
         }
 
         public async Task<List<Mother>> GetMothers()
         {
-            return await Task.FromResult(mothers);
+
+            var mothers = (await _fireBaseService.Client.Child(nameof(Mother)).OnceAsync<Mother>()).Select(m => new Mother
+            {
+                Id = m.Object.Id,
+                FirstName = m.Object.FirstName,
+                LastName = m.Object.LastName,
+                Email = m.Object.Email,
+                PassWord = m.Object.PassWord,
+                MidWifePhoneNumber = m.Object.MidWifePhoneNumber,
+                TimeLineId = m.Object.TimeLineId
+            }).ToList();
+
+
+            foreach (Mother mother in mothers)
+            {
+                var timeLineId = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<TimeLine>())
+                                                                               .Where(t => t.Object.Id == mother.TimeLineId)
+                                                                               .Select(t => t.Object.Id)
+                                                                               .FirstOrDefault();
+                mother.TimeLine = new TimeLine
+                {
+                    Id = timeLineId,
+                    MotherId = mother.Id
+                };
+            }
+            return mothers;
         }
 
-        public Task UpdateMother(string id, Mother mother)
+        public async Task UpdateMother(string id, Mother mother)
         {
-            var motherToUpdate = mothers.Where(m => m.Id.ToString() == id).FirstOrDefault();
-            motherToUpdate.FirstName = mother.FirstName;
-            motherToUpdate.LastName = mother.LastName;
-            motherToUpdate.Email = mother.Email;
-            motherToUpdate.PassWord = mother.PassWord;
-            return Task.CompletedTask;
+            var motherToUpdate = (await _fireBaseService.Client.Child(nameof(Mother))
+                                                    .OnceAsync<Mother>())
+                                                    .Where(t => t.Object.Id == Guid.Parse(id))
+                                                    .FirstOrDefault();
+
+            await _fireBaseService.Client.Child(nameof(Mother)).Child(motherToUpdate.Key).PutAsync(mother);
+            CurrentMother = (await GetMothers()).Where(m => CurrentMother.Id == m.Id).FirstOrDefault();
         }
-        public Task<string> AddEventToTimeLine(string eventMessage, TimeLineCategories messageCategory)
+        public async Task AddEventToTimeLine(string eventMessage, TimeLineCategories messageCategory)
         {
-            CurrentMother.TimeLine.Events.Add(new Event { Id = Guid.NewGuid(), Description = eventMessage, Date = DateTime.Now, Category = messageCategory, Image = DetermineImage(messageCategory) });
-            return Task.FromResult(eventMessage);
+            var timeLineToUpdate = (await _fireBaseService.Client.Child(nameof(TimeLine))
+                                                                .OnceAsync<TimeLine>())
+                                                                .Where(t => t.Object.MotherId == CurrentMother.Id)
+                                                                .FirstOrDefault();
+                                                                
+            Event timeLineEvent = new Event()
+            {
+                Id = Guid.NewGuid(),
+                Date = DateTime.Now,
+                Description = eventMessage,
+                Category = messageCategory
+            };
+
+            await _fireBaseService.Client.Child(nameof(TimeLine)).Child(timeLineToUpdate.Key).Child("Events").PostAsync(JsonConvert.SerializeObject(timeLineEvent));
         }
 
         private string DetermineImage(TimeLineCategories messageCategory)

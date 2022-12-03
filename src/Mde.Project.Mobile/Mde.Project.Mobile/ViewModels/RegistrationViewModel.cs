@@ -239,7 +239,9 @@ namespace Mde.Project.Mobile.ViewModels
                 }
             }
             base.Init(initData);
-            PageTitle = "Account overview";
+
+            if (isEditingAccount) PageTitle = "Account overview";
+            else PageTitle = "Registration page";
         }
 
         private void PopulateControls()
@@ -256,16 +258,26 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand RegisterOrUpdate => new Command(
             async () =>
             {
-                var mother = new Mother { FirstName = this.FirstName, LastName = this.LastName, Email = this.Email, PassWord = this.PassWord, MidWifePhoneNumber = (this.MidWifePhoneNumber != null ? int.Parse(this.MidWifePhoneNumber) : 0) };
+                var mother = new Mother
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                    Email = Email,
+                    PassWord = PassWord,
+                    MidWifePhoneNumber = (MidWifePhoneNumber != null ? int.Parse(MidWifePhoneNumber) : 0),
+                };
                 if (Validate(mother) && !_userService.IsLoggedIn)
                 {
                     await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
                     await CoreMethods.DisplayAlert("Success", "You can now login", "Continue");
                     await CoreMethods.PopPageModel(true, true);
                 }
-                else if(Validate(mother) && _userService.IsLoggedIn)
+                else if (Validate(mother) && _userService.IsLoggedIn)
                 {
+                    mother.Id = _motherService.CurrentMother.Id;
+                    mother.TimeLineId = _motherService.CurrentMother.TimeLineId;
                     await _motherService.UpdateMother(_motherService.CurrentMother.Id.ToString(), mother);
+                    PopulateControls();
                     await CoreMethods.DisplayAlert("Success", "Account updated", "Continue");
                     await CoreMethods.PopPageModel(true, true);
                 }
