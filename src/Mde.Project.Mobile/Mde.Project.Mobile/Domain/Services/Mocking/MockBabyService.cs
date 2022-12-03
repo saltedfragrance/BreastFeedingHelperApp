@@ -20,11 +20,6 @@ namespace Mde.Project.Mobile.Domain.Services.Mocking
         {
             _fireBaseService = fireBaseService;
         }
-
-        private readonly List<Baby> babies = new List<Baby>()
-        {
-             new Baby{ FirstName = "Stijn jr", Height = 40, DateOfBirth = new DateTime(2019, 03, 20), Id = Guid.NewGuid(), MotherId = Guid.Parse("572a8007-46c7-44c0-ab7f-7c20d1530a2b"), Weight = 20 }
-        };
         public async Task CreateBaby(string id, string firstName, double height, double weight, string motherId, string dateOfBirth)
         {
             var babyToAdd = new Baby
