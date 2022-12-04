@@ -10,13 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
-namespace Mde.Project.Mobile.Domain.Services.Mocking
+namespace Mde.Project.Mobile.Domain.Services
 {
-    public class MockBabyService : IBabyService
+    public class BabyService : IBabyService
     {
         private readonly IFireBaseService _fireBaseService;
 
-        public MockBabyService(IFireBaseService fireBaseService)
+        public BabyService(IFireBaseService fireBaseService)
         {
             _fireBaseService = fireBaseService;
         }

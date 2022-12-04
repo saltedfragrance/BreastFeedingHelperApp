@@ -2,7 +2,6 @@
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
-using Mde.Project.Mobile.Domain.Services.Mocking;
 using Mde.Project.Mobile.ViewModels;
 using System;
 using Xamarin.Forms;
@@ -19,7 +18,7 @@ namespace Mde.Project.Mobile
 
             FreshIOC.Container.Register<IFireBaseService>(new FireBaseService());
             FreshIOC.Container.Register<IMotherService>(new MotherService(FreshIOC.Container.Resolve<IFireBaseService>()));
-            FreshIOC.Container.Register<IBabyService>(new MockBabyService(FreshIOC.Container.Resolve<IFireBaseService>()));
+            FreshIOC.Container.Register<IBabyService>(new BabyService(FreshIOC.Container.Resolve<IFireBaseService>()));
             FreshIOC.Container.Register<IUserService>(new UserService(FreshIOC.Container.Resolve<IMotherService>(), FreshIOC.Container.Resolve<IFireBaseService>()));
 
             var loginContainer = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LoginViewModel>(), Constants.LoginContainer);

@@ -62,10 +62,16 @@ namespace Mde.Project.Mobile.Domain.Services
 
             foreach (Mother mother in mothers)
             {
-                var timeLineId = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<TimeLine>())
-                                                                               .Where(t => t.Object.Id == mother.TimeLineId)
-                                                                               .Select(t => t.Object.Id)
-                                                                               .FirstOrDefault();
+                var timeLines = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<TimeLine>()).Select(t => new TimeLine
+                {
+                    Id = t.Object.Id,
+                    MotherId = t.Object.MotherId
+                }).ToList();
+
+                var timeLineId = timeLines.Where(t => t.Id == mother.Id)
+                                              .Select(t => t.Id)
+                                              .FirstOrDefault();
+
                 mother.TimeLine = new TimeLine
                 {
                     Id = timeLineId,
