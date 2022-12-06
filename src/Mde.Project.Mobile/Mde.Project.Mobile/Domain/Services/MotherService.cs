@@ -3,7 +3,9 @@ using Firebase.Database.Query;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Pages;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms.Internals;
 
 namespace Mde.Project.Mobile.Domain.Services
 {
@@ -101,12 +104,13 @@ namespace Mde.Project.Mobile.Domain.Services
             Event timeLineEvent = new Event()
             {
                 Id = Guid.NewGuid(),
-                Date = DateTime.Now,
                 Description = eventMessage,
-                Category = messageCategory
+                Category = messageCategory,
+                Date = DateTime.Now,
+                Image = DetermineImage(messageCategory)
             };
 
-            await _fireBaseService.Client.Child(nameof(TimeLine)).Child(timeLineToUpdate.Key).Child("Events").PostAsync(JsonConvert.SerializeObject(timeLineEvent));
+            await _fireBaseService.Client.Child(nameof(TimeLine)).Child(timeLineToUpdate.Key).Child("Events").Child(timeLineEvent.Id.ToString()).PutAsync(JsonConvert.SerializeObject(timeLineEvent));
             await RefreshCurrentMother();
         }
 
@@ -123,7 +127,38 @@ namespace Mde.Project.Mobile.Domain.Services
         private async Task RefreshCurrentMother()
         {
             var motherToRefresh = (await _fireBaseService.Client.Child(nameof(Mother)).OnceAsync<Mother>()).Where(m => m.Object.Id == CurrentMother.Id).FirstOrDefault();
-            var timeLineOfMother = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<TimeLine>()).ToList().Where(t => t.Object.MotherId == CurrentMother.Id).FirstOrDefault();
+
+
+
+            var timeLineOfMother = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<JObject>());
+
+            //TimeLine timeLine = JObject.Parse(timeLineOfMother.ToString()).SelectToken("$.Events[?(@.]")
+
+
+            var bla = timeLineOfMother.Select(p => p.Object.GetValue("Events").Root).ToList();
+            List<Event> events = new List<Event>();
+            foreach (JToken blak in bla)
+            {
+                var black = blak.ToObject<Event>();
+                events.Add(black);
+            }
+            
+            //.Where(t => t.Object.Id == CurrentMother.Id)
+            //.Select(p => new TimeLine
+            //{
+            //    Events = p.Object.Events.Select(e => new Event
+            //    {
+            //        Id = e.Id,
+            //        Category = (TimeLineCategories)e.Category,
+            //        Date = Convert.ToDateTime(e.Date),
+            //        Description = e.Description
+
+            //    }).ToList(),
+            //    Id = p.Object.Id,
+            //    MotherId = p.Object.MotherId,
+            //}).FirstOrDefault();
+
+
 
             CurrentMother = new Mother()
             {
@@ -136,7 +171,6 @@ namespace Mde.Project.Mobile.Domain.Services
                 {
                     Id = motherToRefresh.Object.TimeLineId,
                     MotherId = motherToRefresh.Object.Id,
-                    Events = timeLineOfMother.Object.Events
                 },
                 TimeLineId = motherToRefresh.Object.TimeLineId,
             };

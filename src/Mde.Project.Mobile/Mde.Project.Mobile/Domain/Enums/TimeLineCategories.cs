@@ -6,11 +6,11 @@ namespace Mde.Project.Mobile.Domain.Enums
 {
     public enum TimeLineCategories
     {
-        BreastFeedingMessage,
-        PumpingMessage,
-        AddedBabyMessage,
-        BabyWeightGainMessage,
-        BabyHeightGainMessage,
-        MemoryAddedMessage
+        BreastFeedingMessage = 1,
+        PumpingMessage = 2,
+        AddedBabyMessage = 3,
+        BabyWeightGainMessage = 4,
+        BabyHeightGainMessage = 5,
+        MemoryAddedMessage = 6
     }
 }
