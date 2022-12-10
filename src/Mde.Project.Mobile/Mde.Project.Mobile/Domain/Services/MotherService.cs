@@ -66,15 +66,7 @@ namespace Mde.Project.Mobile.Domain.Services
             {
                 var timeLines = await GetTimeLines();
 
-                var timeLineId = timeLines.Where(t => t.Id == mother.Id)
-                                              .Select(t => t.Id)
-                                              .FirstOrDefault();
-
-                mother.TimeLine = new TimeLine
-                {
-                    Id = timeLineId,
-                    MotherId = mother.Id
-                };
+                mother.TimeLine = timeLines.Where(t => t.Id == mother.TimeLineId).FirstOrDefault();
             }
 
             return mothers;
@@ -103,7 +95,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 Image = DetermineImage(messageCategory)
             };
 
-            await _fireBaseService.Client.Child(nameof(TimeLine)).Child(timeLineToUpdate.Id.ToString()).Child("Events").Child(timeLineEvent.Id.ToString()).PutAsync(JsonConvert.SerializeObject(timeLineEvent));
+            await _fireBaseService.Client.Child(nameof(TimeLine)).Child(timeLineToUpdate.Id.ToString()).Child("Event").Child(timeLineEvent.Id.ToString()).PutAsync(JsonConvert.SerializeObject(timeLineEvent));
             await RefreshCurrentMother();
         }
 
@@ -141,35 +133,44 @@ namespace Mde.Project.Mobile.Domain.Services
 
         private async Task<List<TimeLine>> GetTimeLines()
         {
-            //Helaas hardgecodeerd want weet niet hoe het anders moet.
             List<TimeLine> timeLines = new List<TimeLine>();
-            if (CurrentMother.TimeLine == null || CurrentMother.TimeLine.Events == null)
-            {
-                timeLines = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<TimeLine>()).Select(t => new TimeLine
-                {
-                    Id = t.Object.Id,
-                    MotherId = t.Object.MotherId
-                }).ToList();
-            }
-            else
-            {
-                timeLines = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<JObject>()).Select(t => new TimeLine
-                {
-                    Events = (JsonConvert.DeserializeObject<Dictionary<string, Event>>(t.Object.GetValue("Events").ToString()).Select(p =>
-                        new Event
-                        {
-                            Id = p.Value.Id,
-                            Category = p.Value.Category,
-                            Date = p.Value.Date,
-                            Description = p.Value.Description,
-                            Image = p.Value.Image,
-                        })).ToList(),
-                    Id = new Guid(t.Object.GetValue("Id").ToString()),
-                    MotherId = new Guid(t.Object.GetValue("MotherId").ToString())
-                }).ToList();
-            }
 
+            var allTimesLines = (await _fireBaseService.Client.Child(nameof(TimeLine)).OnceAsync<JObject>()).ToList();
+
+            for (int i = 0; i < allTimesLines.Count(); i++)
+            {
+                if (allTimesLines[i].Object.ContainsKey(nameof(Event)))
+                {
+                    var timeLine = new TimeLine
+                    {
+                        Events = (JsonConvert.DeserializeObject<Dictionary<string, Event>>(allTimesLines[i].Object.GetValue("Event").ToString()).Select(p =>
+                            new Event
+                            {
+                                Id = p.Value.Id,
+                                Category = p.Value.Category,
+                                Date = p.Value.Date,
+                                Description = p.Value.Description,
+                                Image = p.Value.Image,
+                            })).ToList(),
+                        Id = new Guid(allTimesLines[i].Object.GetValue("Id").ToString()),
+                        MotherId = new Guid(allTimesLines[i].Object.GetValue("MotherId").ToString())
+                    };
+
+                    timeLines.Add(timeLine);
+                }
+                else
+                {
+                    var timeLine = new TimeLine
+                    {
+                        Id = new Guid(allTimesLines[i].Object.GetValue("Id").ToString()),
+                        MotherId = new Guid(allTimesLines[i].Object.GetValue("MotherId").ToString())
+                    };
+
+                    timeLines.Add(timeLine);
+                }
+            }
             return timeLines;
+
         }
     }
 }

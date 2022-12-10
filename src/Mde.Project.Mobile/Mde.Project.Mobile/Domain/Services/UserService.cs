@@ -33,7 +33,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 _motherService.CurrentMother = mothers.Where(m => m.Email == email).FirstOrDefault();
                 IsLoggedIn = true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
