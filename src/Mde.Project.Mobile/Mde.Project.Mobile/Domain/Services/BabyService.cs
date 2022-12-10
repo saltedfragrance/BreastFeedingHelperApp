@@ -48,7 +48,7 @@ namespace Mde.Project.Mobile.Domain.Services
         {
             var babies = (await _fireBaseService.Client.Child(nameof(Baby)).OnceAsync<Baby>()).Select(m => new Baby
             {
-                Id = Guid.NewGuid(),
+                Id = m.Object.Id,
                 DateOfBirth = m.Object.DateOfBirth,
                 FirstName = m.Object.FirstName,
                 Height = m.Object.Height,

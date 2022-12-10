@@ -113,7 +113,7 @@ namespace Mde.Project.Mobile.Domain.Services
         {
             var motherToRefresh = (await _fireBaseService.Client.Child(nameof(Mother)).OnceAsync<Mother>()).Where(m => m.Object.Id == CurrentMother.Id).FirstOrDefault();
 
-            var timeLineOfMother = (await GetTimeLines()).Where(t => t.Id == CurrentMother.Id).FirstOrDefault();
+            var timeLineOfMother = (await GetTimeLines()).Where(t => t.Id == CurrentMother.TimeLineId).FirstOrDefault();
 
             CurrentMother = new Mother()
             {
@@ -122,11 +122,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 FirstName = motherToRefresh.Object.FirstName,
                 LastName = motherToRefresh.Object.LastName,
                 MidWifePhoneNumber = motherToRefresh.Object.MidWifePhoneNumber,
-                TimeLine = new TimeLine
-                {
-                    Id = motherToRefresh.Object.TimeLineId,
-                    MotherId = motherToRefresh.Object.Id,
-                },
+                TimeLine = timeLineOfMother,
                 TimeLineId = motherToRefresh.Object.TimeLineId,
             };
         }
