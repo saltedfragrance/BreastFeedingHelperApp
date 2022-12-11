@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "12816545533",
+    "firebase_url": "https://babytracker-9df68-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "babytracker-9df68",
+    "storage_bucket": "babytracker-9df68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12816545533:android:4a9d9108df4961d22c7094",
+        "android_client_info": {
+          "package_name": "com.babytracker.mde.project.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12816545533-k9kpcdaqvjeii8am7f2k6ohouau72pgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb8TgBpXj5L8NkTtALdX4SxHwpphZ7xAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12816545533-k9kpcdaqvjeii8am7f2k6ohouau72pgt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
