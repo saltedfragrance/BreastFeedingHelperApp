@@ -1,5 +1,6 @@
 ﻿using FreshMvvm;
 using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,13 @@ namespace Mde.Project.Mobile.ViewModels
 {
     public class MemoriesViewModel : FreshBasePageModel
     {
+        private IMotherService _motherService;
+
+        public MemoriesViewModel(IMotherService motherService)
+        {
+            _motherService = motherService;
+        }
+
         private string pageTitle;
         public string PageTitle
         {
@@ -58,6 +66,21 @@ namespace Mde.Project.Mobile.ViewModels
                 memories = value;
                 if (memories != null) memories = new ObservableCollection<Memory>(memories.OrderBy(t => t.Date).Reverse());
                 RaisePropertyChanged(nameof(Memories));
+            }
+        }
+
+        private void RefreshMemories()
+        {
+            if (_motherService.CurrentMother.Memories != null)
+            {
+                HasMemories = true;
+                HasNoMemories = false;
+                Memories = new ObservableCollection<Memory>(_motherService.CurrentMother.Memories);
+            }
+            else
+            {
+                HasMemories = false;
+                HasNoMemories = true;
             }
         }
 
