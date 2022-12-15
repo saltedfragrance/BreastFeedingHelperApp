@@ -8,43 +8,9 @@
     <ContentPage.Content>
         <StackLayout>
             <views:TitleBarView/>
-            <ListView HasUnevenRows="True" IsVisible="{Binding HasMemories}" ItemsSource="{Binding Memories}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid Padding="15" Margin="0,20,0,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="0.30*"></ColumnDefinition>
-                                    <ColumnDefinition Width="0.70*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Frame HorizontalOptions="Center" CornerRadius="10" WidthRequest="200" Padding="0" BorderColor="Black" BackgroundColor="Transparent" Grid.Row="0" Grid.ColumnSpan="2">
-                                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                        <Label Margin="0,0,20,0" HorizontalOptions="Center" TextColor="Black" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy, hh:mm}'}"></Label>
-                                    </StackLayout>
-                                </Frame>
-                                <Image HorizontalOptions="End" Grid.Column="0" Grid.Row="1" Source="{Binding Image}"></Image>
-                                <Label HorizontalOptions="Start" Grid.Row="1" TextColor="Black" Grid.Column="1" Text="{Binding Description}"></Label>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
             <StackLayout VerticalOptions="CenterAndExpand" IsVisible="{Binding HasNoMemories}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.9*"></RowDefinition>
-                        <RowDefinition Height="0.1*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                </Grid>
                 <Image VerticalOptions="Center" Source="memory.png" HeightRequest="50"></Image>
-                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" TextColor="black">No memories yet!</Label>
+                <Label VerticalOptions="Center" HorizontalOptions="Center" TextColor="black">No memories yet!</Label>
                 <Button HorizontalOptions="Center" Command="{Binding AddMemory}" CornerRadius="30" Margin="0,5,0,0" Text="Add memory" TextColor="White" FontSize="15"></Button>
             </StackLayout>
         </StackLayout>

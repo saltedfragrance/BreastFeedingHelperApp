@@ -92,6 +92,12 @@ namespace Mde.Project.Mobile.ViewModels
             RefreshMemories();
         }
 
+        public ICommand AddMemory => new Command(
+           async () =>
+           {
+               await CoreMethods.PushPageModel<AddMemoryViewModel>(null, true);
+           });
+
         public ICommand AccountPage => new Command(
             async () =>
             {
