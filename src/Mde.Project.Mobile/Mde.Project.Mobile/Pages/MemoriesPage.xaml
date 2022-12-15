@@ -5,12 +5,3 @@
              NavigationPage.HasNavigationBar="False"
              xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews"
              BackgroundColor="White">
-    <ContentPage.Content>
-        <StackLayout>
-            <views:TitleBarView/>
-            <Label TextColor="Black" Text="Coming soon"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>

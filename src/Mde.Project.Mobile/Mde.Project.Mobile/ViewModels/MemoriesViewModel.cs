@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
 {
-    public class MemoriesViewModel: FreshBasePageModel
+    public class MemoriesViewModel : FreshBasePageModel
     {
         private string pageTitle;
         public string PageTitle
@@ -19,6 +19,29 @@ namespace Mde.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(PageTitle));
             }
         }
+
+        private bool hasMemories;
+        public bool HasMemories
+        {
+            get { return hasMemories; }
+            set
+            {
+                hasMemories = value;
+                RaisePropertyChanged(nameof(HasMemories));
+            }
+        }
+
+        private bool hasNoMemories;
+        public bool HasNoMemories
+        {
+            get { return hasNoMemories; }
+            set
+            {
+                hasNoMemories = value;
+                RaisePropertyChanged(nameof(HasNoMemories));
+            }
+        }
+
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
