@@ -1,6 +1,7 @@
 ﻿using FreshMvvm;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Plugin.FirebasePushNotification;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -282,6 +283,13 @@ namespace Mde.Project.Mobile.ViewModels
             async () =>
             {
                 await CoreMethods.PushPageModel<RegistrationViewModel>(null, true);
+            });
+
+        public ICommand SetReminder => new Command(
+            async () =>
+            {
+                var reminderInterval = await CurrentPage.DisplayPromptAsync("Set reminder", "Please enter how often you wish to be reminded in minutes:", "Set Reminder", "Cancel");
+                
             });
     }
 }

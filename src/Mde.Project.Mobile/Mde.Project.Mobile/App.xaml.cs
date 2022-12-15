@@ -3,6 +3,7 @@ using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using Mde.Project.Mobile.ViewModels;
+using Plugin.FirebasePushNotification;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
@@ -15,6 +16,8 @@ namespace Mde.Project.Mobile
         public App()
         {
             InitializeComponent();
+
+            
 
             FreshIOC.Container.Register<IFireBaseService>(new FireBaseService());
             FreshIOC.Container.Register<IMotherService>(new MotherService(FreshIOC.Container.Resolve<IFireBaseService>()));
