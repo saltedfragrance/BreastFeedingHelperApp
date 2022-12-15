@@ -97,20 +97,20 @@ namespace Mde.Project.Mobile.ViewModels
                 await CoreMethods.PopPageModel(true, true);
             });
 
-        public ICommand AddMemory => new Command(
-            async () =>
-            {
-                await _memoryService.AddMemory();
-                var memories = await _memoryService.GetMemories();
-                await _motherService.AddEventToTimeLine($"A new memory was added!  {memories.Last()}!", TimeLineCategories.MemoryAddedMessage);
-                PreviousPageModel.ReverseInit(new Memory());
-                await CoreMethods.PopPageModel(true, true);
-            });
+        //public ICommand AddMemory => new Command(
+        //    async () =>
+        //    {
+        //        await _memoryService.AddMemory();
+        //        var memories = await _memoryService.GetMemories();
+        //        await _motherService.AddEventToTimeLine($"A new memory was added!  {memories.Last()}!", TimeLineCategories.MemoryAddedMessage);
+        //        PreviousPageModel.ReverseInit(new Memory());
+        //        await CoreMethods.PopPageModel(true, true);
+        //    });
 
-        public ICommand DeleteMemory => new Command<Guid>(
-            async (Guid id) =>
-            {
-                await _memoryService.DeleteMemory(id.ToString());
-            });
+        //public ICommand DeleteMemory => new Command<Guid>(
+        //    async (Guid id) =>
+        //    {
+        //        await _memoryService.DeleteMemory(id.ToString());
+        //    });
     }
 }

@@ -10,9 +10,9 @@ namespace Mde.Project.Mobile.Domain.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
-        public Uri MediaUri { get; set; }
         public Guid MotherId { get; set; }
         public Mother Mother { get; set; }
-        public ICollection<Baby> Baby { get; set; }
+        public Guid BabyId { get; set; }
+        public Mother Baby { get; set; }
     }
 }

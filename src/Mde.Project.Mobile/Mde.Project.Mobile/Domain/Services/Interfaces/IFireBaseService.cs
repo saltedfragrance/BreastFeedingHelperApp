@@ -1,5 +1,6 @@
 ﻿using Firebase.Auth;
 using Firebase.Database;
+using Firebase.Storage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
     {
         FirebaseClient Client { get; }
         FirebaseAuthProvider AuthProvider { get; }
+        FirebaseStorage FireBaseStorage { get; }
     }
 }
