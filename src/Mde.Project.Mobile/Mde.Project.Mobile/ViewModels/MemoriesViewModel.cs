@@ -1,6 +1,9 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -39,6 +42,22 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 hasNoMemories = value;
                 RaisePropertyChanged(nameof(HasNoMemories));
+            }
+        }
+
+        private ObservableCollection<Memory> memories;
+
+        public ObservableCollection<Memory> Memories
+        {
+            get
+            {
+                return memories;
+            }
+            set
+            {
+                memories = value;
+                if (memories != null) memories = new ObservableCollection<Memory>(memories.OrderBy(t => t.Date).Reverse());
+                RaisePropertyChanged(nameof(Memories));
             }
         }
 
