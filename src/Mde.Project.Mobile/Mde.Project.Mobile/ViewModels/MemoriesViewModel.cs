@@ -89,6 +89,7 @@ namespace Mde.Project.Mobile.ViewModels
         {
             PageTitle = "Memories";
             base.ViewIsAppearing(sender, e);
+            RefreshMemories();
         }
 
         public ICommand AccountPage => new Command(

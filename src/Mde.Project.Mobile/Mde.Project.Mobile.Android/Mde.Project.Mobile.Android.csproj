@@ -143,5 +143,8 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\timelinebabyweightgain.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\memory.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
