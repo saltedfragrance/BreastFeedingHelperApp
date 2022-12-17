@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Mde.Project.Mobile.Pages.AddMemoryPage"
+             xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews" 
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <StackLayout>
+            <views:BackNavBarView/>
+            <StackLayout Padding="30" VerticalOptions="FillAndExpand">
+                <Entry Text="{Binding Title}" TextColor="Black" Placeholder="Enter your title" PlaceholderColor="Black" WidthRequest="0.5"></Entry>
+                <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
+                <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
+                <Frame BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
+                    <StackLayout>
+                        <Image VerticalOptions="FillAndExpand" Aspect="AspectFill"  IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
+                        <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
+                    </StackLayout>
+                </Frame>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Add a picture" Command="{Binding AddPicture}"></Button>
+                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Take a picture" Command="{Binding TakePicture}"></Button>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" BackgroundColor="HotPink" Text="Add a movie" Command="{Binding AddMovie}"></Button>
+                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Film a movie" Command="{Binding FilmMovie}"></Button>
+                </StackLayout>
+
+            </StackLayout>
+            <Button HorizontalOptions="Center" Margin="0,0,0,10" Padding="20" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
