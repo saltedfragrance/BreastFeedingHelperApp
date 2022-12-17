@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.CommunityToolkit.Core;
+using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.Domain.Models
 {
@@ -14,5 +16,10 @@ namespace Mde.Project.Mobile.Domain.Models
         public Mother Mother { get; set; }
         public Guid BabyId { get; set; }
         public Mother Baby { get; set; }
+        public string MemoryUrl { get; set; }
+        public ImageSource MemoryImage { get; set; }
+        public MediaSource MemoryVideo { get; set; }
+        public bool IsPicture { get; set; }
+        public bool IsMovie { get; set; }
     }
 }

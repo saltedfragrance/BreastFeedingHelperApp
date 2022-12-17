@@ -21,11 +21,13 @@ namespace Mde.Project.Mobile.Domain.Services
     {
         private readonly IFireBaseService _fireBaseService;
         private readonly IBabyService _babyService;
+        private readonly IMemoryService _memoryService;
         public Mother CurrentMother { get; set; }
-        public MotherService(IFireBaseService fireBaseService, IBabyService babyService)
+        public MotherService(IFireBaseService fireBaseService, IBabyService babyService, IMemoryService memoryService)
         {
             _fireBaseService = fireBaseService;
             _babyService = babyService;
+            _memoryService = memoryService;
         }
         public async Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
@@ -70,6 +72,8 @@ namespace Mde.Project.Mobile.Domain.Services
 
                 mother.TimeLine = timeLines.Where(t => t.Id == mother.TimeLineId).FirstOrDefault();
                 mother.Babies = (await _babyService.GetBabies()).Where(b => b.MotherId == mother.Id).ToList();
+                var memories = (await _memoryService.GetMemories()).Where(b => b.MotherId == mother.Id).ToList();
+                if (memories.Count() != 0) mother.Memories = memories;
             }
 
             return mothers;

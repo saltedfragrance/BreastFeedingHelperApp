@@ -68,6 +68,12 @@ namespace Mde.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(Memories));
             }
         }
+        protected override void ViewIsAppearing(object sender, EventArgs e)
+        {
+            PageTitle = "Memories";
+            base.ViewIsAppearing(sender, e);
+            RefreshMemories();
+        }
 
         private void RefreshMemories()
         {
@@ -82,14 +88,6 @@ namespace Mde.Project.Mobile.ViewModels
                 HasMemories = false;
                 HasNoMemories = true;
             }
-        }
-
-
-        protected override void ViewIsAppearing(object sender, EventArgs e)
-        {
-            PageTitle = "Memories";
-            base.ViewIsAppearing(sender, e);
-            RefreshMemories();
         }
 
         public ICommand AddMemory => new Command(

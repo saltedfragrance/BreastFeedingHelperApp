@@ -2,27 +2,37 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Mde.Project.Mobile.Pages.MemoriesPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              NavigationPage.HasNavigationBar="False"
              xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews"
              BackgroundColor="White">
     <ContentPage.Content>
         <StackLayout>
             <views:TitleBarView/>
-            <ListView HasUnevenRows="True" IsVisible="{Binding HasMemories}" ItemsSource="{Binding Memories}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Frame HorizontalOptions="Center" CornerRadius="10" WidthRequest="200" Padding="0" BorderColor="Black" BackgroundColor="Transparent">
-                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Label Margin="0,0,20,0" HorizontalOptions="Center" TextColor="Black" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy, hh:mm}'}"></Label>
-                                    <Label HorizontalOptions="Center" TextColor="Black" Text="{Binding Title}"></Label>
-                                    <Label HorizontalOptions="Center" TextColor="Black" Text="{Binding Description}"></Label>
-                                </StackLayout>
-                            </Frame>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <StackLayout BackgroundColor="Transparent" IsVisible="{Binding HasMemories}">
+                <ListView HasUnevenRows="True" ItemsSource="{Binding Memories}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="10" WidthRequest="250" Padding="15" BorderColor="Black" BackgroundColor="Transparent">
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <Label Margin="0,0,20,0" HorizontalOptions="Center" TextColor="Black" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy, hh:mm}'}"></Label>
+                                        <Frame BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
+                                            <StackLayout>
+                                                <Image VerticalOptions="FillAndExpand" Aspect="AspectFill"  IsVisible="{Binding IsPicture}" Source="{Binding MemoryImage}"></Image>
+                                                <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding MemoryVideo}"  ShowsPlaybackControls="True"></xct:MediaElement>
+                                            </StackLayout>
+                                        </Frame>
+                                        <Label HorizontalOptions="Center" TextColor="Black" Text="{Binding Title}"></Label>
+                                        <Label HorizontalOptions="Center" TextColor="Black" Text="{Binding Description}"></Label>
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Margin="0,0,0,10" HorizontalOptions="Center" CornerRadius="30" Text="Add another memory" Command="{Binding AddMemory}"></Button>
+            </StackLayout>
             <StackLayout VerticalOptions="CenterAndExpand" IsVisible="{Binding HasNoMemories}">
                 <Image VerticalOptions="Center" Source="memory.png" HeightRequest="50"></Image>
                 <Label VerticalOptions="Center" HorizontalOptions="Center" TextColor="black">No memories yet!</Label>
