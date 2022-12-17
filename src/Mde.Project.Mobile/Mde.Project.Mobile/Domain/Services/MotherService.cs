@@ -20,10 +20,12 @@ namespace Mde.Project.Mobile.Domain.Services
     public class MotherService : IMotherService
     {
         private readonly IFireBaseService _fireBaseService;
+        private readonly IBabyService _babyService;
         public Mother CurrentMother { get; set; }
-        public MotherService(IFireBaseService fireBaseService)
+        public MotherService(IFireBaseService fireBaseService, IBabyService babyService)
         {
             _fireBaseService = fireBaseService;
+            _babyService = babyService;
         }
         public async Task CreateMother(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
         {
@@ -35,7 +37,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 Email = email,
                 PassWord = passWord,
                 MidWifePhoneNumber = midWifePhoneNumber,
-                TimeLineId = Guid.NewGuid()
+                TimeLineId = Guid.NewGuid(),
             };
 
             var timeLineToAdd = new TimeLine
@@ -67,6 +69,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 var timeLines = await GetTimeLines();
 
                 mother.TimeLine = timeLines.Where(t => t.Id == mother.TimeLineId).FirstOrDefault();
+                mother.Babies = (await _babyService.GetBabies()).Where(b => b.MotherId == mother.Id).ToList();
             }
 
             return mothers;

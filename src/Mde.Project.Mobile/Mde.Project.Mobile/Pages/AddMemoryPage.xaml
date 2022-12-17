@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout>
             <views:BackNavBarView/>
-            <StackLayout Padding="30" VerticalOptions="FillAndExpand">
+            <StackLayout Padding="50" VerticalOptions="FillAndExpand">
                 <Entry Text="{Binding Title}" TextColor="Black" Placeholder="Enter your title" PlaceholderColor="Black" WidthRequest="0.5"></Entry>
                 <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
                 <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
@@ -29,7 +29,10 @@
                 </StackLayout>
 
             </StackLayout>
-            <Button HorizontalOptions="Center" Margin="0,0,0,10" Padding="20" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
+            <StackLayout VerticalOptions="End" HorizontalOptions="Center" WidthRequest="150" >
+                <Picker TextColor="White" HorizontalTextAlignment="Center" Title="Select your baby" TitleColor="Black" ItemsSource="{Binding Babies}" SelectedItem="{Binding SelectedBaby}" ItemDisplayBinding="{Binding Name}" Margin="0,0,0,30"></Picker>
+                <Button HorizontalOptions="Center" Margin="0,0,0,10" Padding="20" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</ContentPage> 

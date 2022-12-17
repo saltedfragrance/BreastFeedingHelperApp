@@ -1,18 +1,13 @@
 ﻿using FreshMvvm;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
-using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive.Threading.Tasks;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Core;
-using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -20,14 +15,39 @@ namespace Mde.Project.Mobile.ViewModels
 {
     public class AddMemoryViewModel : FreshBasePageModel
     {
+        private readonly IMemoryService _memoryService;
         private readonly IMotherService _motherService;
-        private readonly IBabyService _babyService;
 
-        public AddMemoryViewModel(IMotherService motherService, IBabyService babyService)
+        public AddMemoryViewModel(IMemoryService memoryService, IMotherService motherService)
         {
+            _memoryService = memoryService;
             _motherService = motherService;
-            _babyService = babyService;
         }
+
+        public FileResult MediaFile { get; set; }
+
+        private IList<Baby> babies;
+        public IList<Baby> Babies
+        {
+            get { return babies; }
+            set
+            {
+                babies = value;
+                RaisePropertyChanged(nameof(Babies));
+            }
+        }
+
+        private Baby selectedBaby;
+        public Baby SelectedBaby
+        {
+            get { return selectedBaby; }
+            set
+            {
+                selectedBaby = value;
+                RaisePropertyChanged(nameof(SelectedBaby));
+            }
+        }
+
 
         private string pageTitle;
         public string PageTitle
@@ -136,6 +156,7 @@ namespace Mde.Project.Mobile.ViewModels
 
         public async override void Init(object initData)
         {
+            Babies = _motherService.CurrentMother.Babies.ToList();
             base.Init(initData);
             PageTitle = "Add memory";
         }
@@ -152,19 +173,20 @@ namespace Mde.Project.Mobile.ViewModels
             IsPicture = true;
             IsMovie = false;
             VideoSource = null;
+            MediaFile = null;
 
             if (((Button)control).Text == "Add a picture")
             {
-                var result = await MediaPicker.PickPhotoAsync();
-                if (result != null) stream = await result.OpenReadAsync();
-                else return;
+                MediaFile = await MediaPicker.PickPhotoAsync();
             }
             else
             {
-                var result = await MediaPicker.CapturePhotoAsync();
-                if (result != null) stream = await result.OpenReadAsync();
-                else return;
+                MediaFile = await MediaPicker.CapturePhotoAsync();
             }
+
+            if (MediaFile != null) stream = await MediaFile.OpenReadAsync();
+            else return;
+
             PictureSource = ImageSource.FromStream(() => stream);
         });
 
@@ -176,6 +198,7 @@ namespace Mde.Project.Mobile.ViewModels
                 IsPicture = false;
                 IsMovie = true;
                 PictureSource = null;
+                MediaFile = null;
 
                 string path = string.Empty;
                 var fileName = "tempvideo";
@@ -184,31 +207,31 @@ namespace Mde.Project.Mobile.ViewModels
 
                 if (((Button)control).Text == "Add a movie")
                 {
-                    var result = await MediaPicker.PickVideoAsync();
-                    if (result != null) stream = await result.OpenReadAsync();
-                    else return;
+                    MediaFile = await MediaPicker.PickVideoAsync();
                 }
                 else
                 {
-                    var result = await MediaPicker.CaptureVideoAsync();
-                    if (result != null) stream = await result.OpenReadAsync();
-                    else return;
+                    MediaFile = await MediaPicker.CaptureVideoAsync();
+
                 }
+
+                if (MediaFile != null) stream = await MediaFile.OpenReadAsync();
+                else return;
+
                 using (var newStream = File.OpenWrite(newFile))
                     await stream.CopyToAsync(newStream);
 
                 VideoSource = MediaSource.FromFile(newFile);
             });
 
-        //public ICommand AddMemory => new Command(
-        //    async () =>
-        //    {
-        //        await _memoryService.AddMemory();
-        //        var memories = await _memoryService.GetMemories();
-        //        await _motherService.AddEventToTimeLine($"A new memory was added!  {memories.Last()}!", TimeLineCategories.MemoryAddedMessage);
-        //        PreviousPageModel.ReverseInit(new Memory());
-        //        await CoreMethods.PopPageModel(true, true);
-        //    });
+        public ICommand AddMemory => new Command(
+            async () =>
+            {
+                await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
+
+                PreviousPageModel.ReverseInit(new Memory());
+                await CoreMethods.PopPageModel(true, true);
+            });
 
         //public ICommand DeleteMemory => new Command<Guid>(
         //    async (Guid id) =>

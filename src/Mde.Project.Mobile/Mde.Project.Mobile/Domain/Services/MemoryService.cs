@@ -22,9 +22,9 @@ namespace Mde.Project.Mobile.Domain.Services
         public async Task CreateMemory(string title, string description, string date, FileResult media, string motherId, string babyId)
         {
             //create media file name
-            media.FileName = $"{motherId}-{Guid.NewGuid()}";
+            media.FileName = $"{motherId}-{babyId}-{Guid.NewGuid()}";
             //upload media to firestore
-            if (media.ContentType == "image/png")
+            if (media.ContentType.Contains("image"))
             {
                 await _fireBaseService.FireBaseStorage.Child("Images").Child(media.FileName).PutAsync(await media.OpenReadAsync());
             }
