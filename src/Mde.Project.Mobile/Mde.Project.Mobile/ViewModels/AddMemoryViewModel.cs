@@ -145,41 +145,34 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 await CoreMethods.PopPageModel(true, true);
             });
-        public ICommand AddPicture => new Command(
-        async () =>
+        public ICommand AddPicture => new Command<object>(
+        async (object control) =>
         {
             Stream stream = null;
             IsPicture = true;
             IsMovie = false;
-            VideoSource= null;
+            VideoSource = null;
 
-            var result = await MediaPicker.PickPhotoAsync();
-            if (result != null) stream = await result.OpenReadAsync();
-            else return;
-
-            PictureSource = ImageSource.FromStream(() => stream);
-        });
-
-
-        public ICommand TakePicture => new Command(
-            async () =>
+            if (((Button)control).Text == "Add a picture")
             {
-                IsPicture = true;
-                IsMovie = false;
-                VideoSource = null;
-
-                Stream stream = null;
+                var result = await MediaPicker.PickPhotoAsync();
+                if (result != null) stream = await result.OpenReadAsync();
+                else return;
+            }
+            else
+            {
                 var result = await MediaPicker.CapturePhotoAsync();
                 if (result != null) stream = await result.OpenReadAsync();
                 else return;
-                PictureSource = ImageSource.FromStream(() => stream);
-            });
+            }
+            PictureSource = ImageSource.FromStream(() => stream);
+        });
 
-        public ICommand AddMovie => new Command(
-            async () =>
+        public ICommand AddMovie => new Command<object>(
+            async (object control) =>
             {
                 //https://stackoverflow.com/questions/71583611/xamarin-forms-mediaelement-playing-video-selected-from-gallery-with-crossmedia
-                
+
                 IsPicture = false;
                 IsMovie = true;
                 PictureSource = null;
@@ -188,41 +181,34 @@ namespace Mde.Project.Mobile.ViewModels
                 var fileName = "tempvideo";
                 var newFile = Path.Combine(FileSystem.AppDataDirectory, fileName + ".mp4");
                 Stream stream = null;
-                var result = await MediaPicker.PickVideoAsync();
-                if (result != null) stream = await result.OpenReadAsync();
-                else return;
 
+                if (((Button)control).Text == "Add a movie")
+                {
+                    var result = await MediaPicker.PickVideoAsync();
+                    if (result != null) stream = await result.OpenReadAsync();
+                    else return;
+                }
+                else
+                {
+                    var result = await MediaPicker.CaptureVideoAsync();
+                    if (result != null) stream = await result.OpenReadAsync();
+                    else return;
+                }
                 using (var newStream = File.OpenWrite(newFile))
                     await stream.CopyToAsync(newStream);
 
                 VideoSource = MediaSource.FromFile(newFile);
             });
 
-        public ICommand FilmMovie => new Command(
-            async () =>
-            {
-                IsPicture = false;
-                IsMovie = true;
-                PictureSource = null;
-
-                Stream stream = null;
-                var result = await MediaPicker.CaptureVideoAsync();
-                if (result != null) stream = await result.OpenReadAsync();
-                else return;
-
-                PictureSource = ImageSource.FromStream(() => stream);
-            });
-
-
-        public ICommand AddMemory => new Command(
-            async () =>
-            {
-                await _memoryService.AddMemory();
-                var memories = await _memoryService.GetMemories();
-                await _motherService.AddEventToTimeLine($"A new memory was added!  {memories.Last()}!", TimeLineCategories.MemoryAddedMessage);
-                PreviousPageModel.ReverseInit(new Memory());
-                await CoreMethods.PopPageModel(true, true);
-            });
+        //public ICommand AddMemory => new Command(
+        //    async () =>
+        //    {
+        //        await _memoryService.AddMemory();
+        //        var memories = await _memoryService.GetMemories();
+        //        await _motherService.AddEventToTimeLine($"A new memory was added!  {memories.Last()}!", TimeLineCategories.MemoryAddedMessage);
+        //        PreviousPageModel.ReverseInit(new Memory());
+        //        await CoreMethods.PopPageModel(true, true);
+        //    });
 
         //public ICommand DeleteMemory => new Command<Guid>(
         //    async (Guid id) =>

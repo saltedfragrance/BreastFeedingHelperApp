@@ -20,12 +20,12 @@
                     </StackLayout>
                 </Frame>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Add a picture" Command="{Binding AddPicture}"></Button>
-                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Take a picture" Command="{Binding TakePicture}"></Button>
+                    <Button x:Name="AddPicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Add a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference AddPicture}"></Button>
+                    <Button x:Name="TakePicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Take a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference TakePicture}"></Button>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" BackgroundColor="HotPink" Text="Add a movie" Command="{Binding AddMovie}"></Button>
-                    <Button HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Film a movie" Command="{Binding FilmMovie}"></Button>
+                    <Button x:Name="AddMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" BackgroundColor="HotPink" Text="Add a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference AddMovie}"></Button>
+                    <Button x:Name="FilmMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Film a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference FilmMovie}"></Button>
                 </StackLayout>
 
             </StackLayout>
