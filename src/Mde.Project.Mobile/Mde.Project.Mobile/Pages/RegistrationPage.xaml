@@ -6,7 +6,7 @@
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout   HorizontalOptions="FillAndExpand">
+        <StackLayout HorizontalOptions="FillAndExpand">
             <views:BackNavBarView/>
             <StackLayout Padding="40">
                 <Label Text="{Binding FirstNameError}"

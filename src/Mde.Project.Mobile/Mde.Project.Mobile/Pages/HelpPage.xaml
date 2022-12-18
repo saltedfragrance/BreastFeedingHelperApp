@@ -10,11 +10,11 @@
             <views:BackNavBarView/>
             <StackLayout Margin="0,220,0,0" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
                 <Image WidthRequest="35" Source="phone.png" VerticalOptions="Center"></Image>
-                <Label TextColor="Black" Text="Call midwife" VerticalTextAlignment="Center"></Label>
+                <Button TextColor="Black" Text="Call midwife" Command="{Binding SearchDiaperStores}"></Button>
             </StackLayout>
             <StackLayout Padding="40" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
                 <Image WidthRequest="35" Source="diaper.png" VerticalOptions="Center"></Image>
-                <Label TextColor="Black" Text="Locate nearest diaper store" VerticalTextAlignment="Center"></Label>
+                <Button TextColor="Black" Text="Locate nearest diaper store" Command="{Binding PhoneToMidWife}"></Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
