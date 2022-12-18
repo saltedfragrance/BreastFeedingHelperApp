@@ -21,10 +21,11 @@
                     <Label Margin="0,0,0,20" TextColor="black" Grid.Row="1" Grid.Column="2" HorizontalTextAlignment="Center" Text="Help"></Label>
                     <ImageButton BackgroundColor="Transparent" x:Name="accountButton" Margin="20,4,0,0" HorizontalOptions="Start" Grid.Row="0" Grid.Column="0" Source="account.png" Command="{Binding AccountPage}">
                     </ImageButton>
-                    <Image Margin="0,4,0,0" Grid.Row="0" Grid.Column="2" Source="help.png"></Image>
+                    <ImageButton BackgroundColor="Transparent" x:Name="helpButton" Margin="0,4,0,0" Grid.Row="0" Grid.Column="2" Source="help.png" Command="{Binding HelpPage}">
+                    </ImageButton>
                 </Grid>
                 <BoxView Margin="0,-6" HeightRequest="1" Color="Black"/>
-                
+
                 <Grid HeightRequest="80" IsVisible="{Binding IsBreastFeedingPage, FallbackValue='False'}">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -46,7 +47,7 @@
                     <Button Command="{Binding FeedingPage}" CornerRadius="20" Text="Feeding" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="1"></Button>
                     <Button Command="{Binding RemindersPage}" CornerRadius="20" Text="Reminders" BackgroundColor="HotPink" Grid.Row="1" Grid.Column="2"></Button>
                 </Grid>
-                
+
             </StackLayout>
         </StackLayout>
     </ContentView.Content>

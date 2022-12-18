@@ -79,23 +79,29 @@ namespace Mde.Project.Mobile.ViewModels
 
         private void RefreshTimeLine()
         {
-                if (_motherService.CurrentMother.TimeLine.Events != null)
-                {
-                    HasEvents = true;
-                    HasNoEvents = false;
-                    TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
-                }
-                else
-                {
-                    HasEvents = false;
-                    HasNoEvents = true;
-                }
+            if (_motherService.CurrentMother.TimeLine.Events != null)
+            {
+                HasEvents = true;
+                HasNoEvents = false;
+                TimeLineEvents = new ObservableCollection<Event>(_motherService.CurrentMother.TimeLine.Events);
+            }
+            else
+            {
+                HasEvents = false;
+                HasNoEvents = true;
+            }
         }
 
         public ICommand AccountPage => new Command(
             async () =>
             {
                 await CoreMethods.PushPageModel<RegistrationViewModel>(null, true);
+            });
+
+        public ICommand HelpPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<HelpViewModel>(null, true);
             });
     }
 }

@@ -283,5 +283,10 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 await CoreMethods.PushPageModel<RegistrationViewModel>(null, true);
             });
+        public ICommand HelpPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<HelpViewModel>(null, true);
+            });
     }
 }
