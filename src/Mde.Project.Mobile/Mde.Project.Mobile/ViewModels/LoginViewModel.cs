@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Acr.UserDialogs;
+using FluentValidation;
 using FreshMvvm;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services;
@@ -95,6 +96,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand Login => new Command(
             async () =>
             {
+                UserDialogs.Instance.ShowLoading("Loading...");
                 _motherService.CurrentMother = new Mother { Email = this.Email, PassWord = this.PassWord };
 
                 if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
@@ -111,7 +113,7 @@ namespace Mde.Project.Mobile.ViewModels
                     EmailError = "Credentials incorrect!";
                     PassWordError = "Credentials incorrect!";
                 }
-
+                UserDialogs.Instance.HideLoading();
             });
 
         public ICommand RegistrationPage => new Command(

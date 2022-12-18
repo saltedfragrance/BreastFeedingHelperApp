@@ -1,4 +1,5 @@
-﻿using FreshMvvm;
+﻿using Acr.UserDialogs;
+using FreshMvvm;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
@@ -70,9 +71,11 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Loading...");
             PageTitle = "Memories";
             base.ViewIsAppearing(sender, e);
             RefreshMemories();
+            UserDialogs.Instance.HideLoading();
         }
 
         private void RefreshMemories()

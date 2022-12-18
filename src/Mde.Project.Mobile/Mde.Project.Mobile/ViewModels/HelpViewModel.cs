@@ -1,4 +1,5 @@
-﻿using FreshMvvm;
+﻿using Acr.UserDialogs;
+using FreshMvvm;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -54,9 +55,11 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            UserDialogs.Instance.ShowLoading("Loading...");
             PageTitle = "Help";
             await GetLocation();
             base.ViewIsAppearing(sender, e);
+            UserDialogs.Instance.HideLoading();
         }
 
         public ICommand PhoneToMidWife => new Command(
