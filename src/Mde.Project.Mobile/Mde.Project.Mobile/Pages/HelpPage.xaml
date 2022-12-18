@@ -8,9 +8,14 @@
     <ContentPage.Content>
         <StackLayout>
             <views:BackNavBarView/>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Margin="0,220,0,0" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
+                <Image WidthRequest="35" Source="phone.png" VerticalOptions="Center"></Image>
+                <Label TextColor="Black" Text="Call midwife" VerticalTextAlignment="Center"></Label>
+            </StackLayout>
+            <StackLayout Padding="40" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
+                <Image WidthRequest="35" Source="diaper.png" VerticalOptions="Center"></Image>
+                <Label TextColor="Black" Text="Locate nearest diaper store" VerticalTextAlignment="Center"></Label>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
