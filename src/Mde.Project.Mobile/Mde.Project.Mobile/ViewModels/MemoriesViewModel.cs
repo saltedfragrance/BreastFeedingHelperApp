@@ -71,11 +71,9 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
-            UserDialogs.Instance.ShowLoading("Loading...");
             PageTitle = "Memories";
             base.ViewIsAppearing(sender, e);
             RefreshMemories();
-            UserDialogs.Instance.HideLoading();
         }
 
         private void RefreshMemories()

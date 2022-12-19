@@ -96,11 +96,13 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand Login => new Command(
             async () =>
             {
-                UserDialogs.Instance.ShowLoading("Loading...");
+                UserDialogs.Instance.ShowLoading("Logging in...");
                 _motherService.CurrentMother = new Mother { Email = this.Email, PassWord = this.PassWord };
 
                 if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
                 {
+                    UserDialogs.Instance.HideLoading();
+                    UserDialogs.Instance.ShowLoading("Getting memories...");
                     List<Mother> mothers = await _motherService.GetMothers();
                     _motherService.CurrentMother = mothers.FirstOrDefault(m => m.Email == Email
                                                         && m.PassWord == PassWord);
