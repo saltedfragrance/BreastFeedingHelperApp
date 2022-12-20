@@ -11,7 +11,6 @@ using System.Text;
 
 namespace Mde.Project.Mobile.Droid
 {
-
     [BroadcastReceiver(Enabled = true, Label = "Local Notifications Broadcast Receiver")]
     public class AlarmHandler : BroadcastReceiver
     {
