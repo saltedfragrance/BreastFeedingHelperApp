@@ -9,7 +9,6 @@ using Mde.Project.Mobile.Droid;
 using Xamarin.Forms;
 using AndroidApp = Android.App.Application;
 
-
 [assembly: Dependency(typeof(Mde.Project.Mobile.Droid.AndroidNotificationManager))]
 namespace Mde.Project.Mobile.Droid
 {
@@ -56,10 +55,14 @@ namespace Mde.Project.Mobile.Droid
                 intent.PutExtra(TitleKey, title);
                 intent.PutExtra(MessageKey, message);
 
-                PendingIntent pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId++, intent, PendingIntentFlags.CancelCurrent);
+                var pendingIntentFlags = (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+                ? PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Mutable
+                : PendingIntentFlags.UpdateCurrent;
+                var pendingActivityIntent = PendingIntent.GetActivity(AndroidApp.Context, pendingIntentId++, intent, pendingIntentFlags);
+                var pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId++, intent, pendingIntentFlags);
                 long triggerTime = GetNotifyTime(notifyTime.Value);
                 AlarmManager alarmManager = AndroidApp.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-                alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
+                alarmManager.SetRepeating(AlarmType.RtcWakeup, DateTime.Now.Millisecond, 10 * 1000, pendingIntent);
             }
             else
             {
@@ -83,7 +86,13 @@ namespace Mde.Project.Mobile.Droid
             intent.PutExtra(TitleKey, title);
             intent.PutExtra(MessageKey, message);
 
-            PendingIntent pendingIntent = PendingIntent.GetActivity(AndroidApp.Context, pendingIntentId++, intent, PendingIntentFlags.UpdateCurrent);
+
+
+            var pendingIntentFlags = (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+                            ? PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Mutable
+                            : PendingIntentFlags.UpdateCurrent;
+            var pendingActivityIntent = PendingIntent.GetActivity(AndroidApp.Context, pendingIntentId++, intent, pendingIntentFlags);
+            var pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, pendingIntentId++, intent, pendingIntentFlags);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(AndroidApp.Context, channelId)
                 .SetContentIntent(pendingIntent)
@@ -95,6 +104,14 @@ namespace Mde.Project.Mobile.Droid
 
             Notification notification = builder.Build();
             manager.Notify(messageId++, notification);
+        }
+
+        public void DeleteNotification(int id)
+        {
+            Intent intent = new Intent(AndroidApp.Context, typeof(AlarmHandler));
+            PendingIntent pendingIntent = PendingIntent.GetBroadcast(AndroidApp.Context, id, intent, PendingIntentFlags.CancelCurrent);
+            AlarmManager alarmManager = AndroidApp.Context.GetSystemService(Context.AlarmService) as AlarmManager;
+            alarmManager.Cancel(pendingIntent);
         }
 
         void CreateNotificationChannel()

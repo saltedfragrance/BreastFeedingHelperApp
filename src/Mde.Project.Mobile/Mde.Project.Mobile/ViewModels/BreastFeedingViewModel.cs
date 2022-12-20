@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
@@ -13,14 +14,22 @@ namespace Mde.Project.Mobile.ViewModels
     public class BreastFeedingViewModel : FreshBasePageModel
     {
         private IMotherService _motherService;
+        INotificationManager notificationManager;
 
         public BreastFeedingViewModel(IMotherService motherService)
         {
             _motherService = motherService;
+            notificationManager = DependencyService.Get<INotificationManager>();
+            notificationManager.NotificationReceived += (sender, eventArgs) =>
+            {
+                //var evtData = (NotificationEventArgs)eventArgs;
+                //ShowNotification(evtData.Title, evtData.Message);
+            };
         }
 
         private bool stopWatchEnabled = false;
         private Stopwatch stopWatch = new Stopwatch();
+        int notificationNumber = 0;
 
         private string pageTitle;
         public string PageTitle
@@ -207,6 +216,27 @@ namespace Mde.Project.Mobile.ViewModels
         {
             base.ReverseInit(returnedData);
         }
+
+        //void ShowNotification(string title, string message)
+        //{
+        //    Device.BeginInvokeOnMainThread(() =>
+        //    {
+        //        var msg = new Label()
+        //        {
+        //            Text = $"Notification Received:\nTitle: {title}\nMessage: {message}"
+        //        };
+        //        stackLayout.Children.Add(msg);
+        //    });
+        //}
+
+        public ICommand SetFeedingReminder => new Command(
+            () =>
+            {
+                notificationNumber++;
+                string title = $"Local Notification #{notificationNumber}";
+                string message = $"You have now received {notificationNumber} notifications!";
+                notificationManager.SendNotification(title, message, DateTime.Now.AddSeconds(3));
+            });
 
         public ICommand PumpingPage => new Command(
             () =>

@@ -34,8 +34,8 @@ namespace Mde.Project.Mobile.Droid
         {
             CreateNotificationFromIntent(intent);
         }
-        s
-        void CreateNotificationFromIntent(Intent intent)
+        
+        public void CreateNotificationFromIntent(Intent intent)
         {
             if (intent?.Extras != null)
             {
