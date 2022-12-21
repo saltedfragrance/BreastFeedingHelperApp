@@ -123,6 +123,7 @@ namespace Mde.Project.Mobile.Domain.Services
 
             var timeLineOfMother = (await GetTimeLines()).Where(t => t.Id == CurrentMother.TimeLineId).FirstOrDefault();
             var babiesOfMother = (await _babyService.GetBabies()).Where(b => b.MotherId == CurrentMother.Id).ToList();
+            var memories = (await _memoryService.GetMemories()).Where(b => b.MotherId == motherToRefresh.Object.Id).ToList();
 
             CurrentMother = new Mother()
             {
@@ -133,7 +134,8 @@ namespace Mde.Project.Mobile.Domain.Services
                 MidWifePhoneNumber = motherToRefresh.Object.MidWifePhoneNumber,
                 TimeLine = timeLineOfMother,
                 TimeLineId = motherToRefresh.Object.TimeLineId,
-                Babies = babiesOfMother
+                Babies = babiesOfMother,
+                Memories = memories
             };
         }
 

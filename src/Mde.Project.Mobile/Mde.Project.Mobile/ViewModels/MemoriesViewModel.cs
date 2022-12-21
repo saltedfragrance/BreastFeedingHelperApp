@@ -76,6 +76,12 @@ namespace Mde.Project.Mobile.ViewModels
             RefreshMemories();
         }
 
+        public override void ReverseInit(object returnedData)
+        {
+            RefreshMemories();
+            base.ReverseInit(returnedData);
+        }
+
         private void RefreshMemories()
         {
             if (_motherService.CurrentMother.Memories != null)

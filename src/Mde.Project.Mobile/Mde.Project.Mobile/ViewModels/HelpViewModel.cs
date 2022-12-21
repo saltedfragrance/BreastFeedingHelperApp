@@ -90,7 +90,6 @@ namespace Mde.Project.Mobile.ViewModels
             CurrentCountry = location.FirstOrDefault().CountryName;
             CurrentCity = location.FirstOrDefault().Locality;
         }
-
             public ICommand PreviousPage => new Command(
         async () =>
         {

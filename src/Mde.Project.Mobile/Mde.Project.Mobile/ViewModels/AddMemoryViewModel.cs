@@ -160,7 +160,6 @@ namespace Mde.Project.Mobile.ViewModels
             base.Init(initData);
             PageTitle = "Add memory";
         }
-
         public ICommand PreviousPage => new Command(
             async () =>
             {
@@ -229,6 +228,7 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
                 await _motherService.AddEventToTimeLine($"A new memory was added! {(await _memoryService.GetMemories()).Last().Title}!", TimeLineCategories.MemoryAddedMessage);
+                await _motherService.RefreshCurrentMother();
                 PreviousPageModel.ReverseInit(new Memory());
                 await CoreMethods.PopPageModel(true, true);
             });
