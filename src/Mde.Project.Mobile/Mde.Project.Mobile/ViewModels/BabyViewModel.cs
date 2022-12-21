@@ -105,6 +105,7 @@ namespace Mde.Project.Mobile.ViewModels
                     await _babyService.DeleteBaby(id.ToString());
                     await RefreshBabies();
                 }
+                await _motherService.RefreshCurrentMother();
             });
 
         public ICommand EditWeight => new Command<Guid>(
