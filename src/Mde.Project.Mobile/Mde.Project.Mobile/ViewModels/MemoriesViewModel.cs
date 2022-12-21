@@ -94,7 +94,14 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddMemory => new Command(
            async () =>
            {
-               await CoreMethods.PushPageModel<AddMemoryViewModel>(null, true);
+               if (_motherService.CurrentMother.Babies.Count != 0 || _motherService.CurrentMother.Babies == null)
+               {
+                   await CoreMethods.PushPageModel<AddMemoryViewModel>(null, true);
+               }
+               else
+               {
+                   await CoreMethods.DisplayAlert("No babies yet!", "You must add at least one baby before you can start adding memories.", "Continue");
+               }
            });
 
         public ICommand AccountPage => new Command(

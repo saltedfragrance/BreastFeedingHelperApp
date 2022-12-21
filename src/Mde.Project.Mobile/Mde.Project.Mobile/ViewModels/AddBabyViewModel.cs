@@ -160,6 +160,7 @@ namespace Mde.Project.Mobile.ViewModels
                 await _babyService.CreateBaby(Guid.NewGuid().ToString() ,FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
                 var babies = await _babyService.GetBabies();
                 await _motherService.AddEventToTimeLine($"A new baby is born! Welcome {babies.Last().FirstName}!", TimeLineCategories.AddedBabyMessage);
+                await _motherService.RefreshCurrentMother();
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
             });

@@ -116,11 +116,12 @@ namespace Mde.Project.Mobile.Domain.Services
             else return "timelinebabyweightgain.png";
         }
 
-        private async Task RefreshCurrentMother()
+        public async Task RefreshCurrentMother()
         {
             var motherToRefresh = (await _fireBaseService.Client.Child(nameof(Mother)).OnceAsync<Mother>()).Where(m => m.Object.Id == CurrentMother.Id).FirstOrDefault();
 
             var timeLineOfMother = (await GetTimeLines()).Where(t => t.Id == CurrentMother.TimeLineId).FirstOrDefault();
+            var babiesOfMother = (await _babyService.GetBabies()).Where(b => b.MotherId == CurrentMother.Id).ToList();
 
             CurrentMother = new Mother()
             {
@@ -131,6 +132,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 MidWifePhoneNumber = motherToRefresh.Object.MidWifePhoneNumber,
                 TimeLine = timeLineOfMother,
                 TimeLineId = motherToRefresh.Object.TimeLineId,
+                Babies = babiesOfMother
             };
         }
 
