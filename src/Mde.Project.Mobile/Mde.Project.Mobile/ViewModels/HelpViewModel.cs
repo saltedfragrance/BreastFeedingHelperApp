@@ -55,7 +55,7 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
-            UserDialogs.Instance.ShowLoading("Loading...");
+            UserDialogs.Instance.ShowLoading("Getting location...");
             PageTitle = "Help";
             await GetLocation();
             base.ViewIsAppearing(sender, e);
