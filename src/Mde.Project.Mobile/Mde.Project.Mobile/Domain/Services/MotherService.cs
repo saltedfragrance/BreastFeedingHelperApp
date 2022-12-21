@@ -113,6 +113,7 @@ namespace Mde.Project.Mobile.Domain.Services
             else if (messageCategory == TimeLineCategories.MemoryAddedMessage) return "timelinememory.png";
             else if (messageCategory == TimeLineCategories.AddedBabyMessage) return "timelinenewborn.png";
             else if (messageCategory == TimeLineCategories.BabyHeightGainMessage) return "timelinebabygrowing.png";
+            else if (messageCategory == TimeLineCategories.DeletedBabyMessage) return "deleted.png";
             else return "timelinebabyweightgain.png";
         }
 

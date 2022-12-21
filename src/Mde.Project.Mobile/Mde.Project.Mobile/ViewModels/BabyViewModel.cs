@@ -1,4 +1,5 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
@@ -102,10 +103,12 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
                 if (answer)
                 {
+                    await _motherService.AddEventToTimeLine($"You deleted {(await _babyService.GetBaby(id.ToString())).FirstName}!", TimeLineCategories.DeletedBabyMessage);
                     await _babyService.DeleteBaby(id.ToString());
                     await RefreshBabies();
                 }
                 await _motherService.RefreshCurrentMother();
+
             });
 
         public ICommand EditWeight => new Command<Guid>(
