@@ -18,13 +18,23 @@
                     <Label Text="{Binding FileError}" IsVisible="{Binding FileErrorVisible}" TextColor="Red"></Label>
                     <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
                     <Image HorizontalOptions="Center" Source="videoimage.png" WidthRequest="30"></Image>
-                    <Frame BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
-                        <StackLayout>
-                            <Image Rotation="{Binding Rotation}" VerticalOptions="FillAndExpand" Aspect="AspectFill"  IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
-                            <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
+
+                    <Frame IsVisible="{Binding IsPicture}" HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="15" WidthRequest="250"  Padding="15">
+                        <StackLayout VerticalOptions="Center">
+                            <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
+                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Image Rotation="{Binding Rotation}"  Aspect="AspectFit" Source="{Binding PictureSource}"></Image>
+                                </StackLayout>
+                            </Frame>
                         </StackLayout>
                     </Frame>
-                    <Button Text="Rotate image" Command="{Binding RotateImage}"></Button>
+
+                    <Frame IsVisible="{Binding IsMovie}" BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
+                        <StackLayout>
+                            <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit"  Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
+                        </StackLayout>
+                    </Frame>
+                    <Button IsVisible="{Binding IsPicture}" Text="Rotate image" Command="{Binding RotateImage}"></Button>
                     <StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                             <Button x:Name="AddPicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Add a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference AddPicture}"></Button>

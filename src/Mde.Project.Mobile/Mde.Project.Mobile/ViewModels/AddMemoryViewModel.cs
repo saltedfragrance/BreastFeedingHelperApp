@@ -281,6 +281,7 @@ namespace Mde.Project.Mobile.ViewModels
             else return;
 
             PictureSource = ImageSource.FromStream(() => stream);
+            if(PictureSource == null) IsPicture= false;
         });
 
         public ICommand AddMovie => new Command<object>(
@@ -317,6 +318,7 @@ namespace Mde.Project.Mobile.ViewModels
                     await stream.CopyToAsync(newStream);
 
                 VideoSource = MediaSource.FromFile(newFile);
+                if(VideoSource == null) IsMovie= false;
             });
 
         public ICommand AddMemory => new Command(
