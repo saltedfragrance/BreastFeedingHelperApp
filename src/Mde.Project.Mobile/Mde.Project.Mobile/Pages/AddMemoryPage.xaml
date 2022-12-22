@@ -17,14 +17,11 @@
                     <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
                     <Label Text="{Binding FileError}" IsVisible="{Binding FileErrorVisible}" TextColor="Red"></Label>
                     <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
-                    <Frame HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="15" WidthRequest="250" Padding="15">
-                        <StackLayout VerticalOptions="Center">
-                            <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
-                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Image Rotation="{Binding Rotation}"  Aspect="AspectFit" IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
-                                    <xct:MediaElement VerticalOptions="FillAndExpand" Aspect="AspectFill" AutoPlay="True" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
-                                </StackLayout>
-                            </Frame>
+                    <Image HorizontalOptions="Center" Source="videoimage.png" WidthRequest="30"></Image>
+                    <Frame BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
+                        <StackLayout>
+                            <Image Rotation="{Binding Rotation}" VerticalOptions="FillAndExpand" Aspect="AspectFill"  IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
+                            <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
                         </StackLayout>
                     </Frame>
                     <Button Text="Rotate image" Command="{Binding RotateImage}"></Button>

@@ -68,9 +68,19 @@ namespace Mde.Project.Mobile.Domain.Services
                                                                              .Where(b => b.Object.Id.ToString() == id)
                                                                              .FirstOrDefault();
 
-            await _fireBaseService.FireBaseStorage.Child("Images")
-                                                  .Child(memoryToDelete.Object.FileName)
-                                                  .DeleteAsync();
+            if (memoryToDelete.Object.IsPicture)
+            {
+                await _fireBaseService.FireBaseStorage.Child("Images")
+                                      .Child(memoryToDelete.Object.FileName)
+                                      .DeleteAsync();
+            }
+            else
+            {
+                await _fireBaseService.FireBaseStorage.Child("Videos")
+                                      .Child(memoryToDelete.Object.FileName)
+                                      .DeleteAsync();
+            }
+
             await _fireBaseService.Client.Child(nameof(Memory)).Child(memoryToDelete.Key).DeleteAsync();
         }
 
