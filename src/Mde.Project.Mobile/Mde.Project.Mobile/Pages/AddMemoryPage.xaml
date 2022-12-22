@@ -22,7 +22,7 @@
                             <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
                                 <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image Rotation="{Binding Rotation}"  Aspect="AspectFit" IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
-                                    <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
+                                    <xct:MediaElement VerticalOptions="FillAndExpand" Aspect="AspectFill" AutoPlay="True" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
