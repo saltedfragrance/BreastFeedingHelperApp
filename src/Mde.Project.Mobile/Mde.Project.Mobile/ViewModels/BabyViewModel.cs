@@ -114,20 +114,18 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand EditWeight => new Command<Guid>(
             async (Guid id) =>
             {
-                var babies = await _babyService.GetBabies();
-                var result = await CurrentPage.DisplayPromptAsync("Edit weight", "Please enter a weight between 1 and 10kg", "Ok,", "Cancel",
+                var weight = await CurrentPage.DisplayPromptAsync("Edit weight", "Please enter a weight between 1 and 10kg", "Ok,", "Cancel",
                     null, 10, Keyboard.Numeric, "1");
-                babies.Where(b => b.Id == id).FirstOrDefault().Weight = Convert.ToDouble(result);
+                await _babyService.UpdateHeight(id.ToString(), weight);
                 await RefreshBabies();
             });
 
         public ICommand EditHeight => new Command<Guid>(
             async (Guid id) =>
             {
-                var babies = await _babyService.GetBabies();
-                var result = await CurrentPage.DisplayPromptAsync("Edit height", "Please enter a height between 1 and 80cm", "Ok,", "Cancel",
+                var height = await CurrentPage.DisplayPromptAsync("Edit height", "Please enter a height between 1 and 80cm", "Ok,", "Cancel",
                     null, 10, Keyboard.Numeric, "1");
-                babies.Where(b => b.Id == id).FirstOrDefault().Height = Convert.ToDouble(result);
+                await _babyService.UpdateHeight(id.ToString(), height);
                 await RefreshBabies();
             });
 

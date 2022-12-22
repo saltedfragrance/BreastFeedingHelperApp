@@ -62,7 +62,7 @@ namespace Mde.Project.Mobile.Domain.Services
         {
             return (await GetBabies()).Where(b => b.Id.ToString() == id).FirstOrDefault();
         }
-        public async Task UpdateBaby(string id, string firstName, string birthDate, double weight, double height)
+        public async Task UpdateBaby(string id, string firstName, string birthDate, double weight, double height, string motherId)
         {
             Baby baby = new Baby
             {
@@ -70,7 +70,8 @@ namespace Mde.Project.Mobile.Domain.Services
                 FirstName = firstName,
                 DateOfBirth = Convert.ToDateTime(birthDate),
                 Weight = weight,
-                Height = height
+                Height = height,
+                MotherId = new Guid(motherId)
             };
 
             var babyToUpdate = (await _fireBaseService.Client.Child(nameof(Baby))
@@ -79,6 +80,20 @@ namespace Mde.Project.Mobile.Domain.Services
                                                     .FirstOrDefault();
 
             await _fireBaseService.Client.Child(nameof(Baby)).Child(babyToUpdate.Key).PutAsync(baby);
+        }
+
+        public async Task UpdateWeight(string id, string weight)
+        {
+            var baby = (await GetBabies()).Where(b => b.Id.ToString() == id).FirstOrDefault();
+            baby.Weight = Convert.ToDouble(weight);
+            await UpdateBaby(id, baby.FirstName, baby.DateOfBirth.ToString(), baby.Weight, baby.Height, baby.MotherId.ToString());
+        }
+
+        public async Task UpdateHeight(string id, string height)
+        {
+            var baby = (await GetBabies()).Where(b => b.Id.ToString() == id).FirstOrDefault();
+            baby.Height = Convert.ToDouble(height);
+            await UpdateBaby(id, baby.FirstName, baby.DateOfBirth.ToString(), baby.Weight, baby.Height, baby.MotherId.ToString());
         }
     }
 }

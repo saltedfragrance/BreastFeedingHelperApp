@@ -171,7 +171,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand EditBaby => new Command(
             async () =>
             {
-                await _babyService.UpdateBaby(Id.ToString(), FirstName, BirthDate.ToString(), Weight, Height);
+                await _babyService.UpdateBaby(Id.ToString(), FirstName, BirthDate.ToString(), Weight, Height, _motherService.CurrentMother.Id.ToString());
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
             });
