@@ -19,9 +19,11 @@ namespace Mde.Project.Mobile.Domain.Services
     public class MemoryService : IMemoryService
     {
         private readonly IFireBaseService _fireBaseService;
-        public MemoryService(IFireBaseService fireBaseService)
+        private readonly IBabyService _babyService;
+        public MemoryService(IFireBaseService fireBaseService, IBabyService babyService)
         {
             _fireBaseService = fireBaseService;
+            _babyService = babyService;
         }
 
         public async Task CreateMemory(string title, string description, string date, FileResult media, string motherId, string babyId)
@@ -82,14 +84,16 @@ namespace Mde.Project.Mobile.Domain.Services
 
             foreach (Memory memory in memories)
             {
-                var mediaSource = LoadMedia(memory.IsPicture, memory.IsMovie, memory.MemoryUrl, memories);
+                var mediaSource = LoadMedia(memory.IsPicture, memory.MemoryUrl);
                 if (mediaSource is ImageSource) memory.MemoryImage = (ImageSource)mediaSource;
                 else memory.MemoryVideo = (MediaSource)mediaSource;
+                memory.Baby = (await _babyService.GetBabies()).Where(b => b.Id == memory.BabyId).FirstOrDefault();
             }
+
             return memories;
         }
 
-        private object LoadMedia(bool isImage, bool isVideo, string url, List<Memory> memories)
+        private object LoadMedia(bool isImage, string url)
         {
             ImageSource img = null;
             MediaSource video = null;

@@ -18,6 +18,7 @@
                                     <StackLayout VerticalOptions="Center">
                                         <Label Margin="0,0,20,0" HorizontalOptions="Center" TextColor="Black" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy, hh:mm}'}"></Label>
                                         <Label FontSize="30" HorizontalOptions="Center" TextColor="Black" Text="{Binding Title}"></Label>
+                                        <Label FontSize="25" HorizontalOptions="Center" Text="{Binding Baby.FirstName, StringFormat='{0}'}" TextColor="Black"></Label>
                                         <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
                                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                                 <Image Aspect="AspectFit" IsVisible="{Binding IsPicture}" Source="{Binding MemoryImage}"></Image>
