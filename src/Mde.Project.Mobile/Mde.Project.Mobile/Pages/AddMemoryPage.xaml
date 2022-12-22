@@ -40,6 +40,7 @@
                         <StackLayout VerticalOptions="End" HorizontalOptions="Center" WidthRequest="150" >
                             <Label Text="{Binding BabyError}" IsVisible="{Binding BabyErrorVisible}" TextColor="Red"></Label>
                             <Picker TextColor="White" HorizontalTextAlignment="Center" Title="Select your baby" TitleColor="Black" ItemsSource="{Binding Babies}" SelectedItem="{Binding SelectedBaby}" ItemDisplayBinding="{Binding Name}" Margin="0,10,0,10"></Picker>
+                            <Label HorizontalOptions="Center" Text="{Binding SelectedBaby.FirstName, StringFormat='Selected baby: {0}'}" TextColor="Black"></Label>
                             <Button HorizontalOptions="Center" Margin="0,10,0,10" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
                         </StackLayout>
                     </StackLayout>

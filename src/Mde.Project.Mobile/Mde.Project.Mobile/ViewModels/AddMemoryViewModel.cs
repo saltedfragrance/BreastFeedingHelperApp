@@ -123,6 +123,7 @@ namespace Mde.Project.Mobile.ViewModels
             set
             {
                 selectedBaby = value;
+                if (selectedBaby != null) BabyError = "";
                 RaisePropertyChanged(nameof(SelectedBaby));
             }
         }
@@ -322,7 +323,7 @@ namespace Mde.Project.Mobile.ViewModels
             async () =>
             {
                 Memory memoryToAdd = new Memory { Title = Title, Description = Description, Baby = SelectedBaby };
-                if (Validate(memoryToAdd, MediaFile))
+                if (Validate(memoryToAdd, MediaFile) && MediaFile != null)
                 {
                     UserDialogs.Instance.ShowLoading("Adding memory...");
                     await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
@@ -388,14 +389,11 @@ namespace Mde.Project.Mobile.ViewModels
             if (file != null)
             {
                 FileInfo fs = new FileInfo(MediaFile.FullPath);
-                if ((fs.Length / 1048576d) > 10)
-                {
-                    FileError = "File size can't be larger than 10 mb's";
-                }
+                if ((fs.Length / 1048576d) > 10) FileError = "File size can't be larger than 10 mb's";
             }
             if (file == null) FileError = "Please submit an image or video";
-            else FileError = "";
 
+            else FileError = "";
 
             return validationResult.IsValid;
         }
