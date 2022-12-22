@@ -1,4 +1,5 @@
-﻿using FreshMvvm;
+﻿using Acr.UserDialogs;
+using FreshMvvm;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -237,11 +238,13 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddMemory => new Command(
             async () =>
             {
+                UserDialogs.Instance.ShowLoading("Adding memory...");
                 await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
                 await _motherService.AddEventToTimeLine($"A new memory was added! {(await _memoryService.GetMemories()).Last().Title}!", TimeLineCategories.MemoryAddedMessage);
                 await _motherService.RefreshCurrentMother();
                 PreviousPageModel.ReverseInit(new Memory());
                 await CoreMethods.PopPageModel(true, true);
+                UserDialogs.Instance.HideLoading();
             });
 
         //public ICommand DeleteMemory => new Command<Guid>(
