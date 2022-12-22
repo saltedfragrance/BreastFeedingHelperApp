@@ -7,32 +7,40 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="White">
     <ContentPage.Content>
-        <StackLayout>
-            <views:BackNavBarView/>
-            <StackLayout Padding="50" VerticalOptions="FillAndExpand">
-                <Entry Text="{Binding Title}" TextColor="Black" Placeholder="Enter your title" PlaceholderColor="Black" WidthRequest="0.5"></Entry>
-                <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
-                <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
-                <Frame BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
+        <ScrollView>
+            <StackLayout>
+                <views:BackNavBarView/>
+                <StackLayout Padding="50" VerticalOptions="CenterAndExpand">
+                    <Entry Text="{Binding Title}" TextColor="Black" Placeholder="Enter your title" PlaceholderColor="Black" WidthRequest="0.5"></Entry>
+                    <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
+                    <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
+                    <Frame HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="15" WidthRequest="250" Padding="15">
+                        <StackLayout VerticalOptions="Center">
+                            <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
+                                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Image Aspect="AspectFit" IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
+                                    <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </Frame>
                     <StackLayout>
-                        <Image VerticalOptions="FillAndExpand" Aspect="AspectFill"  IsVisible="{Binding IsPicture}" Source="{Binding PictureSource}"></Image>
-                        <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <Button x:Name="AddPicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Add a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference AddPicture}"></Button>
+                            <Button x:Name="TakePicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Take a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference TakePicture}"></Button>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <Button x:Name="AddMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" BackgroundColor="HotPink" Text="Add a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference AddMovie}"></Button>
+                            <Button x:Name="FilmMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Film a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference FilmMovie}"></Button>
+                        </StackLayout>
+                        <StackLayout VerticalOptions="End" HorizontalOptions="Center" WidthRequest="150" >
+                            <Picker TextColor="White" HorizontalTextAlignment="Center" Title="Select your baby" TitleColor="Black" ItemsSource="{Binding Babies}" SelectedItem="{Binding SelectedBaby}" ItemDisplayBinding="{Binding Name}" Margin="0,10,0,10"></Picker>
+                            <Button HorizontalOptions="Center" Margin="0,10,0,10" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
+                        </StackLayout>
                     </StackLayout>
-                </Frame>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Button x:Name="AddPicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Add a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference AddPicture}"></Button>
-                    <Button x:Name="TakePicture" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Take a picture" Command="{Binding AddPicture}" CommandParameter="{x:Reference TakePicture}"></Button>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Button x:Name="AddMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" BackgroundColor="HotPink" Text="Add a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference AddMovie}"></Button>
-                    <Button x:Name="FilmMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Film a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference FilmMovie}"></Button>
-                </StackLayout>
+            </StackLayout>
 
-            </StackLayout>
-            <StackLayout VerticalOptions="End" HorizontalOptions="Center" WidthRequest="150" >
-                <Picker TextColor="White" HorizontalTextAlignment="Center" Title="Select your baby" TitleColor="Black" ItemsSource="{Binding Babies}" SelectedItem="{Binding SelectedBaby}" ItemDisplayBinding="{Binding Name}" Margin="0,0,0,30"></Picker>
-                <Button HorizontalOptions="Center" Margin="0,0,0,10" Padding="20" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
-            </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage> 
