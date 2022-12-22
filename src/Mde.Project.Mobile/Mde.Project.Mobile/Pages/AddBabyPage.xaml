@@ -10,10 +10,13 @@
             <views:BackNavBarView/>
             <StackLayout Padding="60" VerticalOptions="Center">
                 <Label TextColor="Black" Text="First name"></Label>
+                <Label Text="{Binding FirstNameError}" IsVisible="{Binding FirstNameErrorVisible}" TextColor="Red"></Label>
                 <Entry Text="{Binding FirstName}" TextColor="Black" Placeholder="First name" PlaceholderColor="Black"></Entry>
                 <Label Text="Birth date" TextColor="Black"></Label>
+                <Label Text="{Binding BirthDateError}" IsVisible="{Binding BirthDateErrorVisible}" TextColor="Red"></Label>
                 <DatePicker Date="{Binding BirthDate}" Format="D" TextColor="Black">
                 </DatePicker>
+                <Label Text="{Binding WeightError}" IsVisible="{Binding WeightErrorVisible}" TextColor="Red"></Label>
                 <Label TextColor="Black" Text="Weight:">
                     <Label.FormattedText>
                         <FormattedString>
@@ -24,7 +27,7 @@
                     </Label.FormattedText>
                 </Label>
                 <Slider Maximum="10" Value="{Binding Weight}"  MaximumTrackColor="Black"></Slider>
-
+                <Label Text="{Binding HeightError}" IsVisible="{Binding HeightErrorVisible}" TextColor="Red"></Label>
                 <Label TextColor="Black" Text="Weight:">
                     <Label.FormattedText>
                         <FormattedString>

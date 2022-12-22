@@ -130,11 +130,13 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this memory?", "Yes", "No");
                 if (answer)
                 {
+                    UserDialogs.Instance.ShowLoading("Deleting memory...");
                     await _motherService.AddEventToTimeLine($"You deleted the memory {(await _memoryService.GetMemories()).Where(m => m.Id == id).FirstOrDefault().Title}!", TimeLineCategories.DeletedMemoryMessage);
                     await _memoryService.DeleteMemory(id.ToString());
                 }
                 await _motherService.RefreshCurrentMother();
                 RefreshMemories();
+                UserDialogs.Instance.HideLoading();
             });
 
         public ICommand AccountPage => new Command(
