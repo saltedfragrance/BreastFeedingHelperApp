@@ -1,4 +1,5 @@
-﻿using FreshMvvm;
+﻿using Acr.UserDialogs;
+using FreshMvvm;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -105,6 +106,7 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
                 if (answer)
                 {
+                    UserDialogs.Instance.ShowLoading("Deleting baby...");
                     var baby = await _babyService.GetBaby(id.ToString());
                     baby.Memories = (await _memoryService.GetMemories()).Where(m => m.BabyId== id).ToList();
                     var babyMemoriesIds = baby.Memories.Select(m => m.Id.ToString()).ToList();
@@ -114,6 +116,7 @@ namespace Mde.Project.Mobile.ViewModels
                     await RefreshBabies();
                 }
                 await _motherService.RefreshCurrentMother();
+                UserDialogs.Instance.HideLoading();
 
             });
 
@@ -122,6 +125,7 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 var weight = await CurrentPage.DisplayPromptAsync("Edit weight", "Please enter a weight between 1 and 10kg", "Ok,", "Cancel",
                     null, 10, Keyboard.Numeric, "1");
+                await _motherService.AddEventToTimeLine($"You changed the weight of {(await _babyService.GetBaby(id.ToString())).FirstName} to {weight}!", TimeLineCategories.BabyWeightGainMessage);
                 await _babyService.UpdateWeight(id.ToString(), weight);
                 await RefreshBabies();
                 await _motherService.RefreshCurrentMother();
@@ -132,6 +136,7 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 var height = await CurrentPage.DisplayPromptAsync("Edit height", "Please enter a height between 1 and 80cm", "Ok,", "Cancel",
                     null, 10, Keyboard.Numeric, "1");
+                await _motherService.AddEventToTimeLine($"You changed the weight of {(await _babyService.GetBaby(id.ToString())).FirstName} to {height}!", TimeLineCategories.BabyHeightGainMessage);
                 await _babyService.UpdateHeight(id.ToString(), height);
                 await RefreshBabies();
                 await _motherService.RefreshCurrentMother();
