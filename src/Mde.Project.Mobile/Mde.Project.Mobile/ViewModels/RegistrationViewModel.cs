@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Acr.UserDialogs;
+using FluentValidation;
 using FreshMvvm;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -268,16 +269,20 @@ namespace Mde.Project.Mobile.ViewModels
                 };
                 if (Validate(mother) && !_userService.IsLoggedIn)
                 {
+                    UserDialogs.Instance.ShowLoading("Registering account...");
                     await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
+                    UserDialogs.Instance.HideLoading();
                     await CoreMethods.DisplayAlert("Success", "You can now login", "Continue");
                     await CoreMethods.PopPageModel(true, true);
                 }
                 else if (Validate(mother) && _userService.IsLoggedIn)
                 {
+                    UserDialogs.Instance.ShowLoading("Updating account...");
                     mother.Id = _motherService.CurrentMother.Id;
                     mother.TimeLineId = _motherService.CurrentMother.TimeLineId;
                     await _motherService.UpdateMother(_motherService.CurrentMother.Id.ToString(), mother);
                     PopulateControls();
+                    UserDialogs.Instance.HideLoading();
                     await CoreMethods.DisplayAlert("Success", "Account updated", "Continue");
                     await CoreMethods.PopPageModel(true, true);
                 }
