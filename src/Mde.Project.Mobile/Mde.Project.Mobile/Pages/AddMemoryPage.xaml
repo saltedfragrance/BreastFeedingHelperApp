@@ -15,10 +15,10 @@
                     <Entry Text="{Binding Title}" TextColor="Black" Placeholder="Enter your title" PlaceholderColor="Black" WidthRequest="0.5"></Entry>
                     <Label Text="{Binding DescriptionError}" IsVisible="{Binding DescriptionErrorVisible}" TextColor="Red"></Label>
                     <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
-                    <Label Text="{Binding FileError}" IsVisible="{Binding FileErrorVisible}" TextColor="Red"></Label>
                     <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
                     <Image HorizontalOptions="Center" Source="videoimage.png" WidthRequest="30"></Image>
 
+                    <Label Text="{Binding FileError}" IsVisible="{Binding FileErrorVisible}" TextColor="Red"></Label>
                     <Frame IsVisible="{Binding IsPicture}" HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="15" WidthRequest="250"  Padding="15">
                         <StackLayout VerticalOptions="Center">
                             <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
@@ -28,12 +28,12 @@
                             </Frame>
                         </StackLayout>
                     </Frame>
-
                     <Frame IsVisible="{Binding IsMovie}" BorderColor="Black" CornerRadius="15" Padding="0" HeightRequest="300" WidthRequest="150" HasShadow="True">
                         <StackLayout>
                             <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit"  Source="{Binding VideoSource}"  ShowsPlaybackControls="True"></xct:MediaElement>
                         </StackLayout>
                     </Frame>
+
                     <Button IsVisible="{Binding IsPicture}" Text="Rotate image" Command="{Binding RotateImage}"></Button>
                     <StackLayout>
                         <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">

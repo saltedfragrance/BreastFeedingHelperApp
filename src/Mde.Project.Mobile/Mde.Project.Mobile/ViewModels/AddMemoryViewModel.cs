@@ -281,7 +281,7 @@ namespace Mde.Project.Mobile.ViewModels
             else return;
 
             PictureSource = ImageSource.FromStream(() => stream);
-            if(PictureSource == null) IsPicture= false;
+            if (PictureSource == null) IsPicture = false;
         });
 
         public ICommand AddMovie => new Command<object>(
@@ -318,7 +318,7 @@ namespace Mde.Project.Mobile.ViewModels
                     await stream.CopyToAsync(newStream);
 
                 VideoSource = MediaSource.FromFile(newFile);
-                if(VideoSource == null) IsMovie= false;
+                if (VideoSource == null) IsMovie = false;
             });
 
         public ICommand AddMemory => new Command(
@@ -358,6 +358,7 @@ namespace Mde.Project.Mobile.ViewModels
 
         private bool Validate(Memory memory, FileResult file = null)
         {
+            bool fileOk = true;
             TitleError = "";
             DescriptionError = "";
             FileError = "";
@@ -385,13 +386,21 @@ namespace Mde.Project.Mobile.ViewModels
             if (file != null)
             {
                 FileInfo fs = new FileInfo(MediaFile.FullPath);
-                if ((fs.Length / 1048576d) > 10) FileError = "File size can't be larger than 10 mb's";
+                if ((fs.Length / 1048576d) > 10)
+                {
+                    FileError = "File size can't be larger than 10 mb's";
+                    fileOk = false;
+                }
             }
-            if (file == null) FileError = "Please submit an image or video";
-
+            else if (file == null)
+            {
+                fileOk = false;
+                FileError = "Please submit an image or video";
+            }
             else FileError = "";
 
-            return validationResult.IsValid;
+            if (fileOk && validationResult.IsValid) return true;
+            else return false;
         }
     }
 }
