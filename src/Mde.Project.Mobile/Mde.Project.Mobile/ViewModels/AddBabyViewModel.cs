@@ -1,4 +1,5 @@
-﻿using FreshMvvm;
+﻿using Acr.UserDialogs;
+using FreshMvvm;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -157,12 +158,14 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddBaby => new Command(
             async () =>
             {
+                UserDialogs.Instance.ShowLoading("Adding baby...");
                 await _babyService.CreateBaby(Guid.NewGuid().ToString(), FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
                 var babies = await _babyService.GetBabies();
                 await _motherService.AddEventToTimeLine($"A new baby is born! Welcome {babies.Last().FirstName}!", TimeLineCategories.AddedBabyMessage);
                 await _motherService.RefreshCurrentMother();
                 PreviousPageModel.ReverseInit(new Baby());
                 await CoreMethods.PopPageModel(true, true);
+                UserDialogs.Instance.HideLoading();
             });
 
         public ICommand EditBaby => new Command(
