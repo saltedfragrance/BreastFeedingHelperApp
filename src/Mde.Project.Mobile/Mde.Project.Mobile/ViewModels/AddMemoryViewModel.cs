@@ -1,8 +1,10 @@
 ﻿using Acr.UserDialogs;
+using FluentValidation;
 using FreshMvvm;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
+using Mde.Project.Mobile.Domain.Validators;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +13,7 @@ using System.Windows.Input;
 using Xamarin.CommunityToolkit.Core;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static Xamarin.Essentials.Permissions;
 
 namespace Mde.Project.Mobile.ViewModels
 {
@@ -18,11 +21,86 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private readonly IMemoryService _memoryService;
         private readonly IMotherService _motherService;
+        private readonly IValidator _memoryValidator;
 
         public AddMemoryViewModel(IMemoryService memoryService, IMotherService motherService)
         {
             _memoryService = memoryService;
             _motherService = motherService;
+            _memoryValidator = new MemoryValidator();
+        }
+
+        private string babyError;
+
+        public string BabyError
+        {
+            get { return babyError; }
+            set
+            {
+                babyError = value;
+                RaisePropertyChanged(nameof(BabyError));
+                RaisePropertyChanged(nameof(BabyErrorVisible));
+            }
+        }
+
+        public bool BabyErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(BabyError); }
+        }
+
+
+        private string titleError;
+
+        public string TitleError
+        {
+            get { return titleError; }
+            set
+            {
+                titleError = value;
+                RaisePropertyChanged(nameof(TitleError));
+                RaisePropertyChanged(nameof(TitleErrorVisible));
+            }
+        }
+
+        public bool TitleErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(TitleError); }
+        }
+
+        private string descriptionError;
+
+        public string DescriptionError
+        {
+            get { return descriptionError; }
+            set
+            {
+                descriptionError = value;
+                RaisePropertyChanged(nameof(DescriptionError));
+                RaisePropertyChanged(nameof(DescriptionErrorVisible));
+            }
+        }
+
+        public bool DescriptionErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(DescriptionError); }
+        }
+
+        private string fileError;
+
+        public string FileError
+        {
+            get { return fileError; }
+            set
+            {
+                fileError = value;
+                RaisePropertyChanged(nameof(FileError));
+                RaisePropertyChanged(nameof(FileErrorVisible));
+            }
+        }
+
+        public bool FileErrorVisible
+        {
+            get { return !string.IsNullOrWhiteSpace(FileError); }
         }
 
         public FileResult MediaFile { get; set; }
@@ -184,7 +262,6 @@ namespace Mde.Project.Mobile.ViewModels
             IsPicture = true;
             IsMovie = false;
             VideoSource = null;
-            MediaFile = null;
 
             if (((Button)control).Text == "Add a picture")
             {
@@ -195,7 +272,11 @@ namespace Mde.Project.Mobile.ViewModels
                 MediaFile = await MediaPicker.CapturePhotoAsync();
             }
 
-            if (MediaFile != null) stream = await MediaFile.OpenReadAsync();
+            if (MediaFile != null)
+            {
+                stream = await MediaFile.OpenReadAsync();
+                FileError = null;
+            }
             else return;
 
             PictureSource = ImageSource.FromStream(() => stream);
@@ -209,7 +290,6 @@ namespace Mde.Project.Mobile.ViewModels
                 IsPicture = false;
                 IsMovie = true;
                 PictureSource = null;
-                MediaFile = null;
 
                 string path = string.Empty;
                 var fileName = "tempvideo";
@@ -223,10 +303,13 @@ namespace Mde.Project.Mobile.ViewModels
                 else
                 {
                     MediaFile = await MediaPicker.CaptureVideoAsync();
-
                 }
 
-                if (MediaFile != null) stream = await MediaFile.OpenReadAsync();
+                if (MediaFile != null)
+                {
+                    stream = await MediaFile.OpenReadAsync();
+                    FileError = null;
+                }
                 else return;
 
                 using (var newStream = File.OpenWrite(newFile))
@@ -238,13 +321,17 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddMemory => new Command(
             async () =>
             {
-                UserDialogs.Instance.ShowLoading("Adding memory...");
-                await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
-                await _motherService.AddEventToTimeLine($"A new memory was added! {(await _memoryService.GetMemories()).Last().Title}!", TimeLineCategories.MemoryAddedMessage);
-                await _motherService.RefreshCurrentMother();
-                PreviousPageModel.ReverseInit(new Memory());
-                await CoreMethods.PopPageModel(true, true);
-                UserDialogs.Instance.HideLoading();
+                Memory memoryToAdd = new Memory { Title = Title, Description = Description, Baby = SelectedBaby };
+                if (Validate(memoryToAdd, MediaFile))
+                {
+                    UserDialogs.Instance.ShowLoading("Adding memory...");
+                    await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
+                    await _motherService.AddEventToTimeLine($"A new memory was added! {(await _memoryService.GetMemories()).Last().Title}!", TimeLineCategories.MemoryAddedMessage);
+                    await _motherService.RefreshCurrentMother();
+                    PreviousPageModel.ReverseInit(new Memory());
+                    await CoreMethods.PopPageModel(true, true);
+                    UserDialogs.Instance.HideLoading();
+                }
             });
 
         //public ICommand DeleteMemory => new Command<Guid>(
@@ -254,11 +341,63 @@ namespace Mde.Project.Mobile.ViewModels
         //    });
 
         public ICommand RotateImage => new Command(
-             () =>
+        () =>
+        {
+            if (MediaFile != null)
             {
-                if (Rotation == 0) Rotation = 90;
-                else if (Rotation == 90) Rotation = 180;
-                else Rotation = 0;
-            });
+                if (MediaFile.ContentType.Contains("image"))
+                {
+                    if (Rotation == 0) Rotation = 90;
+                    else if (Rotation == 90) Rotation = 180;
+                    else Rotation = 0;
+                }
+                else
+                {
+                    CoreMethods.DisplayAlert("Warning", "Can't rotate a video!", "Continue");
+                }
+            }
+            else CoreMethods.DisplayAlert("Warning", "Please enter an image or video first", "Continue");
+        });
+
+        private bool Validate(Memory memory, FileResult file = null)
+        {
+            TitleError = "";
+            DescriptionError = "";
+            FileError = "";
+            BabyError = "";
+
+            var validationContext = new ValidationContext<Memory>(memory);
+            var validationResult = _memoryValidator.Validate(validationContext);
+
+            foreach (var error in validationResult.Errors)
+            {
+                if (error.PropertyName == nameof(memory.Title))
+                {
+                    TitleError = error.ErrorMessage;
+                }
+                if (error.PropertyName == nameof(memory.Description))
+                {
+                    DescriptionError = error.ErrorMessage;
+                }
+                if (error.PropertyName == nameof(memory.Baby))
+                {
+                    BabyError = error.ErrorMessage;
+                }
+            }
+
+            if (file != null)
+            {
+                FileInfo fs = new FileInfo(MediaFile.FullPath);
+                if ((fs.Length / 1048576d) > 10)
+                {
+                    FileError = "File size can't be larger than 10 mb's";
+                }
+            }
+            if (file == null) FileError = "Please submit an image or video";
+            else FileError = "";
+
+
+            return validationResult.IsValid;
+        }
     }
 }

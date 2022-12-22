@@ -15,7 +15,7 @@ namespace Mde.Project.Mobile.Domain.Models
         public Guid MotherId { get; set; }
         public Mother Mother { get; set; }
         public Guid BabyId { get; set; }
-        public Mother Baby { get; set; }
+        public Baby Baby { get; set; }
         public string MemoryUrl { get; set; }
         public ImageSource MemoryImage { get; set; }
         public MediaSource MemoryVideo { get; set; }

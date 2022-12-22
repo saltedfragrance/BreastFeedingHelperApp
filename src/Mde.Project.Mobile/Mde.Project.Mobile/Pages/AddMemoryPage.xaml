@@ -11,8 +11,11 @@
             <StackLayout>
                 <views:BackNavBarView/>
                 <StackLayout Padding="50" VerticalOptions="CenterAndExpand">
+                    <Label Text="{Binding TitleError}" IsVisible="{Binding TitleErrorVisible}" TextColor="Red"></Label>
                     <Entry Text="{Binding Title}" TextColor="Black" Placeholder="Enter your title" PlaceholderColor="Black" WidthRequest="0.5"></Entry>
+                    <Label Text="{Binding DescriptionError}" IsVisible="{Binding DescriptionErrorVisible}" TextColor="Red"></Label>
                     <Editor MaxLength="100" AutoSize="TextChanges"  Text="{Binding Description}" TextColor="Black" Placeholder="Enter your description (max 100 characters)" PlaceholderColor="Black"></Editor>
+                    <Label Text="{Binding FileError}" IsVisible="{Binding FileErrorVisible}" TextColor="Red"></Label>
                     <Label HorizontalOptions="Center"  TextColor="Black" Text="Media preview:"></Label>
                     <Frame HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="15" WidthRequest="250" Padding="15">
                         <StackLayout VerticalOptions="Center">
@@ -35,6 +38,7 @@
                             <Button x:Name="FilmMovie" HorizontalOptions="CenterAndExpand" CornerRadius="10" Padding="15" BackgroundColor="HotPink" Text="Film a movie" Command="{Binding AddMovie}" CommandParameter="{x:Reference FilmMovie}"></Button>
                         </StackLayout>
                         <StackLayout VerticalOptions="End" HorizontalOptions="Center" WidthRequest="150" >
+                            <Label Text="{Binding BabyError}" IsVisible="{Binding BabyErrorVisible}" TextColor="Red"></Label>
                             <Picker TextColor="White" HorizontalTextAlignment="Center" Title="Select your baby" TitleColor="Black" ItemsSource="{Binding Babies}" SelectedItem="{Binding SelectedBaby}" ItemDisplayBinding="{Binding Name}" Margin="0,10,0,10"></Picker>
                             <Button HorizontalOptions="Center" Margin="0,10,0,10" CornerRadius="10" BackgroundColor="DeepPink"  Text="Add Memory" Command="{Binding AddMemory}"></Button>
                         </StackLayout>
