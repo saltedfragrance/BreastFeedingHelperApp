@@ -15,5 +15,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
         Task CreateMemory(string title, string description, string date, FileResult movie, string motherId, string babyId, int imageRotation);
         //Task CreateMemory(string title, string description, string date, ImageSource image, string motherId, string babyId);
         Task DeleteMemory(string id);
+        Task DeleteMemories(List<string> ids);
     }
 }

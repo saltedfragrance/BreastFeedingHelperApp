@@ -1,4 +1,5 @@
-﻿using Firebase.Database.Query;
+﻿using Firebase.Database;
+using Firebase.Database.Query;
 using Firebase.Storage;
 using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
@@ -71,6 +72,32 @@ namespace Mde.Project.Mobile.Domain.Services
                                                   .Child(memoryToDelete.Object.FileName)
                                                   .DeleteAsync();
             await _fireBaseService.Client.Child(nameof(Memory)).Child(memoryToDelete.Key).DeleteAsync();
+        }
+
+        public async Task DeleteMemories(List<string> ids)
+        {
+            List<FirebaseObject<Memory>> memoriesToDelete = new List<FirebaseObject<Memory>>();
+
+            foreach (string id in ids)
+            {
+                var memoryToDelete = (await _fireBaseService.Client.Child(nameof(Memory))
+                                                                             .OnceAsync<Memory>())
+                                                                             .Where(b => b.Object.Id.ToString() == id)
+                                                                             .FirstOrDefault();
+                memoriesToDelete.Add(memoryToDelete);
+            }
+
+            memoriesToDelete.ForEach(async (m) =>
+            {
+                await _fireBaseService.FireBaseStorage.Child("Images")
+                                      .Child(m.Object.FileName)
+                                      .DeleteAsync();
+            });
+
+            memoriesToDelete.ForEach(async (m) =>
+            {
+                await _fireBaseService.Client.Child(nameof(Memory)).Child(m.Key).DeleteAsync();
+            });
         }
 
         public async Task<List<Memory>> GetMemories()

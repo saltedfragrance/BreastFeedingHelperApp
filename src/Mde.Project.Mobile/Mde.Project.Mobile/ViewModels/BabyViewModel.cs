@@ -19,11 +19,13 @@ namespace Mde.Project.Mobile.ViewModels
     {
         private readonly IBabyService _babyService;
         private readonly IMotherService _motherService;
+        private readonly IMemoryService _memoryService;
 
-        public BabyViewModel(IBabyService babyService, IMotherService motherService)
+        public BabyViewModel(IBabyService babyService, IMotherService motherService, IMemoryService memoryService)
         {
             _babyService = babyService;
             _motherService = motherService;
+            _memoryService = memoryService;
         }
 
         private string pageTitle;
@@ -103,7 +105,11 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
                 if (answer)
                 {
+                    var baby = await _babyService.GetBaby(id.ToString());
+                    baby.Memories = (await _memoryService.GetMemories()).Where(m => m.BabyId== id).ToList();
+                    var babyMemoriesIds = baby.Memories.Select(m => m.Id.ToString()).ToList();
                     await _motherService.AddEventToTimeLine($"You deleted {(await _babyService.GetBaby(id.ToString())).FirstName}!", TimeLineCategories.DeletedBabyMessage);
+                    await _memoryService.DeleteMemories(babyMemoriesIds);
                     await _babyService.DeleteBaby(id.ToString());
                     await RefreshBabies();
                 }
@@ -116,8 +122,9 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 var weight = await CurrentPage.DisplayPromptAsync("Edit weight", "Please enter a weight between 1 and 10kg", "Ok,", "Cancel",
                     null, 10, Keyboard.Numeric, "1");
-                await _babyService.UpdateHeight(id.ToString(), weight);
+                await _babyService.UpdateWeight(id.ToString(), weight);
                 await RefreshBabies();
+                await _motherService.RefreshCurrentMother();
             });
 
         public ICommand EditHeight => new Command<Guid>(
@@ -127,6 +134,7 @@ namespace Mde.Project.Mobile.ViewModels
                     null, 10, Keyboard.Numeric, "1");
                 await _babyService.UpdateHeight(id.ToString(), height);
                 await RefreshBabies();
+                await _motherService.RefreshCurrentMother();
             });
 
         private async Task RefreshBabies()
