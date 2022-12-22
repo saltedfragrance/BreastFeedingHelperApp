@@ -97,11 +97,21 @@ namespace Mde.Project.Mobile.Domain.Services
                 memoriesToDelete.Add(memoryToDelete);
             }
 
+
             memoriesToDelete.ForEach(async (m) =>
             {
-                await _fireBaseService.FireBaseStorage.Child("Images")
-                                      .Child(m.Object.FileName)
-                                      .DeleteAsync();
+                if (m.Object.IsPicture)
+                {
+                    await _fireBaseService.FireBaseStorage.Child("Images")
+                                          .Child(m.Object.FileName)
+                                          .DeleteAsync();
+                }
+                else
+                {
+                    await _fireBaseService.FireBaseStorage.Child("Videos")
+                                          .Child(m.Object.FileName)
+                                          .DeleteAsync();
+                }
             });
 
             memoriesToDelete.ForEach(async (m) =>
