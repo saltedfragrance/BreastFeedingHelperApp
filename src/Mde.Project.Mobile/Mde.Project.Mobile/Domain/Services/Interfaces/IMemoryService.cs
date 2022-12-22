@@ -12,7 +12,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
     public interface IMemoryService
     {
         Task<List<Memory>> GetMemories();
-        Task CreateMemory(string title, string description, string date, FileResult movie, string motherId, string babyId);
+        Task CreateMemory(string title, string description, string date, FileResult movie, string motherId, string babyId, int imageRotation);
         //Task CreateMemory(string title, string description, string date, ImageSource image, string motherId, string babyId);
         Task DeleteMemory(string id);
     }

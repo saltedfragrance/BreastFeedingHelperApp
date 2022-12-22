@@ -26,8 +26,11 @@ namespace Mde.Project.Mobile.Domain.Services
             _babyService = babyService;
         }
 
-        public async Task CreateMemory(string title, string description, string date, FileResult media, string motherId, string babyId)
+        public async Task CreateMemory(string title, string description, string date, FileResult media, string motherId, string babyId, int imageRotation)
         {
+            //create media file name
+            var fileName = $"{motherId}-{babyId}-{Guid.NewGuid()}{Path.GetExtension(media.FullPath)}";
+
             var memoryToAdd = new Memory
             {
                 Id = Guid.NewGuid(),
@@ -35,11 +38,11 @@ namespace Mde.Project.Mobile.Domain.Services
                 Description = description,
                 MotherId = new Guid(motherId),
                 Title = title,
-                BabyId = new Guid(babyId)
+                BabyId = new Guid(babyId),
+                ImageRotation = imageRotation,
+                FileName = fileName
             };
 
-            //create media file name
-            string fileName = $"{motherId}-{babyId}-{Guid.NewGuid()}{Path.GetExtension(media.FullPath)}";
             //upload media to firestore
             if (media.ContentType.Contains("image"))
             {
@@ -64,6 +67,9 @@ namespace Mde.Project.Mobile.Domain.Services
                                                                              .Where(b => b.Object.Id.ToString() == id)
                                                                              .FirstOrDefault();
 
+            await _fireBaseService.FireBaseStorage.Child("Images")
+                                                  .Child(memoryToDelete.Object.FileName)
+                                                  .DeleteAsync();
             await _fireBaseService.Client.Child(nameof(Memory)).Child(memoryToDelete.Key).DeleteAsync();
         }
 
@@ -79,7 +85,8 @@ namespace Mde.Project.Mobile.Domain.Services
                 BabyId = m.Object.BabyId,
                 IsMovie = m.Object.IsMovie,
                 IsPicture = m.Object.IsPicture,
-                MemoryUrl = m.Object.MemoryUrl
+                MemoryUrl = m.Object.MemoryUrl,
+                ImageRotation = m.Object.ImageRotation
             }).ToList();
 
             foreach (Memory memory in memories)

@@ -4,6 +4,7 @@
              x:Class="Mde.Project.Mobile.Pages.MemoriesPage"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              NavigationPage.HasNavigationBar="False"
+             x:Name="this"
              xmlns:views="clr-namespace:Mde.Project.Mobile.Pages.Views.NavigationViews"
              BackgroundColor="White">
     <ContentPage.Content>
@@ -16,12 +17,15 @@
                             <ViewCell>
                                 <Frame HorizontalOptions="Center" Margin="0,20,0,10" CornerRadius="15" WidthRequest="250" Padding="15">
                                     <StackLayout VerticalOptions="Center">
-                                        <Label Margin="0,0,20,0" HorizontalOptions="Center" TextColor="Black" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy, hh:mm}'}"></Label>
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                            <Label Margin="0,0,20,0" HorizontalOptions="Center" TextColor="Black" Text="{Binding Date, StringFormat='{0:MMMM dd, yyyy, hh:mm}'}"></Label>
+                                            <ImageButton Command="{Binding Path=BindingContext.DeleteMemory, Source={x:Reference this}}" CommandParameter="{Binding Id}" HorizontalOptions="Center"  Source="deletebutton.png" WidthRequest="20"></ImageButton>
+                                        </StackLayout>
                                         <Label FontSize="30" HorizontalOptions="Center" TextColor="Black" Text="{Binding Title}"></Label>
                                         <Label FontSize="25" HorizontalOptions="Center" Text="{Binding Baby.FirstName, StringFormat='{0}'}" TextColor="Black"></Label>
                                         <Frame VerticalOptions="FillAndExpand" IsClippedToBounds="True" CornerRadius="20" Padding="0"  BackgroundColor="Transparent">
                                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                                <Image Aspect="AspectFit" IsVisible="{Binding IsPicture}" Source="{Binding MemoryImage}"></Image>
+                                                <Image Rotation="{Binding ImageRotation}" Aspect="AspectFit" IsVisible="{Binding IsPicture}" Source="{Binding MemoryImage}"></Image>
                                                 <xct:MediaElement VerticalOptions="FillAndExpand" AutoPlay="False" Aspect="AspectFit" IsVisible="{Binding IsMovie}" Source="{Binding MemoryVideo}"  ShowsPlaybackControls="True"></xct:MediaElement>
                                             </StackLayout>
                                         </Frame>

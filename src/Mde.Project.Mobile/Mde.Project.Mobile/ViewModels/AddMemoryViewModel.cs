@@ -326,7 +326,7 @@ namespace Mde.Project.Mobile.ViewModels
                 if (Validate(memoryToAdd, MediaFile) && MediaFile != null)
                 {
                     UserDialogs.Instance.ShowLoading("Adding memory...");
-                    await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString());
+                    await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString(), Rotation);
                     await _motherService.AddEventToTimeLine($"A new memory was added! {(await _memoryService.GetMemories()).Last().Title}!", TimeLineCategories.MemoryAddedMessage);
                     await _motherService.RefreshCurrentMother();
                     PreviousPageModel.ReverseInit(new Memory());
@@ -335,30 +335,24 @@ namespace Mde.Project.Mobile.ViewModels
                 }
             });
 
-        //public ICommand DeleteMemory => new Command<Guid>(
-        //    async (Guid id) =>
-        //    {
-        //        await _memoryService.DeleteMemory(id.ToString());
-        //    });
-
         public ICommand RotateImage => new Command(
-        () =>
-        {
-            if (MediaFile != null)
-            {
-                if (MediaFile.ContentType.Contains("image"))
+                () =>
                 {
-                    if (Rotation == 0) Rotation = 90;
-                    else if (Rotation == 90) Rotation = 180;
-                    else Rotation = 0;
-                }
-                else
-                {
-                    CoreMethods.DisplayAlert("Warning", "Can't rotate a video!", "Continue");
-                }
-            }
-            else CoreMethods.DisplayAlert("Warning", "Please enter an image or video first", "Continue");
-        });
+                    if (MediaFile != null)
+                    {
+                        if (MediaFile.ContentType.Contains("image"))
+                        {
+                            if (Rotation == 0) Rotation = 90;
+                            else if (Rotation == 90) Rotation = 180;
+                            else Rotation = 0;
+                        }
+                        else
+                        {
+                            CoreMethods.DisplayAlert("Warning", "Can't rotate a video!", "Continue");
+                        }
+                    }
+                    else CoreMethods.DisplayAlert("Warning", "Please enter an image or video first", "Continue");
+                });
 
         private bool Validate(Memory memory, FileResult file = null)
         {

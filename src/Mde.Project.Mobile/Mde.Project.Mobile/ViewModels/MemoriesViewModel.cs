@@ -1,6 +1,8 @@
 ﻿using Acr.UserDialogs;
 using FreshMvvm;
+using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Models;
+using Mde.Project.Mobile.Domain.Services;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,11 @@ namespace Mde.Project.Mobile.ViewModels
     public class MemoriesViewModel : FreshBasePageModel
     {
         private IMotherService _motherService;
-
-        public MemoriesViewModel(IMotherService motherService)
+        private IMemoryService _memoryService;
+        public MemoriesViewModel(IMotherService motherService, IMemoryService memoryService)
         {
             _motherService = motherService;
+            _memoryService = memoryService;
         }
 
         private string pageTitle;
@@ -29,6 +32,17 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 pageTitle = value;
                 RaisePropertyChanged(nameof(PageTitle));
+            }
+        }
+
+        private int rotation;
+        public int Rotation
+        {
+            get { return rotation; }
+            set
+            {
+                rotation = value;
+                RaisePropertyChanged(nameof(Rotation));
             }
         }
 
@@ -109,6 +123,19 @@ namespace Mde.Project.Mobile.ViewModels
                    await CoreMethods.DisplayAlert("No babies yet!", "You must add at least one baby before you can start adding memories.", "Continue");
                }
            });
+
+        public ICommand DeleteMemory => new Command<Guid>(
+            async (Guid id) =>
+            {
+                bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this memory?", "Yes", "No");
+                if (answer)
+                {
+                    await _motherService.AddEventToTimeLine($"You deleted the memory {(await _memoryService.GetMemories()).Where(m => m.Id == id).FirstOrDefault().Title}!", TimeLineCategories.DeletedMemoryMessage);
+                    await _memoryService.DeleteMemory(id.ToString());
+                }
+                await _motherService.RefreshCurrentMother();
+                RefreshMemories();
+            });
 
         public ICommand AccountPage => new Command(
             async () =>

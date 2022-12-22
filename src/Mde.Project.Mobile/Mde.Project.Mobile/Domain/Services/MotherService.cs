@@ -114,6 +114,7 @@ namespace Mde.Project.Mobile.Domain.Services
             else if (messageCategory == TimeLineCategories.AddedBabyMessage) return "timelinenewborn.png";
             else if (messageCategory == TimeLineCategories.BabyHeightGainMessage) return "timelinebabygrowing.png";
             else if (messageCategory == TimeLineCategories.DeletedBabyMessage) return "deleted.png";
+            else if (messageCategory == TimeLineCategories.DeletedMemoryMessage) return "deleted.png";
             else return "timelinebabyweightgain.png";
         }
 
@@ -135,7 +136,7 @@ namespace Mde.Project.Mobile.Domain.Services
                 TimeLine = timeLineOfMother,
                 TimeLineId = motherToRefresh.Object.TimeLineId,
                 Babies = babiesOfMother,
-                Memories = memories
+                Memories = memories.Count() == 0 ? null : memories
             };
         }
 

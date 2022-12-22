@@ -21,5 +21,7 @@ namespace Mde.Project.Mobile.Domain.Models
         public MediaSource MemoryVideo { get; set; }
         public bool IsPicture { get; set; }
         public bool IsMovie { get; set; }
+        public int ImageRotation { get; set; }
+        public string FileName { get; set; }
     }
 }

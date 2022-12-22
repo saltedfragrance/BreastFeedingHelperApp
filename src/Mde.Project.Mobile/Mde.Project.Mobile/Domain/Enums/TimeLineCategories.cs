@@ -12,6 +12,7 @@ namespace Mde.Project.Mobile.Domain.Enums
         BabyWeightGainMessage = 4,
         BabyHeightGainMessage = 5,
         MemoryAddedMessage = 6,
-        DeletedBabyMessage = 7
+        DeletedBabyMessage = 7,
+        DeletedMemoryMessage = 8
     }
 }
