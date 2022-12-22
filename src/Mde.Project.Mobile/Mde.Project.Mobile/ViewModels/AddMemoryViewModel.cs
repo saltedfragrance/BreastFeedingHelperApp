@@ -56,7 +56,18 @@ namespace Mde.Project.Mobile.ViewModels
             set
             {
                 pageTitle = value;
-                RaisePropertyChanged(nameof(pageTitle));
+                RaisePropertyChanged(nameof(PageTitle));
+            }
+        }
+
+        private int rotation;
+        public int Rotation
+        {
+            get { return rotation; }
+            set
+            {
+                rotation = value;
+                RaisePropertyChanged(nameof(Rotation));
             }
         }
 
@@ -238,5 +249,13 @@ namespace Mde.Project.Mobile.ViewModels
         //    {
         //        await _memoryService.DeleteMemory(id.ToString());
         //    });
+
+        public ICommand RotateImage => new Command(
+             () =>
+            {
+                if (Rotation == 0) Rotation = 90;
+                else if (Rotation == 90) Rotation = 180;
+                else Rotation = 0;
+            });
     }
 }
