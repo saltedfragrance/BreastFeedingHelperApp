@@ -14,7 +14,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button CornerRadius="30" HorizontalOptions="Center" Grid.Column="0" VerticalOptions="Center" BackgroundColor="Pink" Grid.Row="0" TextColor="Black" Text="Set feeding reminder"></Button>
+                <Button Command="{Binding SendNotification}" CornerRadius="30" HorizontalOptions="Center" Grid.Column="0" VerticalOptions="Center" BackgroundColor="Pink" Grid.Row="0" TextColor="Black" Text="Set feeding reminder"></Button>
                 <Button HorizontalOptions="Center" VerticalOptions="Center" CornerRadius="30" BackgroundColor="Pink" Grid.Column="0" Grid.Row="3" TextColor="Black" Text="Set pumping reminder"></Button>
             </Grid>
         </StackLayout>

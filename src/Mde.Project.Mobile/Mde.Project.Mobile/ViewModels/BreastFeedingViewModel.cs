@@ -1,4 +1,5 @@
 ﻿using FreshMvvm;
+using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Enums;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
 namespace Mde.Project.Mobile.ViewModels
@@ -13,11 +15,40 @@ namespace Mde.Project.Mobile.ViewModels
     public class BreastFeedingViewModel : FreshBasePageModel
     {
         private IMotherService _motherService;
+        private INotificationManager _notificationManager;
 
         public BreastFeedingViewModel(IMotherService motherService)
         {
             _motherService = motherService;
+
+            _notificationManager = DependencyService.Get<INotificationManager>();
+            _notificationManager.NotificationReceived += (sender, eventArgs) =>
+            {
+                var evtData = (NotificationEventArgs)eventArgs;
+                //ShowNotification(evtData.Title, evtData.Message);
+            };
         }
+
+        //void ShowNotification(string title, string message)
+        //{
+        //    Device.BeginInvokeOnMainThread(() =>
+        //    {
+        //        var msg = new Label()
+        //        {
+        //            Text = $"Notification Received:\nTitle: {title}\nMessage: {message}"
+        //        };
+        //        stackLayout.Children.Add(msg);
+        //    });
+        //}
+
+        public ICommand SendNotification => new Command(
+           async () =>
+            {
+                var intervalTime = await CurrentPage.DisplayPromptAsync("Interval selection", "Please select an interval in minutes", "Ok", "Cancel", null, -1, Keyboard.Numeric);
+                string title = $"Time to breastfeed";
+                string message = $"Baby is huuuungry!";
+                _notificationManager.SendNotification(title, message, DateTime.Now.Millisecond.ToString(), intervalTime);
+            });
 
         private bool stopWatchEnabled = false;
         private Stopwatch stopWatch = new Stopwatch();
