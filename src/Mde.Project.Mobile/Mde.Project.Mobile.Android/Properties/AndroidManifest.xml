@@ -11,4 +11,11 @@
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 	<uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<receiver android:name=".AlarmReceiver"
+        android:enabled="false">
+		<intent-filter>
+			<action android:name="android.intent.action.BOOT_COMPLETED"></action>
+		</intent-filter>
+	</receiver>
 </manifest>
