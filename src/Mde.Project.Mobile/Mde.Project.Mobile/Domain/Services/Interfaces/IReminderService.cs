@@ -12,5 +12,6 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
         Task RemoveReminder(string id);
         Task<Reminder> GetFeedingReminder(string motherId);
         Task<Reminder> GetPumpingReminder(string motherId);
+        Task<List<Reminder>> GetAll(string motherId);
     }
 }

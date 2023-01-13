@@ -5,20 +5,20 @@ using AndroidX.Core.App;
 using Mde.Project.Mobile.Droid;
 
 [Service]
-public class ForegroundService : Service
+public class AlarmForegroundService : Service
 {
-    public const string NOTIFICATION_CHANNEL_ID = "default";
+    public const string NOTIFICATION_CHANNEL_ID = "1";
     private readonly int NOTIFICATION_ID = 1000;
-    private readonly string NOTIFICATION_CHANNEL_NAME = "Default";
+    private readonly string NOTIFICATION_CHANNEL_NAME = "Reminders";
     private void startForegroundService()
     {
-        var notificationManager = GetSystemService(Context.NotificationService) as NotificationManager;
+        var notifcationManager = GetSystemService(Context.NotificationService) as NotificationManager;
         var intent = new Intent(this, typeof(MainActivity));
         PendingIntent pendingIntent = PendingIntent.GetActivity(this, 1, intent, PendingIntentFlags.OneShot);
 
         if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
         {
-            createNotificationChannel(notificationManager);
+            createNotificationChannel(notifcationManager);
         }
         var notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         notification.SetAutoCancel(false);

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Firebase.Database.Query;
 
 namespace Mde.Project.Mobile.Domain.Services
 {
@@ -39,6 +40,23 @@ namespace Mde.Project.Mobile.Domain.Services
                                                                              .OnceAsync<Reminder>())
                                                                              .Where(b => b.Object.Id.ToString() == id)
                                                                              .FirstOrDefault();
+
+            await _fireBaseService.Client.Child(nameof(Reminder)).Child(toDelete.Key).DeleteAsync();
+        }
+
+        public async Task<List<Reminder>> GetAll(string motherId)
+        {
+            return (await _fireBaseService.Client.Child(nameof(Reminder))
+                                                                           .OnceAsync<Reminder>())
+                                                                           .Where(b => b.Object.MotherId == motherId).Select(r => new Reminder
+                                                                           {
+                                                                               Id = r.Object.Id,
+                                                                               Type = r.Object.Type,
+                                                                               IntervalTime = r.Object.IntervalTime,
+                                                                               Message = r.Object.Message,
+                                                                               MotherId = r.Object.MotherId,
+                                                                               Title = r.Object.Title
+                                                                           }).ToList();
         }
 
         public async Task<Reminder> GetFeedingReminder(string motherId)
@@ -61,7 +79,7 @@ namespace Mde.Project.Mobile.Domain.Services
             return (await _fireBaseService.Client.Child(nameof(Reminder))
                                                                              .OnceAsync<Reminder>())
                                                                              .Where(b => b.Object.MotherId == motherId
-                                                                             && b.Object.Type == "PumpingTypeReminder").Select(r => new Reminder
+                                                                             && b.Object.Type == "PumpingReminderType").Select(r => new Reminder
                                                                              {
                                                                                  Id = r.Object.Id,
                                                                                  Type = r.Object.Type,

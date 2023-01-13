@@ -1,11 +1,14 @@
 ﻿using FreshMvvm;
 using Mde.Project.Mobile.Domain;
 using Mde.Project.Mobile.Domain.Enums;
+using Mde.Project.Mobile.Domain.Models;
 using Mde.Project.Mobile.Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
@@ -19,38 +22,15 @@ namespace Mde.Project.Mobile.ViewModels
         private readonly IReminderService _reminderService;
         private const string FeedingReminderType = "FeedingReminderType";
         private const string PumpingReminderType = "PumpingReminderType";
+        private bool stopWatchEnabled = false;
+        private Stopwatch stopWatch = new Stopwatch();
+
         public BreastFeedingViewModel(IMotherService motherService, IReminderService reminderService)
         {
             _motherService = motherService;
             _reminderService = reminderService;
             _notificationManager = DependencyService.Get<INotificationManager>();
         }
-
-        public ICommand SendNotification => new Command(
-           async () =>
-            {
-                var intervalTime = await CurrentPage.DisplayPromptAsync("Alarm interval selection", "Please select an alarm interval in minutes", "Ok", "Cancel", null, -1, Keyboard.Numeric);
-                string title = $"Time to breastfeed";
-                string message = $"Baby is huuuungry!";
-
-                _notificationManager.ScheduleNotification(Guid.NewGuid().ToString(), title, message, DateTime.Now.Millisecond.ToString(), intervalTime);
-                await _reminderService.AddReminder(Guid.NewGuid().ToString(), _motherService.CurrentMother.Id.ToString(), intervalTime, title, message, FeedingReminderType);
-                FeedingReminder = intervalTime;
-                ActiveFeedingReminder = true;
-            });
-
-        public ICommand CancelReminder => new Command(
-           async () =>
-           {
-               bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to cancel this alert?", "Yes", "No");
-               var reminder = await _reminderService.GetFeedingReminder(_motherService.CurrentMother.Id.ToString());
-               if (answer) _notificationManager.CancelNotification(reminder.Id.ToString(), reminder.Title, reminder.Message);
-               else return;
-               ActiveFeedingReminder = false;
-           });
-
-        private bool stopWatchEnabled = false;
-        private Stopwatch stopWatch = new Stopwatch();
 
         private string feedingReminder;
         public string FeedingReminder
@@ -71,6 +51,28 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 activeFeedingReminder = value;
                 RaisePropertyChanged(nameof(ActiveFeedingReminder));
+            }
+        }
+
+        private string pumpingReminder;
+        public string PumpingReminder
+        {
+            get { return pumpingReminder; }
+            set
+            {
+                pumpingReminder = value;
+                RaisePropertyChanged(nameof(PumpingReminder));
+            }
+        }
+
+        private bool activePumpingReminder;
+        public bool ActivePumpingReminder
+        {
+            get { return activePumpingReminder; }
+            set
+            {
+                activePumpingReminder = value;
+                RaisePropertyChanged(nameof(ActivePumpingReminder));
             }
         }
 
@@ -252,6 +254,7 @@ namespace Mde.Project.Mobile.ViewModels
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
             PageTitle = "Breastfeeding";
+            await GetReminders();
             base.ViewIsAppearing(sender, e);
         }
 
@@ -259,6 +262,82 @@ namespace Mde.Project.Mobile.ViewModels
         {
             base.ReverseInit(returnedData);
         }
+
+        public async Task GetReminders()
+        {
+            var reminders = await _reminderService.GetAll(_motherService.CurrentMother.Id.ToString());
+            if (reminders != null)
+            {
+                reminders.ForEach(r =>
+                {
+                    if (r.Type == FeedingReminderType)
+                    {
+                        ActiveFeedingReminder = true;
+                        FeedingReminder = r.IntervalTime;
+                    }
+                    else
+                    {
+                        ActivePumpingReminder = true;
+                        PumpingReminder = r.IntervalTime;
+                    }
+                });
+            }
+        }
+
+        public ICommand SendNotification => new Command<string>(
+           async (string type) =>
+           {
+               string title;
+               string message = $"Baby is huuuungry!";
+               var intervalTime = await CurrentPage.DisplayPromptAsync("Alarm interval selection", "Please select an alarm interval in minutes", "Ok", "Cancel", null, -1, Keyboard.Numeric);
+
+               if (intervalTime != null)
+               {
+                   if (type == "FeedingReminder")
+                   {
+                       title = $"Time to breastfeed";
+                       FeedingReminder = intervalTime;
+                       ActiveFeedingReminder = true;
+                       await _reminderService.AddReminder(Guid.NewGuid().ToString(), _motherService.CurrentMother.Id.ToString(), intervalTime, title, message, FeedingReminderType);
+                   }
+                   else
+                   {
+                       title = $"Time to pump";
+                       PumpingReminder = intervalTime;
+                       ActivePumpingReminder = true;
+                       await _reminderService.AddReminder(Guid.NewGuid().ToString(), _motherService.CurrentMother.Id.ToString(), intervalTime, title, message, PumpingReminderType);
+                   }
+
+                   _notificationManager.ScheduleNotification(Guid.NewGuid().ToString(), title, message, DateTime.Now.Millisecond.ToString(), intervalTime);
+               }
+               else return;
+           });
+
+        public ICommand CancelReminder => new Command<string>(
+           async (string type) =>
+           {
+               Reminder reminder = new Reminder();
+               bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to cancel this alert?", "Yes", "No");
+
+
+               if (answer)
+               {
+                   if (type == "FeedingReminder")
+                   {
+                       reminder = await _reminderService.GetFeedingReminder(_motherService.CurrentMother.Id.ToString());
+                       ActiveFeedingReminder = false;
+                   }
+                   else
+                   {
+                       reminder = await _reminderService.GetPumpingReminder(_motherService.CurrentMother.Id.ToString());
+                       ActivePumpingReminder = false;
+                   }
+
+                   await _reminderService.RemoveReminder(reminder.Id.ToString());
+                   _notificationManager.CancelNotification(reminder.Id.ToString(), reminder.Title, reminder.Message);
+               }
+               else return;
+           });
 
         public ICommand PumpingPage => new Command(
             () =>

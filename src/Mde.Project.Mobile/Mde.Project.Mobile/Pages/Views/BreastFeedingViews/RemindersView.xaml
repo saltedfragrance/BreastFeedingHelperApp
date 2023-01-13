@@ -10,11 +10,13 @@
                     <RowDefinition Height="0.25*"></RowDefinition>
                     <RowDefinition Height="0.25*"></RowDefinition>
                     <RowDefinition Height="0.25*"></RowDefinition>
+                    <RowDefinition Height="0.25*"></RowDefinition>
+                    <RowDefinition Height="0.25*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Command="{Binding SendNotification}" CornerRadius="30" HorizontalOptions="Center" Grid.Column="0" VerticalOptions="Center" BackgroundColor="Pink" Grid.Row="0" TextColor="Black" Text="Set a repeating feeding reminder">
+                <Button Command="{Binding SendNotification}" CommandParameter="FeedingReminder" CornerRadius="30" HorizontalOptions="Center" Grid.Column="0" VerticalOptions="Center" BackgroundColor="Pink" Grid.Row="0" TextColor="Black" Text="Set a repeating feeding reminder">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveFeedingReminder}" Value="True">
                             <Setter Property="IsEnabled" Value="False" />
@@ -30,14 +32,38 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Button Grid.Column="0" Grid.Row="2" Command="{Binding CancelReminder}" CornerRadius="30" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Pink" TextColor="Black" Text="Stop reminders">
+                <Button Margin="0,0,0,25" Grid.Column="0" Grid.Row="2" Command="{Binding CancelReminder}" CommandParameter="FeedingReminder" CornerRadius="30" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Pink" TextColor="Black" Text="Stop feeding reminders">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding ActiveFeedingReminder}" Value="False">
                             <Setter Property="IsVisible" Value="False" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <!--<Button HorizontalOptions="Center" VerticalOptions="Center" CornerRadius="30" BackgroundColor="Pink" Grid.Column="0" Grid.Row="3" TextColor="Black" Text="Set pumping reminder"></Button>-->
+
+                <Button Command="{Binding SendNotification}" CommandParameter="PumpingReminder" CornerRadius="30" HorizontalOptions="Center" Grid.Column="0" VerticalOptions="Center" BackgroundColor="Pink" Grid.Row="3" TextColor="Black" Text="Set a repeating pumping reminder">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding ActivePumpingReminder}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Label VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding ActivePumpingReminder}" Grid.Column="0" Grid.Row="4" TextColor="Black">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Current pumping reminder set at: "></Span>
+                            <Span TextColor="Red" Text="{Binding PumpingReminder}"></Span>
+                            <Span TextColor="Red" Text=" minute(s)."></Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button Grid.Column="0" Grid.Row="5" Command="{Binding CancelReminder}" CommandParameter="PumpingReminder" CornerRadius="30" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Pink" TextColor="Black" Text="Stop pumping reminders">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding ActivePumpingReminder}" Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
             </Grid>
         </StackLayout>
     </ContentView.Content>
