@@ -96,7 +96,7 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand Login => new Command(
             async () =>
             {
-                UserDialogs.Instance.ShowLoading("Logging in...");
+                UserDialogs.Instance.ShowLoading("Logging in...", MaskType.Black);
                 _motherService.CurrentMother = new Mother { Email = this.Email, PassWord = this.PassWord };
 
                 if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))

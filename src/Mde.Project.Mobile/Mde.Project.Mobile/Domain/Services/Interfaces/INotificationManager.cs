@@ -8,7 +8,8 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
     {
         event EventHandler NotificationReceived;
         void Initialize();
-        void SendNotification(string title, string message, string firstTriggerTime, string intervalTime);
+        void ScheduleNotification(string id, string title, string message, string firstTriggerTime, string intervalTime);
         void ReceiveNotification(string title, string message);
+        void CancelNotification(string id, string title, string message);
     }
 }
