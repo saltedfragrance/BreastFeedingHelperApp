@@ -62,7 +62,10 @@ namespace Mde.Project.Mobile.ViewModels
             PageTitle = "Help";
             await GetLocation();
             base.ViewIsAppearing(sender, e);
-            UserDialogs.Instance.HideLoading();
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                UserDialogs.Instance.HideLoading();
+            }
         }
 
         public ICommand PhoneToMidWife => new Command(

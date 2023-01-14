@@ -1,62 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Package
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
   xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
-  IgnorableNamespaces="uap mp uap2 uap4">
+  xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10"
+  IgnorableNamespaces="uap mp uap2 uap4 rescap iot">
 
-  <Identity
-    Name="2057B2CC-180F-4680-89E2-98CC55AC7E57"
-    Publisher="CN=4E487D8B-C27A-405F-A59E-B29D5BDF3472"
-    Version="1.0.0.0" />
+	<Identity
+	  Name="2057B2CC-180F-4680-89E2-98CC55AC7E57"
+	  Publisher="CN=4E487D8B-C27A-405F-A59E-B29D5BDF3472"
+	  Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="ec0cc741-fd3e-485c-81be-68815c480690" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+	<mp:PhoneIdentity PhoneProductId="ec0cc741-fd3e-485c-81be-68815c480690" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
-  <Properties>
-    <DisplayName>Mde.Project.Mobile.UWP</DisplayName>
-    <PublisherDisplayName>4E487D8B-C27A-405F-A59E-B29D5BDF3472</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
-  </Properties>
+	<Properties>
+		<DisplayName>Mde.Project.Mobile.UWP</DisplayName>
+		<PublisherDisplayName>4E487D8B-C27A-405F-A59E-B29D5BDF3472</PublisherDisplayName>
+		<Logo>Assets\StoreLogo.png</Logo>
+	</Properties>
 
-  <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
-  </Dependencies>
+	<Dependencies>
+		<TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+	</Dependencies>
 
-  <Resources>
-    <Resource Language="x-generate"/>
-  </Resources>
+	<Resources>
+		<Resource Language="x-generate"/>
+	</Resources>
 
-  <Applications>
-    <Application Id="App"
-      Executable="$targetnametoken$.exe"
-      EntryPoint="Mde.Project.Mobile.UWP.App">
-      <uap:VisualElements
-        DisplayName="Baby &amp; breastfeeding tracker"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Mde.Project.Mobile.UWP"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
-          <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square150x150Logo" />
-            <uap:ShowOn Tile="wide310x150Logo" />
-            <uap:ShowOn Tile="square310x310Logo" />
-          </uap:ShowNameOnTiles>
-        </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
-        <uap:InitialRotationPreference>
-          <uap:Rotation Preference="portrait"/></uap:InitialRotationPreference>
-      </uap:VisualElements>
-    </Application>
-  </Applications>
+	<Applications>
+		<Application Id="App"
+		  Executable="$targetnametoken$.exe"
+		  EntryPoint="Mde.Project.Mobile.UWP.App">
+			<uap:VisualElements
+			  DisplayName="Baby &amp; breastfeeding tracker"
+			  Square150x150Logo="Assets\Square150x150Logo.png"
+			  Square44x44Logo="Assets\Square44x44Logo.png"
+			  Description="Mde.Project.Mobile.UWP"
+			  BackgroundColor="transparent">
+				<uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
+					<uap:ShowNameOnTiles>
+						<uap:ShowOn Tile="square150x150Logo" />
+						<uap:ShowOn Tile="wide310x150Logo" />
+						<uap:ShowOn Tile="square310x310Logo" />
+					</uap:ShowNameOnTiles>
+				</uap:DefaultTile>
+				<uap:SplashScreen Image="Assets\SplashScreen.png" />
+				<uap:InitialRotationPreference>
+					<uap:Rotation Preference="portrait"/>
+				</uap:InitialRotationPreference>
+			</uap:VisualElements>
+		</Application>
+	</Applications>
 
-  <Capabilities>
-    <Capability Name="internetClient" />
-    <uap:Capability Name="phoneCall"/>
-    <uap4:Capability Name="offlineMapsManagement"/>
-    <DeviceCapability Name="location"/>
-  </Capabilities>
+	<Capabilities>
+		<rescap:Capability Name="broadFileSystemAccess"/>
+		<rescap:Capability Name="runFullTrust"/>
+		<Capability Name="internetClientServer"/>
+		<Capability Name="internetClient"/>
+		<uap4:Capability Name="offlineMapsManagement"/>
+		<uap:Capability Name="phoneCall"/>
+		<uap:Capability Name="picturesLibrary"/>
+		<Capability Name="privateNetworkClientServer"/>
+		<uap:Capability Name="removableStorage"/>
+		<iot:Capability Name="systemManagement"/>
+		<uap:Capability Name="videosLibrary"/>
+		<DeviceCapability Name="location"/>
+		<DeviceCapability Name="microphone"/>
+	</Capabilities>
 </Package>

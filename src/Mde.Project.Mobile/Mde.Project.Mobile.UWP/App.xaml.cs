@@ -30,6 +30,7 @@ namespace Mde.Project.Mobile.UWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            Xamarin.Essentials.Platform.MapServiceToken = "Kz8CK8xyb4wei94NrcJ3~DSEHjZw7T30JvzNTYZSkCA~AptkanNoesw_2DQyeaZbRSwsEgK4aN0OCp_MgUfQmQwhlFugDyCW689KP4UcbjJo";
         }
 
         /// <summary>
