@@ -22,8 +22,10 @@
             </StackLayout>
             <StackLayout Padding="40" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
                 <Image WidthRequest="35" Source="phone.png" VerticalOptions="Center"></Image>
-                <Button CornerRadius="20" TextColor="Black" Text="Call midwife" Command="{Binding PhoneToMidWife}"></Button>
+                <Button CornerRadius="20" TextColor="Black" Text="Call midwife" Command="{Binding PhoneToMidWife}">
+                </Button>
             </StackLayout>
+            <Label HorizontalOptions="Center" TextColor="Red" IsVisible="{Binding OnUwp}" Text="This feature is not supported on this device."></Label>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

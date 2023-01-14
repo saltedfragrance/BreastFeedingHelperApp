@@ -53,8 +53,20 @@ namespace Mde.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(PageTitle));
             }
         }
+
+        private bool onUwp;
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            OnUwp= false;
             if (Device.RuntimePlatform == Device.Android)
             {
                 UserDialogs.Instance.ShowLoading("Getting location...");
@@ -73,7 +85,14 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 try
                 {
-                    PhoneDialer.Open(_motherService.CurrentMother.MidWifePhoneNumber.ToString());
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        PhoneDialer.Open(_motherService.CurrentMother.MidWifePhoneNumber.ToString());
+                    }
+                    if (Device.RuntimePlatform == Device.UWP)
+                    {
+                        OnUwp= true;
+                    }
                 }
                 catch (Exception)
                 {
@@ -90,7 +109,7 @@ namespace Mde.Project.Mobile.ViewModels
                 {
                     await Launcher.OpenAsync($"geo:{CurrentLocation.Latitude},{CurrentLocation.Longitude}?q=Convenience store");
                 }
-                else if(Device.RuntimePlatform == Device.UWP)
+                else if (Device.RuntimePlatform == Device.UWP)
                 {
                     await Launcher.OpenAsync($"bingmaps:?cp={CurrentLocation.Latitude}~{CurrentLocation.Longitude}&ss=Convenience store&lvl=10.3");
                 }
