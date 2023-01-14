@@ -86,7 +86,7 @@ namespace Mde.Project.Mobile.Droid
                 {
                     Description = channelDescription,
                     LockscreenVisibility = NotificationVisibility.Public,
-                    Importance = NotificationImportance.High,
+                    Importance = NotificationImportance.Max,
                 };
                 manager.CreateNotificationChannel(channel);
             }
@@ -108,13 +108,13 @@ namespace Mde.Project.Mobile.Droid
                 .SetFullScreenIntent(pendingIntent, true)
                 .SetContentTitle(title)
                 .SetContentText(message)
+                .SetShowWhen(true)
                 .SetLargeIcon(BitmapFactory.DecodeResource(AndroidApp.Context.Resources, Resource.Drawable.babydrinkingbottle))
                 .SetSmallIcon(Resource.Drawable.babydrinkingbottle)
-                .SetPriority(NotificationCompat.PriorityMax)
                 .SetVisibility((int)NotificationVisibility.Public)
                 .SetStyle(new NotificationCompat.BigTextStyle().BigText(message))
                 .SetDefaults(NotificationCompat.DefaultVibrate | NotificationCompat.DefaultSound)
-                .SetPriority((int)NotificationPriority.High);
+                .SetPriority((int)NotificationPriority.Max);
 
             Notification notification = builder.Build();
             manager.Notify(messageId++, notification);
