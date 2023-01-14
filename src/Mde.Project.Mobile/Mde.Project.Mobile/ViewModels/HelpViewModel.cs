@@ -86,7 +86,14 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand SearchDiaperStores => new Command(
             async () =>
             {
-                await Launcher.OpenAsync($"geo:{CurrentLocation.Latitude},{CurrentLocation.Longitude}?q=Kruidvat");
+                if (Device.RuntimePlatform == Device.Android)
+                {
+                    await Launcher.OpenAsync($"geo:{CurrentLocation.Latitude},{CurrentLocation.Longitude}?q=Convenience store");
+                }
+                else if(Device.RuntimePlatform == Device.UWP)
+                {
+                    await Launcher.OpenAsync($"bingmaps:?cp={CurrentLocation.Latitude}~{CurrentLocation.Longitude}&ss=Convenience store&lvl=10.3");
+                }
             });
 
         private async Task GetLocation()
