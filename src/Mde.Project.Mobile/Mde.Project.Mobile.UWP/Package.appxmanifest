@@ -34,7 +34,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Mde.Project.Mobile.UWP.App">
       <uap:VisualElements
-        DisplayName="Mde.Project.Mobile.UWP"
+        DisplayName="Baby &amp; breastfeeding tracker"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="Mde.Project.Mobile.UWP"
@@ -47,6 +47,8 @@
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="portrait"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>
