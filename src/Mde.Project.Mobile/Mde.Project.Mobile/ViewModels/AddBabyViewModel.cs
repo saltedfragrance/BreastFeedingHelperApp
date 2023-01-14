@@ -242,14 +242,20 @@ namespace Mde.Project.Mobile.ViewModels
                 Baby babyToAdd = new Baby { FirstName = FirstName, DateOfBirth = BirthDate, Weight = Weight, Height = Height };
                 if (Validate(babyToAdd))
                 {
-                    UserDialogs.Instance.ShowLoading("Adding baby...");
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.ShowLoading("Adding baby...");
+                    }
                     await _babyService.CreateBaby(Guid.NewGuid().ToString(), FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
                     var babies = await _babyService.GetBabies();
                     await _motherService.AddEventToTimeLine($"A new baby is born! Welcome {babies.Last().FirstName}!", TimeLineCategories.AddedBabyMessage);
                     await _motherService.RefreshCurrentMother();
                     PreviousPageModel.ReverseInit(new Baby());
                     await CoreMethods.PopPageModel(true, true);
-                    UserDialogs.Instance.HideLoading();
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    }
                 }
             });
 

@@ -55,7 +55,10 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
-            UserDialogs.Instance.ShowLoading("Getting location...");
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                UserDialogs.Instance.ShowLoading("Getting location...");
+            }
             PageTitle = "Help";
             await GetLocation();
             base.ViewIsAppearing(sender, e);
@@ -90,10 +93,10 @@ namespace Mde.Project.Mobile.ViewModels
             CurrentCountry = location.FirstOrDefault().CountryName;
             CurrentCity = location.FirstOrDefault().Locality;
         }
-            public ICommand PreviousPage => new Command(
-        async () =>
-        {
-            await CoreMethods.PopPageModel(true, true);
-        });
+        public ICommand PreviousPage => new Command(
+    async () =>
+    {
+        await CoreMethods.PopPageModel(true, true);
+    });
     }
 }

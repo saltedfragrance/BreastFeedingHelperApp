@@ -4,7 +4,9 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp">
+  xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+  xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+  IgnorableNamespaces="uap mp uap2 uap4">
 
   <Identity
     Name="2057B2CC-180F-4680-89E2-98CC55AC7E57"
@@ -51,5 +53,8 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="phoneCall"/>
+    <uap4:Capability Name="offlineMapsManagement"/>
+    <DeviceCapability Name="location"/>
   </Capabilities>
 </Package>

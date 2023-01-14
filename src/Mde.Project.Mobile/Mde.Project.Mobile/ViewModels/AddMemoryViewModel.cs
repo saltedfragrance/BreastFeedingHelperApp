@@ -327,13 +327,19 @@ namespace Mde.Project.Mobile.ViewModels
                 Memory memoryToAdd = new Memory { Title = Title, Description = Description, Baby = SelectedBaby };
                 if (Validate(memoryToAdd, MediaFile) && MediaFile != null)
                 {
-                    UserDialogs.Instance.ShowLoading("Adding memory...");
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.ShowLoading("Adding memory...");
+                    }
                     await _memoryService.CreateMemory(Title, Description, DateTime.Now.ToString(), MediaFile, _motherService.CurrentMother.Id.ToString(), SelectedBaby.Id.ToString(), Rotation);
                     await _motherService.AddEventToTimeLine($"A new memory was added! {(await _memoryService.GetMemories()).Last().Title}!", TimeLineCategories.MemoryAddedMessage);
                     await _motherService.RefreshCurrentMother();
                     PreviousPageModel.ReverseInit(new Memory());
                     await CoreMethods.PopPageModel(true, true);
-                    UserDialogs.Instance.HideLoading();
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    }
                 }
             });
 

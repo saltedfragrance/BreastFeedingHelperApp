@@ -106,7 +106,10 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
                 if (answer)
                 {
-                    UserDialogs.Instance.ShowLoading("Deleting baby...");
+                    if (Device.RuntimePlatform == Device.Android)
+                    {
+                        UserDialogs.Instance.ShowLoading("Deleting baby...");
+                    }
                     var baby = await _babyService.GetBaby(id.ToString());
                     baby.Memories = (await _memoryService.GetMemories()).Where(m => m.BabyId== id).ToList();
                     var babyMemoriesIds = baby.Memories.Select(m => m.Id.ToString()).ToList();
@@ -116,7 +119,10 @@ namespace Mde.Project.Mobile.ViewModels
                     await RefreshBabies();
                 }
                 await _motherService.RefreshCurrentMother();
-                UserDialogs.Instance.HideLoading();
+                if (Device.RuntimePlatform == Device.Android)
+                {
+                    UserDialogs.Instance.HideLoading();
+                }
 
             });
 
