@@ -22,12 +22,14 @@ namespace Mde.Project.Mobile.ViewModels
         private readonly IMemoryService _memoryService;
         private readonly IMotherService _motherService;
         private readonly IValidator _memoryValidator;
+        private IMediaPicker _mediaPicker;
 
         public AddMemoryViewModel(IMemoryService memoryService, IMotherService motherService)
         {
             _memoryService = memoryService;
             _motherService = motherService;
             _memoryValidator = new MemoryValidator();
+            _mediaPicker = DependencyService.Get<IMediaPicker>();
         }
 
         private string babyError;
@@ -266,7 +268,15 @@ namespace Mde.Project.Mobile.ViewModels
 
             if (((Button)control).Text == "Add a picture")
             {
-                MediaFile = await MediaPicker.PickPhotoAsync();
+                if (Device.RuntimePlatform == Device.Android)
+                {
+                    MediaFile = await MediaPicker.PickPhotoAsync();
+                }
+                else if(Device.RuntimePlatform == Device.UWP)
+                {
+                    stream = await _mediaPicker.PickMedia(true, false);
+                    pictureSource = ImageSource.FromStream(() => stream);
+                }
             }
             else
             {
@@ -280,7 +290,7 @@ namespace Mde.Project.Mobile.ViewModels
             }
             else return;
 
-            PictureSource = ImageSource.FromStream(() => stream);
+          
             if (PictureSource == null) IsPicture = false;
         });
 
