@@ -301,7 +301,7 @@ namespace Mde.Project.Mobile.ViewModels
                 else if(OnUwp)
                 {
                     stream = await _mediaPicker.PickMedia(true, false);
-                    pictureSource = ImageSource.FromStream(() => stream);
+                    PictureSource = ImageSource.FromStream(() => stream);
                 }
             }
             else
@@ -312,6 +312,7 @@ namespace Mde.Project.Mobile.ViewModels
             if (MediaFile != null)
             {
                 stream = await MediaFile.OpenReadAsync();
+                PictureSource = ImageSource.FromStream(() => stream);
                 FileError = null;
             }
             else return;
