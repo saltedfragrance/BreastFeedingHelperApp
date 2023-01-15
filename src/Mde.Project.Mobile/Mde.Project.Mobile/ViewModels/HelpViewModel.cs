@@ -105,10 +105,9 @@ namespace Mde.Project.Mobile.ViewModels
                 if (OnAndroid)
                 {
                     PhoneDialer.Open(_motherService.CurrentMother.MidWifePhoneNumber.ToString());
+                    var phoneNumber = await CurrentPage.DisplayPromptAsync("Something went wrong", "Please enter a valid number", "Ok,", "Cancel");
+                    PhoneDialer.Open(phoneNumber);
                 }
-
-                var phoneNumber = await CurrentPage.DisplayPromptAsync("Something went wrong", "Please enter a valid number", "Ok,", "Cancel");
-                PhoneDialer.Open(phoneNumber);
             });
 
         public ICommand SearchDiaperStores => new Command(
