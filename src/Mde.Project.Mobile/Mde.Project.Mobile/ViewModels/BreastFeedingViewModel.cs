@@ -324,7 +324,9 @@ namespace Mde.Project.Mobile.ViewModels
                string message = $"Baby is huuuungry!";
                var intervalTime = await CurrentPage.DisplayPromptAsync("Alarm interval selection", "Please select an alarm interval in minutes", "Ok", "Cancel", null, -1, Keyboard.Numeric);
 
-               if (intervalTime != null)
+               if (string.IsNullOrEmpty(intervalTime)) await CoreMethods.DisplayAlert("Error", "Please enter a valid value", "Continue");
+
+               if (!string.IsNullOrEmpty(intervalTime))
                {
                    if (type == "FeedingReminder")
                    {
