@@ -79,6 +79,29 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
+
         public override async void ReverseInit(object returnedData)
         {
             await RefreshBabies();
@@ -87,6 +110,9 @@ namespace Mde.Project.Mobile.ViewModels
 
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             PageTitle = "Babies";
             base.ViewIsAppearing(sender, e);
 
@@ -106,7 +132,7 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this baby?", "Yes", "No");
                 if (answer)
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Deleting baby...");
                     }
@@ -119,7 +145,7 @@ namespace Mde.Project.Mobile.ViewModels
                     await RefreshBabies();
                 }
                 await _motherService.RefreshCurrentMother();
-                if (Device.RuntimePlatform == Device.Android)
+                if (OnAndroid)
                 {
                     UserDialogs.Instance.HideLoading();
                 }
@@ -177,5 +203,6 @@ namespace Mde.Project.Mobile.ViewModels
             {
                 await CoreMethods.PushPageModel<HelpViewModel>(null, true);
             });
+
     }
 }

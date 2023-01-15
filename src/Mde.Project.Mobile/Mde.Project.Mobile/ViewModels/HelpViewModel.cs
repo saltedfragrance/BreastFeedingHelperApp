@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace Mde.Project.Mobile.ViewModels
 {
@@ -23,6 +24,8 @@ namespace Mde.Project.Mobile.ViewModels
 
         public Location CurrentLocation { get; set; }
         private string currentCountry;
+
+
         public string CurrentCountry
         {
             get { return currentCountry; }
@@ -54,7 +57,19 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
         private bool onUwp;
+
         public bool OnUwp
         {
             get { return onUwp; }
@@ -66,15 +81,19 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
-            OnUwp= false;
-            if (Device.RuntimePlatform == Device.Android)
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
+            if (OnAndroid)
             {
                 UserDialogs.Instance.ShowLoading("Getting location...");
             }
+
             PageTitle = "Help";
             await GetLocation();
             base.ViewIsAppearing(sender, e);
-            if (Device.RuntimePlatform == Device.Android)
+
+            if (OnAndroid)
             {
                 UserDialogs.Instance.HideLoading();
             }
@@ -83,33 +102,23 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand PhoneToMidWife => new Command(
             async () =>
             {
-                try
+                if (OnAndroid)
                 {
-                    if (Device.RuntimePlatform == Device.Android)
-                    {
-                        PhoneDialer.Open(_motherService.CurrentMother.MidWifePhoneNumber.ToString());
-                    }
-                    if (Device.RuntimePlatform == Device.UWP)
-                    {
-                        OnUwp= true;
-                    }
+                    PhoneDialer.Open(_motherService.CurrentMother.MidWifePhoneNumber.ToString());
                 }
-                catch (Exception)
-                {
 
-                    var phoneNumber = await CurrentPage.DisplayPromptAsync("Something went wrong", "Please enter a valid number", "Ok,", "Cancel");
-                    PhoneDialer.Open(phoneNumber);
-                }
+                var phoneNumber = await CurrentPage.DisplayPromptAsync("Something went wrong", "Please enter a valid number", "Ok,", "Cancel");
+                PhoneDialer.Open(phoneNumber);
             });
 
         public ICommand SearchDiaperStores => new Command(
             async () =>
             {
-                if (Device.RuntimePlatform == Device.Android)
+                if (OnAndroid)
                 {
                     await Launcher.OpenAsync($"geo:{CurrentLocation.Latitude},{CurrentLocation.Longitude}?q=Convenience store");
                 }
-                else if (Device.RuntimePlatform == Device.UWP)
+                else if (OnUwp)
                 {
                     await Launcher.OpenAsync($"bingmaps:?cp={CurrentLocation.Latitude}~{CurrentLocation.Longitude}&ss=yp.Convenience store~sst.1~pg.2");
                 }
@@ -123,9 +132,9 @@ namespace Mde.Project.Mobile.ViewModels
             CurrentCity = location.FirstOrDefault().Locality;
         }
         public ICommand PreviousPage => new Command(
-    async () =>
-    {
-        await CoreMethods.PopPageModel(true, true);
-    });
+            async () =>
+            {
+                await CoreMethods.PopPageModel(true, true);
+            });
     }
 }

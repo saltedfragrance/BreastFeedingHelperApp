@@ -31,6 +31,30 @@ namespace Mde.Project.Mobile.ViewModels
             _babyValidator = new BabyValidator();
         }
 
+        private bool onAndroid;
+
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
+
         private string pageTitle;
         public string PageTitle
         {
@@ -207,6 +231,9 @@ namespace Mde.Project.Mobile.ViewModels
 
         public async override void Init(object initData)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             if (initData != null)
             {
                 Add = false;
@@ -242,17 +269,19 @@ namespace Mde.Project.Mobile.ViewModels
                 Baby babyToAdd = new Baby { FirstName = FirstName, DateOfBirth = BirthDate, Weight = Weight, Height = Height };
                 if (Validate(babyToAdd))
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Adding baby...");
                     }
+
                     await _babyService.CreateBaby(Guid.NewGuid().ToString(), FirstName, Height, Weight, _motherService.CurrentMother.Id.ToString(), BirthDate.ToString());
                     var babies = await _babyService.GetBabies();
                     await _motherService.AddEventToTimeLine($"A new baby is born! Welcome {babies.Last().FirstName}!", TimeLineCategories.AddedBabyMessage);
                     await _motherService.RefreshCurrentMother();
                     PreviousPageModel.ReverseInit(new Baby());
                     await CoreMethods.PopPageModel(true, true);
-                    if (Device.RuntimePlatform == Device.Android)
+
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.HideLoading();
                     }

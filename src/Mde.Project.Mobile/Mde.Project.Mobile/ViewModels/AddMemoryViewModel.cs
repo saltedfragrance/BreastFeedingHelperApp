@@ -32,6 +32,29 @@ namespace Mde.Project.Mobile.ViewModels
             _mediaPicker = DependencyService.Get<IMediaPicker>();
         }
 
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
+
         private string babyError;
 
         public string BabyError
@@ -249,6 +272,9 @@ namespace Mde.Project.Mobile.ViewModels
 
         public async override void Init(object initData)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             Babies = _motherService.CurrentMother.Babies.ToList();
             base.Init(initData);
             PageTitle = "Add memory";
@@ -268,11 +294,11 @@ namespace Mde.Project.Mobile.ViewModels
 
             if (((Button)control).Text == "Add a picture")
             {
-                if (Device.RuntimePlatform == Device.Android)
+                if (OnAndroid)
                 {
                     MediaFile = await MediaPicker.PickPhotoAsync();
                 }
-                else if(Device.RuntimePlatform == Device.UWP)
+                else if(OnUwp)
                 {
                     stream = await _mediaPicker.PickMedia(true, false);
                     pictureSource = ImageSource.FromStream(() => stream);
@@ -337,7 +363,7 @@ namespace Mde.Project.Mobile.ViewModels
                 Memory memoryToAdd = new Memory { Title = Title, Description = Description, Baby = SelectedBaby };
                 if (Validate(memoryToAdd, MediaFile) && MediaFile != null)
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Adding memory...");
                     }

@@ -223,8 +223,34 @@ namespace Mde.Project.Mobile.ViewModels
             get { return !string.IsNullOrEmpty(MidWifePhoneNumberError); }
         }
 
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
+
         public async override void Init(object initData)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             if (initData != null)
             {
                 IsRegistering = true;
@@ -269,13 +295,13 @@ namespace Mde.Project.Mobile.ViewModels
                 };
                 if (Validate(mother) && !_userService.IsLoggedIn)
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Registering account...");
                     }
                     await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
 
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.HideLoading();
                     }
@@ -284,7 +310,7 @@ namespace Mde.Project.Mobile.ViewModels
                 }
                 else if (Validate(mother) && _userService.IsLoggedIn)
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Updating account...");
                     }
@@ -292,7 +318,7 @@ namespace Mde.Project.Mobile.ViewModels
                     mother.TimeLineId = _motherService.CurrentMother.TimeLineId;
                     await _motherService.UpdateMother(_motherService.CurrentMother.Id.ToString(), mother);
                     PopulateControls();
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.HideLoading();
                     }

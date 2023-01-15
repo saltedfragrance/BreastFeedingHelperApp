@@ -240,6 +240,29 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
+
         private bool isRemindersPage;
 
         public bool IsRemindersPage
@@ -253,8 +276,11 @@ namespace Mde.Project.Mobile.ViewModels
         }
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             PageTitle = "Breastfeeding";
-            await GetReminders();
+            if (OnAndroid) await GetReminders();
             base.ViewIsAppearing(sender, e);
         }
 
@@ -265,6 +291,7 @@ namespace Mde.Project.Mobile.ViewModels
 
         public async Task GetReminders()
         {
+
             var reminders = await _reminderService.GetAll(_motherService.CurrentMother.Id.ToString());
             if (reminders != null)
             {
@@ -287,6 +314,12 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand SendNotification => new Command<string>(
            async (string type) =>
            {
+               if (OnUwp)
+               {
+                   CoreMethods.DisplayAlert("Not supported", "Feature not supported on UWP", "Go back");
+                   return;
+               }
+
                string title;
                string message = $"Baby is huuuungry!";
                var intervalTime = await CurrentPage.DisplayPromptAsync("Alarm interval selection", "Please select an alarm interval in minutes", "Ok", "Cancel", null, -1, Keyboard.Numeric);
@@ -318,7 +351,6 @@ namespace Mde.Project.Mobile.ViewModels
            {
                Reminder reminder = new Reminder();
                bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to cancel this alert?", "Yes", "No");
-
 
                if (answer)
                {

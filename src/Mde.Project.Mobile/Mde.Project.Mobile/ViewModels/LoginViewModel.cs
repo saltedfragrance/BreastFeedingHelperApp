@@ -70,6 +70,29 @@ namespace Mde.Project.Mobile.ViewModels
             }
         }
 
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid= value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp= value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
+
         public bool PassWordErrorVisible
         {
             get { return !string.IsNullOrWhiteSpace(PassWordError); }
@@ -90,13 +113,16 @@ namespace Mde.Project.Mobile.ViewModels
 
         protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             base.ViewIsAppearing(sender, e);
         }
 
         public ICommand Login => new Command(
             async () =>
             {
-                if (Device.RuntimePlatform == Device.Android)
+                if (OnAndroid)
                 {
                     UserDialogs.Instance.ShowLoading("Logging in...", MaskType.Black);
                 }
@@ -104,7 +130,7 @@ namespace Mde.Project.Mobile.ViewModels
 
                 if (Validate(_motherService.CurrentMother) && (await _userService.Login(Email, PassWord) == true))
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.HideLoading();
                         UserDialogs.Instance.ShowLoading("Getting memories...");
@@ -122,7 +148,7 @@ namespace Mde.Project.Mobile.ViewModels
                     PassWordError = "Credentials incorrect!";
                 }
 
-                if (Device.RuntimePlatform == Device.Android)
+                if (OnAndroid)
                 {
                     UserDialogs.Instance.HideLoading();
                 }

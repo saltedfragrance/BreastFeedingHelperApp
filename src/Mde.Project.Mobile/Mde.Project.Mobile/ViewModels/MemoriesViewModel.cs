@@ -83,8 +83,34 @@ namespace Mde.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(Memories));
             }
         }
+
+        private bool onAndroid;
+        public bool OnAndroid
+        {
+            get { return onAndroid; }
+            set
+            {
+                onAndroid = value;
+                RaisePropertyChanged(nameof(OnAndroid));
+            }
+        }
+
+        private bool onUwp;
+
+        public bool OnUwp
+        {
+            get { return onUwp; }
+            set
+            {
+                onUwp = value;
+                RaisePropertyChanged(nameof(OnUwp));
+            }
+        }
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
+            if (HelperMethods.CheckOs()) OnAndroid = true;
+            else OnUwp = true;
+
             PageTitle = "Memories";
             base.ViewIsAppearing(sender, e);
             RefreshMemories();
@@ -114,14 +140,19 @@ namespace Mde.Project.Mobile.ViewModels
         public ICommand AddMemory => new Command(
            async () =>
            {
-               if (_motherService.CurrentMother.Babies.Count != 0 || _motherService.CurrentMother.Babies == null)
+               if (OnAndroid)
                {
-                   await CoreMethods.PushPageModel<AddMemoryViewModel>(null, true);
+                   if (_motherService.CurrentMother.Babies.Count != 0 || _motherService.CurrentMother.Babies == null)
+                   {
+                       await CoreMethods.PushPageModel<AddMemoryViewModel>(null, true);
+                   }
+                   else
+                   {
+                       await CoreMethods.DisplayAlert("No babies yet!", "You must add at least one baby before you can start adding memories.", "Continue");
+                   }
                }
-               else
-               {
-                   await CoreMethods.DisplayAlert("No babies yet!", "You must add at least one baby before you can start adding memories.", "Continue");
-               }
+               else await CoreMethods.DisplayAlert("Alert", "This feature is not supported on UWP", "Continue");
+
            });
 
         public ICommand DeleteMemory => new Command<Guid>(
@@ -130,7 +161,7 @@ namespace Mde.Project.Mobile.ViewModels
                 bool answer = await CoreMethods.DisplayAlert("Attention", "Are you sure wish to delete this memory?", "Yes", "No");
                 if (answer)
                 {
-                    if (Device.RuntimePlatform == Device.Android)
+                    if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Deleting memory...");
                     }
@@ -140,7 +171,7 @@ namespace Mde.Project.Mobile.ViewModels
                 await _motherService.RefreshCurrentMother();
                 RefreshMemories();
 
-                if (Device.RuntimePlatform == Device.Android)
+                if (OnAndroid)
                 {
                     UserDialogs.Instance.HideLoading();
                 }
