@@ -97,6 +97,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UwpNotificationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -164,7 +165,7 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="loginscreenimage.png">
+    <Content Include="loginscreenimage.jpg">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </Content>
@@ -219,6 +220,15 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.2.0.534</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>7.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="Shiny.Core">
+      <Version>2.0.0.2639</Version>
+    </PackageReference>
+    <PackageReference Include="Shiny.Notifications">
+      <Version>2.0.0.2639</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.CommunityToolkit">
       <Version>2.0.5</Version>

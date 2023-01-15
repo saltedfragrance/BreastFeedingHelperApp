@@ -111,7 +111,7 @@ namespace Mde.Project.Mobile.ViewModels
                 }
                 else if (Device.RuntimePlatform == Device.UWP)
                 {
-                    await Launcher.OpenAsync($"bingmaps:?cp={CurrentLocation.Latitude}~{CurrentLocation.Longitude}&ss=Convenience store&lvl=10.3");
+                    await Launcher.OpenAsync($"bingmaps:?cp={CurrentLocation.Latitude}~{CurrentLocation.Longitude}&ss=yp.Convenience store~sst.1~pg.2");
                 }
             });
 
