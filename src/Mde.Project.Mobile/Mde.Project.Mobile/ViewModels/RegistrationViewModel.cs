@@ -293,13 +293,23 @@ namespace Mde.Project.Mobile.ViewModels
                     PassWord = PassWord,
                     MidWifePhoneNumber = (MidWifePhoneNumber != null ? int.Parse(MidWifePhoneNumber) : 0),
                 };
+
                 if (Validate(mother) && !_userService.IsLoggedIn)
                 {
                     if (OnAndroid)
                     {
                         UserDialogs.Instance.ShowLoading("Registering account...");
                     }
-                    await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
+                    var response = await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber));
+                    if (response == false)
+                    {
+                        if (OnAndroid)
+                        {
+                            UserDialogs.Instance.HideLoading();
+                        }
+                        await CoreMethods.DisplayAlert("Failure", "Email already exists!", "Try again");
+                        return;
+                    }
 
                     if (OnAndroid)
                     {
@@ -314,6 +324,18 @@ namespace Mde.Project.Mobile.ViewModels
                     {
                         UserDialogs.Instance.ShowLoading("Updating account...");
                     }
+
+                    var response = await _userService.Register(FirstName, LastName, Email, PassWord, int.Parse(MidWifePhoneNumber), true);
+                    if (response == false)
+                    {
+                        if (OnAndroid)
+                        {
+                            UserDialogs.Instance.HideLoading();
+                        }
+                        await CoreMethods.DisplayAlert("Failure", "Email already exists!", "Try again");
+                        return;
+                    }
+
                     mother.Id = _motherService.CurrentMother.Id;
                     mother.TimeLineId = _motherService.CurrentMother.TimeLineId;
                     await _motherService.UpdateMother(_motherService.CurrentMother.Id.ToString(), mother);

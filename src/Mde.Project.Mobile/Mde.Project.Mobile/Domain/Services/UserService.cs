@@ -17,6 +17,7 @@ namespace Mde.Project.Mobile.Domain.Services
         private readonly IFireBaseService _fireBaseService;
 
         public bool IsLoggedIn { get; set; } = false;
+        public User User { get; set; }
 
         public UserService(IMotherService motherService, IFireBaseService fireBaseService)
         {
@@ -28,7 +29,8 @@ namespace Mde.Project.Mobile.Domain.Services
         {
             try
             {
-                FirebaseAuthLink token = await _fireBaseService.AuthProvider.SignInWithEmailAndPasswordAsync(email, passWord);
+                FirebaseAuthLink response = await _fireBaseService.AuthProvider.SignInWithEmailAndPasswordAsync(email, passWord);
+                User = response.User;
                 var mothers = await _motherService.GetMothers();
                 _motherService.CurrentMother = mothers.Where(m => m.Email == email).FirstOrDefault();
                 IsLoggedIn = true;
@@ -45,10 +47,24 @@ namespace Mde.Project.Mobile.Domain.Services
             throw new NotImplementedException();
         }
 
-        public async Task Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber)
+        public async Task<bool> Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, bool isUpdating = false)
         {
-            await _fireBaseService.AuthProvider.CreateUserWithEmailAndPasswordAsync(email, passWord);
+            try
+            {
+                if (isUpdating)
+                {
+                    if (!(await _motherService.GetMothers()).Any(m => m.Email == email)) await _fireBaseService.AuthProvider.ChangeUserEmail(User.LocalId, email);
+                    await _fireBaseService.AuthProvider.ChangeUserPassword(User.LocalId, passWord);
+                }
+                else await _fireBaseService.AuthProvider.CreateUserWithEmailAndPasswordAsync(email, passWord);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("EMAIL_EXISTS")) return false;
+            }
+
             await _motherService.CreateMother(firstName, lastName, email, passWord, midWifePhoneNumber);
+            return true;
         }
     }
 }

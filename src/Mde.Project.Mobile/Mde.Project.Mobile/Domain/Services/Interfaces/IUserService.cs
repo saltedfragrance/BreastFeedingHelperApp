@@ -11,7 +11,7 @@ namespace Mde.Project.Mobile.Domain.Services.Interfaces
 
         Task<bool> Logout();
 
-        Task Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber);
+        Task<bool> Register(string firstName, string lastName, string email, string passWord, int midWifePhoneNumber, bool isUpdating = false);
 
         bool IsLoggedIn { get; set; }
     }
