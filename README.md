@@ -1,13 +1,10 @@
-# Naam van jouw project
+# Breastfeeding app
 
-## Project
-Beschrijf hier je project
+An android app to help with your breastfeeding. What it does:
+- Add all of your children, including pictures
+- Add memories (pictures or videos) including a description to the app
+- A timeline that documents all the happenings in the app
+- A timer which can log your breastfeedings
 
-## Extra info
-Plaats hier de nodig informatie om het
-project te kunnen uitvoeren:
-
-- API keys of nodige secrets
-- Logingegevens
-- Database configuraties
-- ...
+###  Login page
+![Screenshot](https://github.com/saltedfragrance/BreastFeedingHelperApp/blob/dev/screenshots/screenshot.jpg)
